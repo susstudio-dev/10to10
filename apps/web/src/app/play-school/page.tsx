@@ -11,6 +11,7 @@ import {
 } from "@/content/playschool";
 import { AdmissionForm } from "@/components/admission-form";
 import { BookButton } from "@/components/book-button";
+import { PlaySchoolIllustration } from "@/components/playschool-illustration";
 import { Star, Check, ArrowRight, Clock, Users, Calendar } from "lucide-react";
 import {
   BlocksIcon,
@@ -21,7 +22,6 @@ import {
   BookIcon,
   ShieldIcon,
   UsersIcon,
-  SparkleIcon,
   UnderlineSquiggle,
 } from "@/components/vectors";
 import { siteConfig } from "@/lib/utils";
@@ -97,10 +97,24 @@ export default function PlaySchoolPage() {
         {JSON.stringify(faqJsonLd)}
       </Script>
 
-      {/* HERO */}
-      <section className="relative pt-28 md:pt-32 pb-16 md:pb-20 overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-[480px] h-[480px] rounded-full bg-brand-primary/8 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 w-[420px] h-[420px] rounded-full bg-brand-yellow/15 blur-3xl pointer-events-none" />
+      {/* HERO — Play School theme: warm butter-cream + scholarly accents, fades into body */}
+      <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
+        <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
+          {/* layered theme wash */}
+          <div className="absolute -top-32 -left-32 w-[640px] h-[640px] rounded-full bg-brand-yellow/22 blur-3xl" />
+          <div className="absolute -top-20 right-0 w-[520px] h-[520px] rounded-full bg-brand-grape/14 blur-3xl" />
+          <div className="absolute top-40 left-1/3 w-[420px] h-[420px] rounded-full bg-brand-primary/8 blur-3xl" />
+          {/* notebook-line underlay (subtle) */}
+          <div
+            className="absolute inset-0 opacity-[0.05] mix-blend-multiply"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(0deg, transparent, transparent 31px, #2c3873 31px, #2c3873 32px)",
+            }}
+          />
+          {/* fade-out at the bottom so the hero blends into the page cream */}
+          <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-[#fdfbf7]" />
+        </div>
 
         <div className="container relative grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7">
@@ -150,36 +164,8 @@ export default function PlaySchoolPage() {
             </div>
           </div>
 
-          <div className="lg:col-span-5 relative">
-            <div className="aspect-[4/5] rounded-3xl bg-gradient-to-br from-brand-primary/15 via-brand-yellow/15 to-brand-turquoise/15 border border-black/[0.07] grid place-items-center relative overflow-hidden">
-              <div className="absolute inset-0 grid grid-cols-3 grid-rows-4 gap-2 p-2 opacity-90">
-                {/* placeholder for real photo - illustrated mosaic */}
-                <div className="col-span-2 row-span-2 rounded-2xl bg-brand-primary/15 grid place-items-center">
-                  <BlocksIcon className="h-16 w-16 text-brand-primary" />
-                </div>
-                <div className="rounded-2xl bg-brand-yellow/30 grid place-items-center">
-                  <SparkleIcon className="h-8 w-8 text-amber-700" />
-                </div>
-                <div className="rounded-2xl bg-brand-turquoise/20 grid place-items-center">
-                  <PaletteIcon className="h-8 w-8 text-brand-turquoise" />
-                </div>
-                <div className="rounded-2xl bg-rose-100 grid place-items-center">
-                  <HeartIcon className="h-8 w-8 text-rose-600" />
-                </div>
-                <div className="col-span-2 rounded-2xl bg-indigo-100 grid place-items-center">
-                  <BookIcon className="h-10 w-10 text-indigo-700" />
-                </div>
-                <div className="rounded-2xl bg-purple-100 grid place-items-center">
-                  <YogaIcon className="h-8 w-8 text-purple-700" />
-                </div>
-                <div className="col-span-2 rounded-2xl bg-teal-100 grid place-items-center">
-                  <UsersIcon className="h-10 w-10 text-teal-700" />
-                </div>
-                <div className="rounded-2xl bg-amber-100 grid place-items-center">
-                  <PencilIcon className="h-8 w-8 text-amber-700" />
-                </div>
-              </div>
-            </div>
+          <div className="lg:col-span-5">
+            <PlaySchoolIllustration />
           </div>
         </div>
       </section>

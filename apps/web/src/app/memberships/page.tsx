@@ -59,11 +59,31 @@ const faqs = [
 export default function MembershipsPage() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative pt-28 md:pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-mesh-hero" />
+      {/* HERO — Memberships theme: premium indigo + turquoise tonal wash, fades into body */}
+      <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
+        <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
+          <div className="absolute -top-40 -left-32 w-[720px] h-[720px] rounded-full bg-brand-primary/14 blur-3xl" />
+          <div className="absolute -top-20 right-0 w-[560px] h-[560px] rounded-full bg-brand-turquoise/14 blur-3xl" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[440px] h-[440px] rounded-full bg-brand-yellow/10 blur-3xl" />
+          {/* gold-foil shimmer overlay (premium feel) */}
+          <div
+            className="absolute inset-0 opacity-[0.08] mix-blend-multiply"
+            style={{
+              backgroundImage:
+                "linear-gradient(110deg, transparent 40%, rgba(255,217,61,0.6) 50%, transparent 60%)",
+            }}
+          />
+          {/* tier dots scatter */}
+          <div className="absolute inset-0 opacity-[0.07]" style={{
+            backgroundImage:
+              "radial-gradient(circle at 12% 22%, #2c3873 1.5px, transparent 2px), radial-gradient(circle at 78% 32%, #00d4c8 1.5px, transparent 2px), radial-gradient(circle at 42% 70%, #8b5cf6 1.5px, transparent 2px)",
+            backgroundSize: "120px 120px",
+          }} />
+          {/* bottom fade to body cream */}
+          <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-[#fdfbf7]" />
+        </div>
         <div className="container relative text-center max-w-3xl">
-          <span className="inline-flex items-center gap-2 chip bg-white/80 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary">
+          <span className="inline-flex items-center gap-2 chip bg-white/85 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary">
             <Crown className="h-3.5 w-3.5" /> Memberships & passes
           </span>
           <h1 className="heading-xl mt-5">
