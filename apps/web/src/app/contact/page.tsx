@@ -118,28 +118,67 @@ export default function ContactPage() {
 
   return (
     <>
-      {/* HERO */}
-      <section className="relative pt-28 md:pt-32 pb-12 md:pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-mesh-hero" />
+      {/* HERO — Contact theme: friendly chat-bubble palette (turquoise/yellow/grape/coral), fades into body */}
+      <section className="relative pt-28 md:pt-32 pb-16 md:pb-20 overflow-hidden">
+        <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
+          {/* turquoise (whatsapp / friendly chat) */}
+          <div className="absolute -top-32 -left-24 w-[600px] h-[600px] rounded-full bg-brand-turquoise/22 blur-3xl" />
+          {/* warm yellow (calling, sunshine) */}
+          <div className="absolute -top-10 right-0 w-[520px] h-[520px] rounded-full bg-brand-yellow/26 blur-3xl" />
+          {/* grape (email, calm) */}
+          <div className="absolute top-32 left-1/2 -translate-x-1/2 w-[480px] h-[480px] rounded-full bg-brand-grape/16 blur-3xl" />
+          {/* coral (warmth, hi-five) */}
+          <div className="absolute -bottom-24 -right-16 w-[440px] h-[440px] rounded-full bg-rose-300/26 blur-3xl" />
+
+          {/* Floating speech-bubble silhouettes */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.08]" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+            <g fill="#2c3873">
+              <path d="M 80 110 q 0 -28 28 -28 h 90 q 28 0 28 28 v 36 q 0 28 -28 28 h -55 l -16 18 v -18 h -19 q -28 0 -28 -28 z" />
+              <circle cx="118" cy="130" r="3" />
+              <circle cx="138" cy="130" r="3" />
+              <circle cx="158" cy="130" r="3" />
+            </g>
+            <g fill="#00d4c8">
+              <path d="M 980 70 q 0 -22 22 -22 h 110 q 22 0 22 22 v 30 q 0 22 -22 22 h 40 l 14 16 v -16 h -164 q -22 0 -22 -22 z" />
+            </g>
+            <g fill="#8b5cf6">
+              <path d="M 1020 380 q 0 -22 22 -22 h 90 q 22 0 22 22 v 30 q 0 22 -22 22 h -40 l -16 18 v -18 h -34 q -22 0 -22 -22 z" />
+            </g>
+            <g fill="#ff8a3d">
+              <path d="M 60 420 q 0 -22 22 -22 h 100 q 22 0 22 22 v 30 q 0 22 -22 22 h -50 l -14 16 v -16 h -36 q -22 0 -22 -22 z" />
+            </g>
+          </svg>
+
+          {/* tiny dotted "calling" pattern */}
+          <div
+            className="absolute inset-0 opacity-[0.10]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 10% 26%, #00d4c8 1.4px, transparent 2px), radial-gradient(circle at 64% 14%, #ffd93d 1.4px, transparent 2px), radial-gradient(circle at 88% 56%, #8b5cf6 1.4px, transparent 2px), radial-gradient(circle at 32% 78%, #ff5a8a 1.4px, transparent 2px)",
+              backgroundSize: "180px 180px",
+            }}
+          />
+          <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-[#fdfbf7]" />
+        </div>
 
         <div className="container relative max-w-4xl">
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="inline-flex items-center gap-2 chip bg-white/80 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary">
+            <span className="inline-flex items-center gap-2 chip bg-white/85 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary shadow-sm">
               <MessageCircle className="h-3.5 w-3.5" /> Get in touch
             </span>
             {status && (
               <motion.span
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className={`inline-flex items-center gap-2 chip border-2 font-bold ${
+                className={`inline-flex items-center gap-2 chip border-2 font-bold shadow-sm ${
                   status.isOpen
-                    ? "bg-brand-mint/30 text-brand-turquoise border-brand-turquoise/30"
-                    : "bg-white/80 text-brand-ink/65 border-brand-ink/15"
+                    ? "bg-brand-mint/40 text-emerald-700 border-emerald-400/40"
+                    : "bg-white/85 text-brand-ink/65 border-brand-ink/15"
                 }`}
               >
                 <span
                   className={`h-2 w-2 rounded-full ${
-                    status.isOpen ? "bg-brand-turquoise animate-pulse" : "bg-brand-ink/30"
+                    status.isOpen ? "bg-emerald-500 animate-pulse" : "bg-brand-ink/30"
                   }`}
                 />
                 {status.isOpen ? `Open now · closes ${status.closes}` : `Closed · opens ${status.opens}`}
@@ -148,21 +187,29 @@ export default function ContactPage() {
           </div>
 
           <h1 className="heading-xl mt-5">
-            Come say <span className="gradient-text">hi</span>.
+            Come say{" "}
+            <span className="relative inline-block">
+              <span className="gradient-text">hi</span>
+              {/* hand-drawn waving emphasis */}
+              <span className="absolute -top-3 -right-7 text-3xl select-none rotate-12">👋</span>
+            </span>
+            .
           </h1>
           <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed max-w-2xl">
             Drop by, call, WhatsApp, or email — whichever works for you. We
             usually reply within minutes during business hours.
           </p>
 
-          {/* Quick channel cards */}
+          {/* Quick channel cards — playful colored tiles */}
           <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3">
             <ChannelCard
               href={`${siteConfig.whatsapp}?text=Hi%2010to10!`}
               icon={MessageCircle}
               label="WhatsApp"
               sub="Fastest reply"
-              accent="bg-brand-mint/40 text-brand-turquoise"
+              tint="from-emerald-100 to-teal-50"
+              accent="bg-emerald-500 text-white"
+              ring="ring-emerald-300/60"
               external
             />
             <ChannelCard
@@ -170,21 +217,27 @@ export default function ContactPage() {
               icon={Phone}
               label="Call us"
               sub={siteConfig.phone}
-              accent="bg-brand-primary/15 text-brand-primary"
+              tint="from-indigo-100 to-blue-50"
+              accent="bg-brand-primary text-white"
+              ring="ring-brand-primary/40"
             />
             <ChannelCard
               href={`mailto:${siteConfig.email}`}
               icon={Mail}
               label="Email"
               sub="Replies in hours"
-              accent="bg-brand-grape/15 text-brand-grape"
+              tint="from-purple-100 to-violet-50"
+              accent="bg-brand-grape text-white"
+              ring="ring-brand-grape/40"
             />
             <ChannelCard
               href={directions}
               icon={Navigation}
               label="Directions"
               sub="Open in Maps"
-              accent="bg-brand-yellow/30 text-brand-orange"
+              tint="from-amber-100 to-orange-50"
+              accent="bg-brand-orange text-white"
+              ring="ring-brand-orange/40"
               external
             />
           </div>
@@ -196,33 +249,36 @@ export default function ContactPage() {
         <div className="container grid lg:grid-cols-5 gap-6">
           {/* LEFT — info + hours */}
           <div className="lg:col-span-2 space-y-6 lg:order-1 order-2">
-            <div className="rounded-3xl bg-white border-2 border-brand-ink/5 p-6 md:p-8 shadow-lifted space-y-5">
-              <h3 className="font-display text-lg font-bold flex items-center gap-2">
+            {/* VISIT US — indigo accent band */}
+            <div className="relative rounded-3xl bg-white border-2 border-brand-ink/5 p-6 md:p-8 shadow-lifted space-y-5 overflow-hidden">
+              <span className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-brand-primary via-brand-grape to-brand-turquoise" />
+              <span className="absolute -top-12 -right-10 w-32 h-32 rounded-full bg-brand-primary/8 blur-2xl pointer-events-none" />
+              <h3 className="font-display text-lg font-bold flex items-center gap-2 relative">
                 <MapPin className="h-5 w-5 text-brand-primary" />
                 Visit us
               </h3>
-              <InfoRow icon={MapPin} label="Address">
+              <InfoRow icon={MapPin} label="Address" tint="bg-brand-primary/10 text-brand-primary">
                 {siteConfig.address}
               </InfoRow>
-              <InfoRow icon={Phone} label="Phone">
-                <a href={siteConfig.phoneHref} className="hover:text-brand-primary">
+              <InfoRow icon={Phone} label="Phone" tint="bg-emerald-100 text-emerald-700">
+                <a href={siteConfig.phoneHref} className="hover:text-brand-primary transition">
                   {siteConfig.phone}
                 </a>
               </InfoRow>
-              <InfoRow icon={Mail} label="Email">
+              <InfoRow icon={Mail} label="Email" tint="bg-brand-grape/15 text-brand-grape">
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="hover:text-brand-primary break-all"
+                  className="hover:text-brand-primary break-all transition"
                 >
                   {siteConfig.email}
                 </a>
               </InfoRow>
-              <InfoRow icon={Instagram} label="Instagram">
+              <InfoRow icon={Instagram} label="Instagram" tint="bg-rose-100 text-rose-600">
                 <a
                   href={siteConfig.instagram}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-brand-primary"
+                  className="hover:text-brand-primary transition"
                 >
                   @10to10play
                 </a>
@@ -230,23 +286,28 @@ export default function ContactPage() {
             </div>
 
             {/* HOURS — today highlighted */}
-            <div className="rounded-3xl bg-white border-2 border-brand-ink/5 p-6 md:p-8 shadow-lifted">
-              <div className="flex items-center justify-between mb-4">
+            <div className="relative rounded-3xl bg-white border-2 border-brand-ink/5 p-6 md:p-8 shadow-lifted overflow-hidden">
+              <span className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-400 via-brand-orange to-rose-400" />
+              <span className="absolute -bottom-16 -left-10 w-40 h-40 rounded-full bg-brand-yellow/12 blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between mb-4 relative">
                 <h3 className="font-display text-lg font-bold flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-brand-primary" />
+                  <Clock className="h-5 w-5 text-amber-600" />
                   Opening hours
                 </h3>
                 {status && (
                   <span
-                    className={`text-xs font-bold ${
-                      status.isOpen ? "text-brand-turquoise" : "text-brand-ink/50"
+                    className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full ${
+                      status.isOpen
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-brand-ink/5 text-brand-ink/55"
                     }`}
                   >
+                    <span className={`h-1.5 w-1.5 rounded-full ${status.isOpen ? "bg-emerald-500 animate-pulse" : "bg-brand-ink/30"}`} />
                     {status.isOpen ? "Open" : "Closed"}
                   </span>
                 )}
               </div>
-              <ul className="space-y-1 text-sm">
+              <ul className="space-y-1 text-sm relative">
                 {hoursTable.map((h) => {
                   const isToday = status?.todayName === h.day;
                   return (
@@ -254,14 +315,15 @@ export default function ContactPage() {
                       key={h.day}
                       className={`flex justify-between items-center px-3 py-2 rounded-xl transition ${
                         isToday
-                          ? "bg-brand-primary/10 font-bold text-brand-primary"
+                          ? "bg-gradient-to-r from-amber-100 to-rose-50 font-bold text-amber-800 ring-1 ring-amber-200"
                           : "hover:bg-brand-ink/5"
                       }`}
                     >
                       <span>
                         {h.day}
                         {isToday && (
-                          <span className="ml-2 chip bg-brand-primary text-white !text-[10px] !py-0 !px-1.5">
+                          <span className="ml-2 inline-flex items-center gap-1 chip bg-amber-500 text-white !text-[10px] !py-0 !px-1.5">
+                            <Sparkles className="h-2.5 w-2.5" />
                             Today
                           </span>
                         )}
@@ -278,19 +340,24 @@ export default function ContactPage() {
               </p>
             </div>
 
-            {/* MINI STATS */}
+            {/* MINI STATS — colored tiles */}
             <div className="grid grid-cols-3 gap-2">
-              <MiniStat icon={Timer} value="<5 min" label="Avg. reply" />
-              <MiniStat icon={Languages} value="EN · TE · HI" label="Spoken" />
-              <MiniStat icon={Sparkles} value="7 days" label="Always open" />
+              <MiniStat icon={Timer}     value="<5 min"      label="Avg. reply"   tint="from-emerald-100 to-teal-50"  iconColor="text-emerald-700" />
+              <MiniStat icon={Languages} value="EN·TE·HI"     label="Spoken"       tint="from-purple-100 to-violet-50" iconColor="text-brand-grape" />
+              <MiniStat icon={Sparkles}  value="7 days"       label="Always open"  tint="from-amber-100 to-orange-50"  iconColor="text-brand-orange" />
             </div>
           </div>
 
           {/* RIGHT — form */}
           <div className="lg:col-span-3 lg:order-2 order-1">
-            <div className="rounded-3xl bg-white border-2 border-brand-ink/5 p-6 md:p-10 shadow-lifted">
+            <div className="relative rounded-3xl bg-white border-2 border-brand-ink/5 p-6 md:p-10 shadow-lifted overflow-hidden">
+              {/* playful corner accents */}
+              <span className="absolute -top-12 -right-10 w-44 h-44 rounded-full bg-brand-yellow/14 blur-2xl pointer-events-none" />
+              <span className="absolute -bottom-16 -left-12 w-48 h-48 rounded-full bg-brand-turquoise/12 blur-2xl pointer-events-none" />
+              <span className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-emerald-400 via-brand-primary to-brand-grape" />
+              <span aria-hidden className="absolute top-5 right-5 text-2xl select-none rotate-12">✉️</span>
               {!sent ? (
-                <form onSubmit={submit}>
+                <form onSubmit={submit} className="relative">
                   <div className="flex items-start justify-between gap-4 flex-wrap">
                     <div>
                       <h2 className="font-display text-2xl md:text-3xl font-bold">
@@ -300,7 +367,7 @@ export default function ContactPage() {
                         Replies on WhatsApp within minutes during business hours.
                       </p>
                     </div>
-                    <span className="chip bg-brand-mint/30 text-brand-turquoise font-bold">
+                    <span className="chip bg-emerald-100 text-emerald-700 font-bold border border-emerald-200">
                       <CheckCircle2 className="h-3.5 w-3.5" /> Free
                     </span>
                   </div>
@@ -333,20 +400,34 @@ export default function ContactPage() {
                   <div className="mt-4">
                     <Field label="What is this about?">
                       <div className="flex flex-wrap gap-2">
-                        {subjects.map((s) => (
-                          <button
-                            key={s}
-                            type="button"
-                            onClick={() => setForm({ ...form, subject: s })}
-                            className={`chip border-2 transition active:scale-95 ${
-                              form.subject === s
-                                ? "bg-brand-primary text-white border-brand-primary"
-                                : "bg-white text-brand-ink/70 border-brand-ink/10 hover:border-brand-primary/40"
-                            }`}
-                          >
-                            {s}
-                          </button>
-                        ))}
+                        {subjects.map((s, i) => {
+                          // each subject gets its own accent so the chip strip feels playful
+                          const palettes = [
+                            { sel: "bg-brand-primary border-brand-primary",     un: "hover:border-brand-primary/40 hover:text-brand-primary" },
+                            { sel: "bg-rose-500 border-rose-500",                un: "hover:border-rose-400/60 hover:text-rose-600" },
+                            { sel: "bg-brand-grape border-brand-grape",          un: "hover:border-brand-grape/40 hover:text-brand-grape" },
+                            { sel: "bg-amber-500 border-amber-500",              un: "hover:border-amber-400/60 hover:text-amber-700" },
+                            { sel: "bg-emerald-500 border-emerald-500",          un: "hover:border-emerald-400/60 hover:text-emerald-700" },
+                            { sel: "bg-brand-turquoise border-brand-turquoise",  un: "hover:border-brand-turquoise/50 hover:text-brand-turquoise" },
+                            { sel: "bg-brand-orange border-brand-orange",        un: "hover:border-brand-orange/50 hover:text-brand-orange" },
+                          ];
+                          const p = palettes[i % palettes.length];
+                          const active = form.subject === s;
+                          return (
+                            <button
+                              key={s}
+                              type="button"
+                              onClick={() => setForm({ ...form, subject: s })}
+                              className={`chip border-2 transition active:scale-95 ${
+                                active
+                                  ? `text-white ${p.sel} shadow-sm`
+                                  : `bg-white text-brand-ink/70 border-brand-ink/10 ${p.un}`
+                              }`}
+                            >
+                              {s}
+                            </button>
+                          );
+                        })}
                       </div>
                     </Field>
                   </div>
@@ -392,15 +473,15 @@ export default function ContactPage() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-center py-12"
+                  className="text-center py-12 relative"
                 >
                   <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+                    initial={{ scale: 0, rotate: -30 }}
+                    animate={{ scale: 1, rotate: 0 }}
                     transition={{ type: "spring", damping: 10 }}
-                    className="mx-auto w-20 h-20 rounded-full bg-brand-mint/30 flex items-center justify-center mb-5"
+                    className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-emerald-100 to-teal-50 flex items-center justify-center mb-5 ring-4 ring-emerald-200/50"
                   >
-                    <CheckCircle2 className="h-12 w-12 text-brand-turquoise" strokeWidth={2.5} />
+                    <CheckCircle2 className="h-12 w-12 text-emerald-600" strokeWidth={2.5} />
                   </motion.div>
                   <h3 className="font-display text-2xl md:text-3xl font-bold">
                     Message sent! 🎉
@@ -465,6 +546,25 @@ export default function ContactPage() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
+            {/* Playful "you are here" pin sticker (top-left) */}
+            <motion.div
+              initial={{ scale: 0, rotate: -25 }}
+              animate={{ scale: 1, rotate: -8 }}
+              transition={{ type: "spring", damping: 10, delay: 0.2 }}
+              className="absolute top-5 left-5 hidden sm:block pointer-events-none"
+            >
+              <div className="bg-white rounded-2xl px-4 py-2.5 shadow-lifted border-2 border-brand-yellow flex items-center gap-2.5">
+                <span className="relative flex">
+                  <span className="absolute inset-0 rounded-full bg-rose-400 animate-ping opacity-60" />
+                  <MapPin className="h-5 w-5 text-rose-500 relative" fill="currentColor" />
+                </span>
+                <div>
+                  <div className="font-display text-sm font-bold leading-none">10to10 Adventures</div>
+                  <div className="text-[10px] text-brand-ink/60 mt-0.5">You are here · drop in any time</div>
+                </div>
+              </div>
+            </motion.div>
+
             <a
               href={directions}
               target="_blank"
@@ -487,14 +587,18 @@ function ChannelCard({
   icon: Icon,
   label,
   sub,
+  tint,
   accent,
+  ring,
   external,
 }: {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   sub: string;
+  tint: string;
   accent: string;
+  ring: string;
   external?: boolean;
 }) {
   return (
@@ -502,16 +606,16 @@ function ChannelCard({
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noreferrer" : undefined}
-      className="group relative rounded-3xl bg-white border-2 border-brand-ink/5 p-5 hover:-translate-y-1 hover:border-brand-primary/30 hover:shadow-lifted transition active:scale-[0.98]"
+      className={`group relative rounded-3xl bg-gradient-to-br ${tint} border-2 border-white/70 backdrop-blur p-5 hover:-translate-y-1 hover:shadow-lifted transition active:scale-[0.98] hover:ring-4 ${ring}`}
     >
-      <div className={`inline-flex w-11 h-11 rounded-2xl items-center justify-center ${accent}`}>
+      <div className={`inline-flex w-11 h-11 rounded-2xl items-center justify-center shadow-sm ${accent}`}>
         <Icon className="h-5 w-5" />
       </div>
       <div className="mt-4">
-        <div className="font-display font-bold">{label}</div>
-        <div className="text-xs text-brand-ink/55 mt-0.5">{sub}</div>
+        <div className="font-display font-bold text-brand-ink">{label}</div>
+        <div className="text-xs text-brand-ink/65 mt-0.5">{sub}</div>
       </div>
-      <ArrowRight className="absolute top-5 right-5 h-4 w-4 text-brand-ink/30 group-hover:text-brand-primary group-hover:translate-x-0.5 transition" />
+      <ArrowRight className="absolute top-5 right-5 h-4 w-4 text-brand-ink/40 group-hover:text-brand-ink group-hover:translate-x-0.5 transition" />
     </a>
   );
 }
@@ -520,16 +624,20 @@ function MiniStat({
   icon: Icon,
   value,
   label,
+  tint,
+  iconColor,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   value: string;
   label: string;
+  tint: string;
+  iconColor: string;
 }) {
   return (
-    <div className="rounded-2xl bg-white border-2 border-brand-ink/5 p-3 text-center">
-      <Icon className="h-4 w-4 text-brand-primary mx-auto" />
-      <div className="font-bold text-xs mt-1.5">{value}</div>
-      <div className="text-[10px] text-brand-ink/55 uppercase tracking-wider mt-0.5">
+    <div className={`rounded-2xl bg-gradient-to-br ${tint} border-2 border-white/70 p-3 text-center shadow-sm`}>
+      <Icon className={`h-4 w-4 mx-auto ${iconColor}`} />
+      <div className="font-bold text-xs mt-1.5 text-brand-ink">{value}</div>
+      <div className="text-[10px] text-brand-ink/60 uppercase tracking-wider mt-0.5">
         {label}
       </div>
     </div>
@@ -540,14 +648,16 @@ function InfoRow({
   icon: Icon,
   label,
   children,
+  tint,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   children: React.ReactNode;
+  tint: string;
 }) {
   return (
-    <div className="flex gap-4">
-      <div className="shrink-0 w-11 h-11 rounded-2xl bg-brand-primary/10 text-brand-primary flex items-center justify-center">
+    <div className="flex gap-4 relative">
+      <div className={`shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center ${tint}`}>
         <Icon className="h-5 w-5" />
       </div>
       <div className="min-w-0 flex-1">
