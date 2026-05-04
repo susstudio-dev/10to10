@@ -35,10 +35,29 @@ export const metadata = {
 export default function PartyPlannerPage() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative pt-28 md:pt-32 pb-16 md:pb-20 overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-[480px] h-[480px] rounded-full bg-brand-primary/8 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 w-[420px] h-[420px] rounded-full bg-brand-turquoise/8 blur-3xl pointer-events-none" />
+      {/* HERO — Parties theme: celebratory (rose + sunshine + lavender), fades into body */}
+      <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
+        <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
+          {/* rose-pink balloon glow top-left */}
+          <div className="absolute -top-32 -left-24 w-[600px] h-[600px] rounded-full bg-rose-300/35 blur-3xl" />
+          {/* warm sunshine top-right */}
+          <div className="absolute -top-20 -right-24 w-[560px] h-[560px] rounded-full bg-brand-yellow/30 blur-3xl" />
+          {/* lavender at the centre to bridge */}
+          <div className="absolute top-32 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-brand-grape/14 blur-3xl" />
+          {/* turquoise lower-left for cool balance */}
+          <div className="absolute -bottom-24 -left-16 w-[440px] h-[440px] rounded-full bg-brand-turquoise/14 blur-3xl" />
+          {/* confetti dot pattern overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.16]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 18% 22%, #ff5a8a 2px, transparent 3px), radial-gradient(circle at 62% 14%, #ffd93d 2px, transparent 3px), radial-gradient(circle at 84% 64%, #00d4c8 2px, transparent 3px), radial-gradient(circle at 32% 76%, #8b5cf6 2px, transparent 3px), radial-gradient(circle at 70% 36%, #ff8a3d 1.5px, transparent 2.5px)",
+              backgroundSize: "180px 180px",
+            }}
+          />
+          {/* bottom fade to body cream */}
+          <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-[#fdfbf7]" />
+        </div>
 
         <div className="container relative">
           <div className="max-w-3xl">

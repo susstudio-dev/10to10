@@ -186,9 +186,27 @@ const included = [
 export default function SummerCampPage() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-mesh-hero" />
+      {/* HERO — Summer Camp theme: sunlit outdoor (sun + grass), fades into body */}
+      <section className="relative pt-32 pb-24 overflow-hidden">
+        <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
+          {/* sun in the top-right */}
+          <div className="absolute -top-32 -right-24 w-[640px] h-[640px] rounded-full bg-brand-yellow/35 blur-3xl" />
+          {/* coral warmth on the left */}
+          <div className="absolute -top-10 -left-32 w-[520px] h-[520px] rounded-full bg-brand-orange/22 blur-3xl" />
+          {/* mint grass underline at the bottom */}
+          <div className="absolute -bottom-32 left-0 w-[80%] h-[440px] rounded-full bg-brand-mint/30 blur-3xl" />
+          <div className="absolute -bottom-32 right-0 w-[60%] h-[380px] rounded-full bg-brand-turquoise/15 blur-3xl" />
+          {/* a few sun-ray streaks */}
+          <div
+            className="absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(115deg, transparent, transparent 90px, rgba(255,184,61,0.7) 90px, rgba(255,184,61,0.7) 92px)",
+            }}
+          />
+          {/* bottom fade to body cream */}
+          <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-b from-transparent to-[#fdfbf7]" />
+        </div>
 
         <div className="container relative">
           <div className="max-w-3xl">

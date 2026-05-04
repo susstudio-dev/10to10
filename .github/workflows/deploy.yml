@@ -30,6 +30,7 @@ jobs:
 
       - name: Build (Next static export)
         env:
+          STATIC_EXPORT: "1"
           NEXT_PUBLIC_BASE_PATH: /10to10
         run: npm run build
 
