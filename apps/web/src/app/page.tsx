@@ -1,4 +1,5 @@
 import { Hero } from "@/components/hero";
+import { VenueIllustration } from "@/components/venue-illustration";
 import { VenueShowcase } from "@/components/venue-showcase";
 import { StatsStrip } from "@/components/stats-strip";
 import { ZoneGrid } from "@/components/zone-grid";
@@ -13,6 +14,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <VenueIllustration />
       <VenueShowcase />
       <StatsStrip />
       <ZoneGrid />
