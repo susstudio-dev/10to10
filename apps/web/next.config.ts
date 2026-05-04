@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "/10to10";
+
 const config: NextConfig = {
   output: "export",
-  basePath: "/10to10-website",
+  basePath,
+  assetPrefix: basePath || undefined,
+  trailingSlash: true,
   reactStrictMode: true,
   images: {
     unoptimized: true,
