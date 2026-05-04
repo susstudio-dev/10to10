@@ -243,12 +243,18 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.5 }}
           transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 text-[10px] font-semibold tracking-[0.2em] uppercase text-brand-ink/50"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 text-[10px] font-semibold tracking-[0.2em] uppercase text-brand-ink/50 z-20"
         >
           <span className="h-px w-6 bg-brand-ink/30" />
           Scroll
         </motion.div>
       )}
+
+      {/* Bottom fade — blends hero washes into the body cream */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-56 pointer-events-none bg-gradient-to-b from-transparent to-[#fdfbf7]"
+      />
     </section>
   );
 }

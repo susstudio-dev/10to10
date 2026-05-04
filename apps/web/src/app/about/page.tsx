@@ -35,9 +35,36 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative pt-28 md:pt-32 pb-16 md:pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-mesh-hero" />
+      {/* HERO — About theme: warm storybook (heart-pink + butter + indigo trust), fades into body */}
+      <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
+        <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
+          {/* heart-pink storybook glow top-left */}
+          <div className="absolute -top-32 -left-24 w-[640px] h-[640px] rounded-full bg-rose-300/30 blur-3xl" />
+          {/* butter cream warmth across the top */}
+          <div className="absolute -top-20 left-1/3 w-[520px] h-[520px] rounded-full bg-brand-yellow/22 blur-3xl" />
+          {/* indigo trust glow on the right */}
+          <div className="absolute -top-10 -right-24 w-[560px] h-[560px] rounded-full bg-brand-primary/14 blur-3xl" />
+          {/* turquoise warmth bottom-left for movement */}
+          <div className="absolute bottom-0 -left-16 w-[420px] h-[420px] rounded-full bg-brand-turquoise/14 blur-3xl" />
+          {/* hand-written paper texture (subtle horizontal rule lines, like a story being written) */}
+          <div
+            className="absolute inset-0 opacity-[0.05] mix-blend-multiply"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(0deg, transparent, transparent 33px, #2c3873 33px, #2c3873 34px)",
+            }}
+          />
+          {/* tiny heart sprinkles */}
+          <div
+            className="absolute inset-0 opacity-[0.10]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 14% 30%, #ff5a8a 1.5px, transparent 2px), radial-gradient(circle at 72% 22%, #ffd93d 1.5px, transparent 2px), radial-gradient(circle at 88% 64%, #00d4c8 1.5px, transparent 2px), radial-gradient(circle at 28% 80%, #8b5cf6 1.5px, transparent 2px)",
+              backgroundSize: "180px 180px",
+            }}
+          />
+          <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-[#fdfbf7]" />
+        </div>
         <div className="container relative max-w-3xl">
           <span className="inline-flex items-center gap-2 chip bg-white/80 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary">
             <Heart className="h-3.5 w-3.5" /> Our story
