@@ -111,9 +111,6 @@ export function LogoV4({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
         <span className="font-semibold uppercase tracking-[0.18em]" style={{ fontSize: tag, lineHeight: 1.3 }}>
           Adventures
         </span>
-        <span className="font-semibold uppercase tracking-[0.18em]" style={{ fontSize: tag, lineHeight: 1.3 }}>
-          Khammam
-        </span>
       </div>
     </div>
   );
