@@ -15,11 +15,13 @@ import {
   Sun,
 } from "lucide-react";
 import { BookButton } from "@/components/book-button";
+import { faqJsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Summer Camp Khammam 2026 — Ages 3-12 | 10to10 Adventures",
+export const metadata = pageMetadata({
+  title: "Summer Camp Khammam 2026 — Ages 3-12",
   description:
     "Khammam's most loved summer camp for kids ages 3–12. Two months of dance, art, sports, brain games, yoga and more. Daily snacks, trained staff, 1:8 ratio. Limited seats.",
+  path: "/summer-camp",
   keywords: [
     "summer camp Khammam",
     "kids summer camp 2026",
@@ -27,8 +29,7 @@ export const metadata = {
     "summer activities for kids Khammam",
     "summer classes Khammam",
   ],
-  alternates: { canonical: "/summer-camp" },
-};
+});
 
 const activities = [
   {
@@ -186,6 +187,10 @@ const included = [
 export default function SummerCampPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqs)) }}
+      />
       {/* HERO — Summer Camp theme: sunlit outdoor (sun + grass), fades into body */}
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">

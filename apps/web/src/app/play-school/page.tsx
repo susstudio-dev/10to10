@@ -3,7 +3,6 @@ import {
   programs,
   curriculum,
   dailySchedule,
-  fees,
   admissionSteps,
   whyUs,
   playSchoolFaqs,
@@ -26,11 +25,13 @@ import {
 } from "@/components/vectors";
 import { siteConfig } from "@/lib/utils";
 import Script from "next/script";
+import { faqJsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Play School Khammam — Montessori Preschool | Admissions Open 2026",
+export const metadata: Metadata = pageMetadata({
+  title: "Play School in Khammam — Montessori Preschool | Admissions Open 2026",
   description:
-    "10to10 Adventures Play School in Khammam — Montessori-inspired preschool for ages 1.5 to 5.5. Trained teachers, 1:8 ratio, daily reports, free trial day. Admissions open for 2026.",
+    "10to10 Adventures Play School in Khammam is a Montessori-inspired preschool for ages 1.5 to 5.5. Trained teachers, 1:8 ratio, daily reports, free trial day. Admissions open for 2026.",
+  path: "/play-school",
   keywords: [
     "play school Khammam",
     "preschool Khammam",
@@ -39,14 +40,7 @@ export const metadata: Metadata = {
     "kindergarten Khammam admission 2026",
     "nursery Khammam",
   ],
-  openGraph: {
-    title: "Play School Khammam — Admissions Open 2026 | 10to10 Adventures",
-    description:
-      "Montessori-inspired preschool in Khammam. 1:8 ratio, trained teachers, daily reports, free trial day.",
-    type: "website",
-  },
-  alternates: { canonical: "/play-school" },
-};
+});
 
 const curriculumIcons = [
   { Icon: BlocksIcon, color: "bg-amber-100 text-amber-700" },
@@ -60,10 +54,13 @@ const curriculumIcons = [
 const preschoolJsonLd = {
   "@context": "https://schema.org",
   "@type": "Preschool",
+  "@id": `${siteConfig.url}/play-school#preschool`,
   name: "10to10 Adventures Play School",
   description:
     "Montessori-inspired play school in Khammam offering Playgroup, Nursery, LKG, and UKG programs for children aged 1.5 to 5.5 years.",
   url: `${siteConfig.url}/play-school`,
+  logo: `${siteConfig.url}/icon.svg`,
+  image: `${siteConfig.url}/icon.svg`,
   telephone: siteConfig.phone,
   email: siteConfig.email,
   address: {
@@ -75,16 +72,20 @@ const preschoolJsonLd = {
   },
   hasCredential: "Montessori-certified educators",
   educationalLevel: "Preschool",
-};
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: playSchoolFaqs.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
+  areaServed: { "@type": "City", name: "Khammam" },
+  parentOrganization: {
+    "@type": "EntertainmentBusiness",
+    "@id": `${siteConfig.url}/#business`,
+    name: siteConfig.name,
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "09:00",
+      closes: "12:30",
+    },
+  ],
 };
 
 export default function PlaySchoolPage() {
@@ -94,7 +95,7 @@ export default function PlaySchoolPage() {
         {JSON.stringify(preschoolJsonLd)}
       </Script>
       <Script id="ld-faq" type="application/ld+json">
-        {JSON.stringify(faqJsonLd)}
+        {JSON.stringify(faqJsonLd(playSchoolFaqs))}
       </Script>
 
       {/* HERO — Play School theme: warm butter-cream + scholarly accents, fades into body */}
@@ -126,7 +127,7 @@ export default function PlaySchoolPage() {
               Admissions open for 2026 · 12 seats remaining
             </span>
             <h1 className="heading-xl mt-5">
-              Where little learners{" "}
+              Montessori play school in Khammam where little learners{" "}
               <span className="relative inline-block">
                 <span className="accent">find their spark</span>
                 <UnderlineSquiggle className="absolute -bottom-2 left-0 w-full h-3 text-brand-yellow" />
@@ -134,7 +135,7 @@ export default function PlaySchoolPage() {
               .
             </h1>
             <p className="mt-6 text-base md:text-lg text-brand-ink/65 leading-relaxed max-w-xl">
-              A Montessori-inspired play school in the heart of Khammam.
+              10to10 Adventures is a Montessori-inspired play school in the heart of Khammam.
               Trained teachers, a 1:8 ratio, daily reports to your phone, and
               an open-door policy that means you can drop in any time.
             </p>
@@ -264,60 +265,6 @@ export default function PlaySchoolPage() {
         </div>
       </section>
 
-      {/* FEES */}
-      <section className="section bg-white border-y border-black/[0.07]">
-        <div className="container">
-          <div className="max-w-xl mb-12">
-            <span className="eyebrow">Fees & schedule</span>
-            <h2 className="heading-lg mt-3">
-              Transparent pricing, <span className="accent">zero surprises.</span>
-            </h2>
-            <p className="mt-4 text-brand-ink/60 leading-relaxed">
-              All fees include curriculum materials, daily snack, uniform, and access
-              to all 7 zones during play hours.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-4 max-w-5xl">
-            {fees.map((f, i) => (
-              <div
-                key={i}
-                className={`relative rounded-2xl p-7 transition ${
-                  f.popular
-                    ? "bg-brand-ink text-white border border-brand-primary/40 ring-1 ring-brand-primary/30"
-                    : "card"
-                }`}
-              >
-                {f.popular && (
-                  <span className="absolute -top-2.5 left-6 chip bg-brand-primary text-white !text-[11px]">
-                    Best value
-                  </span>
-                )}
-                <div className={`text-xs font-bold uppercase tracking-widest ${f.popular ? "text-brand-primary" : "text-brand-ink/45"}`}>
-                  {f.plan}
-                </div>
-                <div className={`font-display text-base mt-1 ${f.popular ? "text-white/80" : "text-brand-ink/70"}`}>
-                  {f.program}
-                </div>
-                <div className="mt-5 flex items-baseline gap-1.5">
-                  <span className={`font-display text-4xl font-bold tabular-nums ${f.popular ? "text-white" : "text-brand-ink"}`}>
-                    {f.price}
-                  </span>
-                  <span className={`text-sm ${f.popular ? "text-white/55" : "text-brand-ink/50"}`}>
-                    {f.period}
-                  </span>
-                </div>
-                <p className={`text-xs mt-3 ${f.popular ? "text-white/65" : "text-brand-ink/55"}`}>
-                  {f.note}
-                </p>
-              </div>
-            ))}
-          </div>
-          <p className="mt-6 text-xs text-brand-ink/50">
-            Sibling discount: 10% off second child. Annual fees can be paid in two installments.
-          </p>
-        </div>
-      </section>
-
       {/* ADMISSION STEPS */}
       <section className="section">
         <div className="container">
@@ -351,7 +298,7 @@ export default function PlaySchoolPage() {
           <div className="max-w-xl mb-12">
             <span className="eyebrow">Why parents choose us</span>
             <h2 className="heading-lg mt-3">
-              Built for <span className="accent">trust.</span>
+              A play school Khammam parents can <span className="accent">trust.</span>
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

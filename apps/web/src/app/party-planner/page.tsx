@@ -17,11 +17,13 @@ import {
   partyFaqs,
   partyTestimonials,
 } from "@/content/parties";
+import { faqJsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Birthday Party Venue Khammam — Kids Party Hall | 10to10 Adventures",
+export const metadata = pageMetadata({
+  title: "Birthday Party Venue Khammam — Kids Party Hall",
   description:
     "Khammam's premier birthday party venue for kids. Themed decor, hosts, cake, private theatre. Packages from ₹7,999 for up to 15 guests. Book your party today.",
+  path: "/party-planner",
   keywords: [
     "birthday party venue Khammam",
     "kids party hall Khammam",
@@ -29,12 +31,15 @@ export const metadata = {
     "kids birthday party Khammam",
     "themed birthday Khammam",
   ],
-  alternates: { canonical: "/party-planner" },
-};
+});
 
 export default function PartyPlannerPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(partyFaqs)) }}
+      />
       {/* HERO — Parties theme: celebratory (rose + sunshine + lavender), fades into body */}
       <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">

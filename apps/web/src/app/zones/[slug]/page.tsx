@@ -4,7 +4,7 @@ import { ArrowLeft, Check } from "lucide-react";
 import { zones } from "@/content/zones";
 import { siteConfig } from "@/lib/utils";
 import { BookButton } from "@/components/book-button";
-
+import { absoluteUrl, breadcrumbJsonLd } from "@/lib/seo";
 
 
 export function generateStaticParams() {
@@ -15,9 +15,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const zone = zones.find((z) => z.slug === slug);
   if (!zone) return {};
+  const path = `/zones/${zone.slug}`;
+  const title = `${zone.name} Khammam`;
   return {
-    title: zone.name,
+    title,
     description: zone.description,
+    alternates: { canonical: path },
+    openGraph: {
+      title,
+      description: zone.description,
+      url: absoluteUrl(path),
+      siteName: siteConfig.name,
+      locale: "en_IN",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: zone.description,
+    },
   };
 }
 
@@ -25,9 +41,37 @@ export default async function ZonePage({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const zone = zones.find((z) => z.slug === slug);
   if (!zone) notFound();
+  const path = `/zones/${zone.slug}`;
+  const zoneJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `${zone.name} at ${siteConfig.name}`,
+    description: zone.description,
+    url: absoluteUrl(path),
+    provider: {
+      "@type": "EntertainmentBusiness",
+      "@id": `${siteConfig.url}/#business`,
+      name: siteConfig.name,
+    },
+    areaServed: { "@type": "City", name: "Khammam" },
+    audience: { "@type": "Audience", audienceType: zone.ages },
+  };
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Zones", path: "/#zones" },
+    { name: zone.name, path },
+  ]);
 
   return (
     <article className="relative">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(zoneJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
+      />
       <div className="absolute inset-x-0 top-0 h-[60vh] bg-mesh-hero -z-10" />
       <div className="container pt-32 pb-20">
         <Link
