@@ -11,6 +11,7 @@ import { BackToTop } from "@/components/back-to-top";
 import { RouteScrollTop } from "@/components/route-scroll-top";
 import { StickyMobileCta } from "@/components/sticky-mobile-cta";
 import { siteConfig } from "@/lib/utils";
+import { localBusinessJsonLd } from "@/lib/seo";
 
 // Lora — warm, premium, gender-neutral serif for headings
 const displayFont = Lora({
@@ -34,6 +35,9 @@ const playfulFont = Fredoka({
   display: "swap",
 });
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const withBasePath = (path: string) => `${basePath}${path}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -41,6 +45,7 @@ export const metadata: Metadata = {
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  alternates: { canonical: "/" },
   keywords: [
     "10to10 Adventures",
     "Khammam play area",
@@ -62,6 +67,11 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
   },
+  icons: {
+    icon: [{ url: withBasePath("/icon.svg"), type: "image/svg+xml" }],
+    shortcut: [{ url: withBasePath("/icon.svg"), type: "image/svg+xml" }],
+    apple: [{ url: withBasePath("/apple-icon.svg"), type: "image/svg+xml" }],
+  },
   robots: { index: true, follow: true },
   other: {
     "cache-control": "no-cache, must-revalidate",
@@ -72,25 +82,6 @@ export const viewport: Viewport = {
   themeColor: "#ff5a8a",
   width: "device-width",
   initialScale: 1,
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "EntertainmentBusiness",
-  name: siteConfig.name,
-  description: siteConfig.description,
-  url: siteConfig.url,
-  telephone: siteConfig.phone,
-  email: siteConfig.email,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Mamatha College Road, Above Just Bake",
-    addressLocality: "Khammam",
-    addressRegion: "Telangana",
-    addressCountry: "IN",
-  },
-  priceRange: "₹₹",
-  sameAs: [siteConfig.instagram],
 };
 
 export default function RootLayout({
@@ -104,7 +95,7 @@ export default function RootLayout({
         <Script
           id="ld-json"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }}
         />
         <a href="#main" className="skip-link">Skip to main content</a>
         <SmoothScroll>

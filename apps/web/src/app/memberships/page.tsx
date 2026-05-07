@@ -2,19 +2,20 @@ import { Check, X, Crown, Sparkles } from "lucide-react";
 import { MembershipStrip } from "@/components/membership-strip";
 import { BookButton } from "@/components/book-button";
 import { sessionPricing } from "@/content/memberships";
+import { faqJsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Memberships — Kids Play Area Khammam | 10to10 Adventures",
+export const metadata = pageMetadata({
+  title: "Kids Play Area Memberships Khammam",
   description:
     "Silver, Gold, Platinum kids play area memberships in Khammam. Save 30–50% on play sessions, priority booking, free monthly visits, exclusive perks.",
+  path: "/memberships",
   keywords: [
     "play area membership Khammam",
     "kids play pass Khammam",
     "10to10 membership",
     "kids entertainment subscription Khammam",
   ],
-  alternates: { canonical: "/memberships" },
-};
+});
 
 const compare = [
   { feature: "Play area discount", silver: "30%", gold: "40%", platinum: "50%" },
@@ -59,6 +60,10 @@ const faqs = [
 export default function MembershipsPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqs)) }}
+      />
       {/* HERO — Memberships theme: premium indigo + turquoise tonal wash, fades into body */}
       <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
