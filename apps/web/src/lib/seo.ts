@@ -84,7 +84,7 @@ export function localBusinessJsonLd() {
     priceRange: "₹₹",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Mamatha College Road, Above Just Bake",
+      streetAddress: "Mamatha College Road, Above Just Bake, Near SBI Bank",
       addressLocality: "Khammam",
       addressRegion: "Telangana",
       addressCountry: "IN",

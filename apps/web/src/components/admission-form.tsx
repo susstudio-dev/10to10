@@ -24,23 +24,42 @@ export function AdmissionForm() {
     company: "", // honeypot
   });
   const [state, setState] = useState<"idle" | "submitting" | "sent">("idle");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const today = new Date();
+  const todayIso = today.toISOString().split("T")[0];
+  const minDob = new Date(today.getFullYear() - 7, today.getMonth(), today.getDate())
+    .toISOString()
+    .split("T")[0];
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.company) return; // bot detected
+    if (state === "submitting") return;
+    const digitCount = form.phone.replace(/\D/g, "").length;
+    if (digitCount < 10) {
+      setErrorMsg("Please enter a valid phone number with at least 10 digits.");
+      return;
+    }
+    setErrorMsg(null);
     setState("submitting");
-    await submitLead("Play School Admission", {
-      parent_name: form.parentName,
-      phone: form.phone,
-      email: form.email,
-      child_name: form.childName,
-      child_dob: form.childDob,
-      program: form.program,
-      preferred_start: form.startMonth,
-      heard_from: form.heardFrom,
-      notes: form.notes,
-    });
-    setState("sent");
+    try {
+      await submitLead("Play School Admission", {
+        parent_name: form.parentName,
+        phone: form.phone,
+        email: form.email,
+        child_name: form.childName,
+        child_dob: form.childDob,
+        program: form.program,
+        preferred_start: form.startMonth,
+        heard_from: form.heardFrom,
+        notes: form.notes,
+      });
+      setState("sent");
+    } catch {
+      setErrorMsg("Something went wrong. Please try again or call us directly.");
+      setState("idle");
+    }
   };
 
   if (state === "sent") {
@@ -101,10 +120,13 @@ export function AdmissionForm() {
         <Field label="Parent's name">
           <input
             required
+            minLength={2}
+            maxLength={80}
             value={form.parentName}
             onChange={(e) => setForm({ ...form, parentName: e.target.value })}
             className="input"
             placeholder="Priya Kumar"
+            autoComplete="name"
           />
         </Field>
         <Field label="Phone (WhatsApp)">
@@ -112,24 +134,31 @@ export function AdmissionForm() {
             required
             type="tel"
             inputMode="tel"
+            pattern="\+?[0-9][0-9\s\-]{9,14}"
+            title="Enter a valid phone number with at least 10 digits"
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
             className="input"
             placeholder="+91 98765 43210"
+            autoComplete="tel"
           />
         </Field>
         <Field label="Email">
           <input
             type="email"
+            maxLength={120}
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             className="input"
             placeholder="priya@example.com"
+            autoComplete="email"
           />
         </Field>
         <Field label="Child's name">
           <input
             required
+            minLength={2}
+            maxLength={80}
             value={form.childName}
             onChange={(e) => setForm({ ...form, childName: e.target.value })}
             className="input"
@@ -140,6 +169,8 @@ export function AdmissionForm() {
           <input
             required
             type="date"
+            min={minDob}
+            max={todayIso}
             value={form.childDob}
             onChange={(e) => setForm({ ...form, childDob: e.target.value })}
             className="input"
@@ -186,11 +217,18 @@ export function AdmissionForm() {
             value={form.notes}
             onChange={(e) => setForm({ ...form, notes: e.target.value })}
             rows={3}
+            maxLength={1000}
             className="input resize-none"
             placeholder="Optional"
           />
         </Field>
       </div>
+
+      {errorMsg && (
+        <p role="alert" className="mt-4 text-sm text-rose-600 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+          {errorMsg}
+        </p>
+      )}
 
       <button
         type="submit"

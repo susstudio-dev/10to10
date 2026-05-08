@@ -70,9 +70,11 @@ export default function ContactPage() {
     phone: "",
     subject: "General inquiry",
     message: "",
+    company: "", // honeypot
   });
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // compute "open now" status on the client only
   const [now, setNow] = useState<Date | null>(null);
@@ -99,22 +101,34 @@ export default function ContactPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.phone || !form.message) return;
+    if (submitting) return;
+    if (form.company) return; // bot detected
+    const digitCount = form.phone.replace(/\D/g, "").length;
+    if (digitCount < 10) {
+      setErrorMsg("Please enter a valid phone number with at least 10 digits.");
+      return;
+    }
+    setErrorMsg(null);
     setSubmitting(true);
-    const { submitLead } = await import("@/lib/lead");
-    await submitLead("Contact Page", {
-      name: form.name,
-      phone: form.phone,
-      subject: form.subject,
-      message: form.message,
-    });
-    setSubmitting(false);
-    setSent(true);
+    try {
+      const { submitLead } = await import("@/lib/lead");
+      await submitLead("Contact Page", {
+        name: form.name,
+        phone: form.phone,
+        subject: form.subject,
+        message: form.message,
+      });
+      setSent(true);
+    } catch {
+      setErrorMsg("Something went wrong. Please try again or call us directly.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const directions =
     "https://www.google.com/maps/dir/?api=1&destination=" +
-    encodeURIComponent("10to10 Adventures, Mamatha College Road, Khammam");
+    encodeURIComponent("10to10 Adventures, Mamatha College Road, Near SBI Bank, Khammam");
 
   return (
     <>
@@ -358,6 +372,17 @@ export default function ContactPage() {
               <span aria-hidden className="absolute top-5 right-5 text-2xl select-none rotate-12">✉️</span>
               {!sent ? (
                 <form onSubmit={submit} className="relative">
+                  {/* honeypot */}
+                  <input
+                    type="text"
+                    name="company"
+                    value={form.company}
+                    onChange={(e) => setForm({ ...form, company: e.target.value })}
+                    className="absolute -left-[9999px]"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                  />
                   <div className="flex items-start justify-between gap-4 flex-wrap">
                     <div>
                       <h2 className="font-display text-2xl md:text-3xl font-bold">
@@ -376,6 +401,8 @@ export default function ContactPage() {
                     <Field label="Your name" required>
                       <input
                         required
+                        minLength={2}
+                        maxLength={80}
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         className="input"
@@ -388,6 +415,8 @@ export default function ContactPage() {
                         required
                         type="tel"
                         inputMode="tel"
+                        pattern="\+?[0-9][0-9\s\-]{9,14}"
+                        title="Enter a valid phone number with at least 10 digits"
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
                         className="input"
@@ -436,6 +465,8 @@ export default function ContactPage() {
                     <Field label="Your message" required>
                       <textarea
                         required
+                        minLength={5}
+                        maxLength={1000}
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
                         rows={5}
@@ -443,10 +474,16 @@ export default function ContactPage() {
                         placeholder="Tell us what you need — date, group size, anything we should know..."
                       />
                       <div className="text-xs text-brand-ink/45 mt-1.5 text-right">
-                        {form.message.length} chars
+                        {form.message.length} / 1000
                       </div>
                     </Field>
                   </div>
+
+                  {errorMsg && (
+                    <p role="alert" className="mt-3 text-sm text-rose-600 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+                      {errorMsg}
+                    </p>
+                  )}
 
                   <button
                     type="submit"
@@ -496,11 +533,13 @@ export default function ContactPage() {
                       className="btn-ghost"
                       onClick={() => {
                         setSent(false);
+                        setErrorMsg(null);
                         setForm({
                           name: "",
                           phone: "",
                           subject: "General inquiry",
                           message: "",
+                          company: "",
                         });
                       }}
                     >

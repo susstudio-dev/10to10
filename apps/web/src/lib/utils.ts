@@ -15,6 +15,6 @@ export const siteConfig = {
   phoneHref: "tel:+919256787788",
   whatsapp: "https://wa.me/919256787788",
   email: "contactus@10to10adventures.com",
-  address: "Mamatha College Road, Above Just Bake, Khammam, Telangana",
+  address: "Mamatha College Road, Above Just Bake, Near SBI Bank, Khammam, Telangana",
   instagram: "https://instagram.com/10to10play",
 };
