@@ -36,10 +36,6 @@ const faqs = [
     a: "Tap any 'Choose plan' button or send us a WhatsApp message with your preferred tier. We'll activate your membership within 30 minutes. Payment via UPI, card, or cash at the venue.",
   },
   {
-    q: "Can I cancel anytime?",
-    a: "Yes. Silver (monthly) can be cancelled anytime with no penalty. Gold (quarterly) and Platinum (annual) can be cancelled within 7 days for a full refund; after that, prorated refunds apply.",
-  },
-  {
     q: "Can I upgrade mid-plan?",
     a: "Absolutely. Upgrade any time — we credit your remaining balance toward the new tier. Downgrades take effect at the next renewal.",
   },
@@ -96,7 +92,7 @@ export default function MembershipsPage() {
           </h1>
           <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed">
             From single-session drop-ins to annual all-access passes — we&apos;ve got a
-            plan for every family. Switch or cancel any time.
+            plan for every family. Upgrade any time.
           </p>
         </div>
       </section>
@@ -194,7 +190,7 @@ export default function MembershipsPage() {
           </div>
 
           <p className="text-center text-brand-ink/55 text-sm mt-6">
-            Multi-member families get an additional 10% off. All memberships auto-renew but can be cancelled any time.
+            Multi-member families get an additional 10% off.
           </p>
         </div>
       </section>

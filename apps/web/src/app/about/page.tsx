@@ -37,7 +37,7 @@ export default function AboutPage() {
   return (
     <>
       {/* HERO — About theme: warm storybook (heart-pink + butter + indigo trust), fades into body */}
-      <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
+      <section className="relative pt-28 md:pt-32 pb-8 md:pb-10 overflow-hidden">
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
           {/* heart-pink storybook glow top-left */}
           <div className="absolute -top-32 -left-24 w-[640px] h-[640px] rounded-full bg-rose-300/30 blur-3xl" />
@@ -82,7 +82,7 @@ export default function AboutPage() {
       </section>
 
       {/* STORY */}
-      <section className="section">
+      <section className="pb-10 md:pb-14">
         <div className="container max-w-3xl">
           <div className="prose prose-lg text-brand-ink/75 leading-relaxed space-y-5 text-lg">
             <p>
@@ -115,7 +115,7 @@ export default function AboutPage() {
       </section>
 
       {/* VALUES */}
-      <section className="section bg-white/50">
+      <section className="pt-10 md:pt-14 pb-10 md:pb-14 bg-white/50">
         <div className="container">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="eyebrow">
@@ -146,7 +146,7 @@ export default function AboutPage() {
       </section>
 
       {/* STATS */}
-      <section className="section">
+      <section className="py-10 md:py-14">
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {[
@@ -172,7 +172,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="section">
+      <section className="pt-10 md:pt-14 pb-20 md:pb-28">
         <div className="container">
           <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-primary via-brand-primary-deep to-brand-grape p-10 md:p-16 text-white text-center shadow-glow">
             <div className="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-brand-yellow/30 blur-3xl" />

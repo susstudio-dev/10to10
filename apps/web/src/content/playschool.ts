@@ -131,8 +131,8 @@ export const admissionSteps = [
 
 export const whyUs = [
   {
-    title: "Montessori-certified teachers",
-    desc: "Every educator holds a Montessori or early-childhood certification with 3+ years of experience.",
+    title: "Certified teachers",
+    desc: "Every educator holds an early-childhood certification with 3+ years of experience.",
   },
   {
     title: "1:8 child-teacher ratio",
@@ -143,8 +143,8 @@ export const whyUs = [
     desc: "Photos, meals, mood and milestones delivered to your phone before pickup every day.",
   },
   {
-    title: "CCTV + biometric entry",
-    desc: "Full premises monitoring and authorised-pickup biometrics. Parents can view anytime.",
+    title: "CCTV monitoring",
+    desc: "Full premises monitoring with authorised pickup. Parents can view anytime.",
   },
   {
     title: "Open-door policy",

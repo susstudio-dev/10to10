@@ -65,7 +65,7 @@ const preschoolJsonLd = {
   email: siteConfig.email,
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Mamatha College Road, Above Just Bake",
+    streetAddress: "Mamatha College Road, Above Just Bake, Near SBI Bank",
     addressLocality: "Khammam",
     addressRegion: "Telangana",
     addressCountry: "IN",
@@ -156,11 +156,11 @@ export default function PlaySchoolPage() {
               </span>
               <span className="inline-flex items-center gap-2">
                 <ShieldIcon className="h-4 w-4 text-brand-primary" />
-                CCTV + biometric entry
+                CCTV monitoring
               </span>
               <span className="inline-flex items-center gap-2">
                 <Star className="h-4 w-4 text-brand-primary" />
-                Montessori-certified teachers
+                Certified teachers
               </span>
             </div>
           </div>
