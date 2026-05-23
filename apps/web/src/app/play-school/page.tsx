@@ -5,7 +5,6 @@ import {
   dailySchedule,
   snacksMenu,
   events,
-  fees,
   admissionSteps,
   whyUs,
   playSchoolFaqs,
@@ -350,60 +349,6 @@ export default function PlaySchoolPage() {
 
           <p className="text-center text-brand-ink/50 text-xs mt-8">
             Plus regional days, themed weeks, and small in-class moments year-round.
-          </p>
-        </div>
-      </section>
-
-      {/* FEES */}
-      <section className="section bg-white border-y border-black/[0.07]">
-        <div className="container">
-          <div className="max-w-xl mb-12">
-            <span className="eyebrow">Fees</span>
-            <h2 className="heading-lg mt-3">
-              Simple pricing, <span className="accent">no hidden costs.</span>
-            </h2>
-            <p className="mt-4 text-brand-ink/60 leading-relaxed">
-              Same fee across all four programs. Pay-as-you-go for flexibility, or
-              save with the annual plan.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-4">
-            {fees.map((f) => (
-              <div
-                key={f.plan}
-                className={`relative rounded-3xl p-8 border-2 transition hover:-translate-y-1 ${
-                  f.popular
-                    ? "bg-gradient-to-br from-brand-primary to-brand-grape border-transparent shadow-glow md:scale-105 text-white"
-                    : "bg-white border-black/[0.06] hover:border-brand-primary/20 shadow-lifted"
-                }`}
-              >
-                {f.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 chip bg-brand-yellow text-brand-ink font-bold">
-                    Most popular
-                  </span>
-                )}
-                <div className={`text-xs font-bold uppercase tracking-widest ${f.popular ? "text-white/75" : "text-brand-primary"}`}>
-                  {f.plan}
-                </div>
-                <div className="mt-3 flex items-baseline gap-1">
-                  <span className="font-display text-4xl font-bold">{f.price}</span>
-                  <span className={f.popular ? "text-white/70 text-sm" : "text-brand-ink/55 text-sm"}>
-                    {f.period}
-                  </span>
-                </div>
-                <div className={`text-xs font-medium mt-2 ${f.popular ? "text-white/65" : "text-brand-ink/50"}`}>
-                  {f.program}
-                </div>
-                <div className={`h-px my-5 ${f.popular ? "bg-white/15" : "bg-black/[0.06]"}`} />
-                <div className={`text-sm leading-relaxed ${f.popular ? "text-white/85" : "text-brand-ink/70"}`}>
-                  {f.note}
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-brand-ink/55 text-xs mt-8">
-            Fees include all activities, snacks, and reports. Annual fee includes
-            books, uniform and one off-campus trip per term.
           </p>
         </div>
       </section>
