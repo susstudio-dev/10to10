@@ -22,7 +22,7 @@ import { faqJsonLd, pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata({
   title: "Birthday Party Venue Khammam — Kids Party Hall",
   description:
-    "Khammam's premier birthday party venue for kids. Themed decor, hosts, cake, private theatre. Packages from ₹7,999 for up to 15 guests. Book your party today.",
+    "Khammam's premier birthday party venue for kids. Pick a private party room (₹10,000 / 15 kids), a private theatre, or the full combo (₹15,000 / 30 kids). Themed decor, hosts, cake, photos, photography included.",
   path: "/party-planner",
   keywords: [
     "birthday party venue Khammam",
@@ -76,8 +76,8 @@ export default function PartyPlannerPage() {
             </h1>
             <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed max-w-2xl">
               Private venue, themed decor, cake, hosts, games, photography — we
-              handle every tiny detail so you can actually enjoy your kid's big
-              day. Packages from ₹7,999.
+              handle every tiny detail so you can actually enjoy your kid&apos;s big
+              day. Private theatre from ₹1,000, party packages from ₹10,000.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -123,7 +123,10 @@ export default function PartyPlannerPage() {
             </h2>
             <p className="mt-4 text-brand-ink/65">
               All packages include private venue, party host, decor, and full setup
-              & cleanup. Pick the one that fits your headcount and vibe.
+              &amp; cleanup &mdash; and every one is{" "}
+              <strong className="font-semibold text-brand-ink">fully customisable</strong>.
+              Pick your theme, swap the decor, mix in add-ons. Pick the package that
+              fits your headcount; we&apos;ll tailor the rest.
             </p>
           </div>
 
@@ -179,7 +182,8 @@ export default function PartyPlannerPage() {
           </div>
 
           <p className="text-center text-brand-ink/55 text-sm mt-8">
-            Member discount: Silver 10% · Gold 15% · Platinum 20% off all party packages.
+            Gold &amp; Platinum members: 10% off party packages, 20% off party-area
+            on birthday, plus a surprise gift. <a href="/memberships" className="text-brand-primary font-semibold hover:underline">See memberships</a>.
           </p>
         </div>
       </section>

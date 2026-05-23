@@ -94,7 +94,7 @@ export default function AboutPage() {
               So we built 10to10 Adventures — seven distinct zones under one roof,
               designed around a single question: what would make a child&apos;s eyes
               light up the moment they walk in? The answer turned into a 2,400 sq ft
-              soft-play arena, a Montessori-inspired play school, a gaming lounge,
+              soft-play arena, a play school, a gaming lounge,
               a private theatre, a themed party room, a snack bar, and a curated
               toy stall.
             </p>

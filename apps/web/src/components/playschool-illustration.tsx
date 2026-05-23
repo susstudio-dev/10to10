@@ -11,7 +11,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 /**
- * PlaySchoolIllustration — a custom Montessori classroom-corner vector scene.
+ * PlaySchoolIllustration — a custom classroom-corner vector scene.
  *
  * Pure SVG. Layered like a stage:
  *  - back wall (dotted wallpaper + sun-rayed window)

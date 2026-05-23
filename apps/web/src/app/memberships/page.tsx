@@ -1,13 +1,13 @@
-import { Check, X, Crown, Sparkles } from "lucide-react";
+import { Check, X, Crown, Sparkles, Users } from "lucide-react";
 import { MembershipStrip } from "@/components/membership-strip";
 import { BookButton } from "@/components/book-button";
-import { sessionPricing } from "@/content/memberships";
+import { multiPlan } from "@/content/memberships";
 import { faqJsonLd, pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Kids Play Area Memberships Khammam",
   description:
-    "Silver, Gold, Platinum kids play area memberships in Khammam. Save 30–50% on play sessions, priority booking, free monthly visits, exclusive perks.",
+    "Silver (₹599/mo), Gold (₹2,000/6 mo) and Platinum (₹3,499/yr) memberships at 10to10 Adventures Khammam. Free play hours, private movie screenings, birthday perks. Multi-member add-on at 50% off.",
   path: "/memberships",
   keywords: [
     "play area membership Khammam",
@@ -18,16 +18,16 @@ export const metadata = pageMetadata({
 });
 
 const compare = [
-  { feature: "Play area discount", silver: "30%", gold: "40%", platinum: "50%" },
-  { feature: "Gaming zone discount", silver: "30%", gold: "40%", platinum: "50%" },
-  { feature: "Summer camp discount", silver: "20%", gold: "25%", platinum: "30%" },
-  { feature: "Birthday party discount", silver: "10%", gold: "15%", platinum: "20%" },
-  { feature: "Free play visits", silver: "—", gold: "1 / month", platinum: "2 / month" },
-  { feature: "Free theatre bookings", silver: "—", gold: "—", platinum: "1 / quarter" },
-  { feature: "Priority booking", silver: false, gold: true, platinum: true },
-  { feature: "Early-bird offers", silver: false, gold: false, platinum: true },
-  { feature: "Member-only events", silver: true, gold: true, platinum: true },
-  { feature: "Free guest passes", silver: "—", gold: "2 / year", platinum: "6 / year" },
+  { feature: "Price", silver: "₹599 / mo", gold: "₹2,000 / 6 mo", platinum: "₹3,499 / yr" },
+  { feature: "Free play hours", silver: "1 hour", gold: "6 hours", platinum: "12 hours" },
+  { feature: "Free private movie screenings", silver: "1 theatre hour", gold: "1 screening", platinum: "2 screenings" },
+  { feature: "Discount on play hours", silver: "25%", gold: "extra 30%", platinum: "40%" },
+  { feature: "Discount on snacks", silver: "10%", gold: "10%", platinum: "10%" },
+  { feature: "Discount on gaming", silver: "10%", gold: "10%", platinum: "10%" },
+  { feature: "Discount on theatre & parties", silver: "—", gold: "10%", platinum: "10%" },
+  { feature: "Birthday surprise gift", silver: false, gold: true, platinum: true },
+  { feature: "Birthday party-area discount", silver: "—", gold: "20%", platinum: "20%" },
+  { feature: "Multi-member family add-on", silver: "50% off", gold: "50% off", platinum: "50% off" },
 ];
 
 const faqs = [
@@ -40,16 +40,16 @@ const faqs = [
     a: "Absolutely. Upgrade any time — we credit your remaining balance toward the new tier. Downgrades take effect at the next renewal.",
   },
   {
-    q: "Is membership transferable?",
-    a: "Memberships are tied to one primary member, but you can add up to 3 family members to a plan for a 10% surcharge each. Perks apply to every linked member.",
+    q: "How does the Multi Members Plan work?",
+    a: "Add cousins, siblings, or friends to any base plan and the extra members pay 50% of the plan price. Each linked member gets the same benefits as the primary member. Example: 1st child on annual Platinum is ₹3,499; 2nd child on the same plan is ₹1,749.",
   },
   {
-    q: "Do perks include the party room?",
-    a: "Yes — members get 10–20% off all birthday party packages based on tier. Contact us for bulk or frequent-party discounts.",
+    q: "Do membership perks include the party room?",
+    a: "Yes. Gold and Platinum members get 10% off theatre and party bookings plus a 20% birthday party-area discount and a birthday surprise gift. Silver focuses on play & gaming perks.",
   },
   {
-    q: "What counts as a 'free play visit'?",
-    a: "One full play session (1 hour soft-play + 15-min theatre + games + snack pack) per eligible month. Unused visits don't roll over.",
+    q: "What counts as a 'free play hour'?",
+    a: "One hour of soft-play access at the play area. Silver includes 1 hour, Gold includes 6 hours, and Platinum includes 12 hours. Use them whenever — they don't roll over after the plan period ends.",
   },
 ];
 
@@ -91,49 +91,57 @@ export default function MembershipsPage() {
             Pick your <span className="gradient-text">play plan</span>.
           </h1>
           <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed">
-            From single-session drop-ins to annual all-access passes — we&apos;ve got a
-            plan for every family. Upgrade any time.
+            Three tiers and a multi-member family add-on. Free play hours,
+            private movie screenings, birthday perks. Upgrade any time.
           </p>
-        </div>
-      </section>
-
-      {/* SINGLE SESSION PASSES */}
-      <section className="pb-20">
-        <div className="container">
-          <div className="text-center mb-10">
-            <span className="eyebrow">
-              <span className="h-px w-8 bg-brand-primary" /> Drop-in pricing
-            </span>
-            <h2 className="heading-lg mt-4">Single session passes</h2>
-            <p className="mt-3 text-brand-ink/60 max-w-xl mx-auto">
-              No commitment, just fun. All passes include 1-hour play, 15-min
-              theatre, games, and a snack pack.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-5 max-w-4xl mx-auto">
-            {sessionPricing.map((p) => (
-              <div
-                key={p.label}
-                className="rounded-3xl border-2 border-brand-ink/5 bg-white p-8 shadow-lifted text-center hover:-translate-y-1 hover:border-brand-primary/20 transition"
-              >
-                <div className="text-xs font-bold uppercase tracking-wider text-brand-ink/50">
-                  {p.label}
-                </div>
-                <div className="font-display text-5xl font-bold mt-3 gradient-text">
-                  {p.price}
-                </div>
-                <div className="text-sm text-brand-ink/60 mt-2">{p.note}</div>
-                <BookButton preset="Play Session" className="w-full mt-6">
-                  Book now
-                </BookButton>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* TIER CARDS */}
       <MembershipStrip />
+
+      {/* MULTI MEMBERS PLAN */}
+      <section className="pb-4 -mt-4">
+        <div className="container">
+          <div className="relative overflow-hidden rounded-3xl border-2 border-brand-yellow/40 bg-gradient-to-br from-brand-yellow/15 via-brand-orange/10 to-brand-yellow/20 p-8 md:p-12 shadow-lifted">
+            <div className="absolute -top-20 -right-16 w-72 h-72 rounded-full bg-brand-yellow/30 blur-3xl pointer-events-none" />
+            <div className="relative grid md:grid-cols-5 gap-8 items-center">
+              <div className="md:col-span-3">
+                <span className="inline-flex items-center gap-2 chip bg-white border-2 border-brand-orange/30 font-bold text-brand-orange">
+                  <Users className="h-3.5 w-3.5" /> Family add-on
+                </span>
+                <h2 className="font-display text-3xl md:text-4xl font-bold mt-4">
+                  {multiPlan.name}
+                </h2>
+                <p className="mt-3 text-brand-ink/75 leading-relaxed">
+                  {multiPlan.tagline}
+                </p>
+                <ul className="mt-6 space-y-3">
+                  {multiPlan.perks.map((p) => (
+                    <li key={p} className="flex gap-3 text-sm md:text-base">
+                      <Check className="h-5 w-5 shrink-0 text-brand-orange mt-0.5" strokeWidth={2.5} />
+                      <span className="text-brand-ink/80">{p}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="md:col-span-2">
+                <div className="rounded-2xl bg-white border-2 border-white p-6 shadow-lifted">
+                  <div className="text-xs font-bold uppercase tracking-widest text-brand-orange">
+                    Example
+                  </div>
+                  <p className="mt-3 text-brand-ink/85 leading-relaxed text-sm">
+                    {multiPlan.example}
+                  </p>
+                  <BookButton preset="Play Session" className="w-full mt-5">
+                    Add a family member
+                  </BookButton>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* COMPARISON TABLE */}
       <section className="section">
@@ -190,7 +198,7 @@ export default function MembershipsPage() {
           </div>
 
           <p className="text-center text-brand-ink/55 text-sm mt-6">
-            Multi-member families get an additional 10% off.
+            Add siblings or cousins at <strong className="text-brand-ink">50% off</strong> via the Multi Members Plan above.
           </p>
         </div>
       </section>

@@ -123,6 +123,44 @@ export default async function ZonePage({ params }: { params: Promise<{ slug: str
             </div>
           </div>
         </div>
+
+        {zone.pricing && zone.pricing.length > 0 && (
+          <div className="mt-12">
+            <div className="rounded-3xl border-2 border-brand-ink/5 bg-white p-8 md:p-10 shadow-lifted">
+              <div className="flex items-baseline justify-between flex-wrap gap-3 mb-6">
+                <h2 className="font-display text-2xl font-bold">Pricing</h2>
+                <span className="text-xs font-semibold uppercase tracking-widest text-brand-ink/45">
+                  Walk-in rates
+                </span>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {zone.pricing.map((p) => (
+                  <div
+                    key={p.label}
+                    className="flex items-center justify-between gap-4 rounded-2xl bg-brand-cloud border border-black/[0.06] px-5 py-4"
+                  >
+                    <div className="min-w-0">
+                      <div className="font-semibold text-brand-ink text-sm">{p.label}</div>
+                      {p.note && (
+                        <div className="text-xs text-brand-ink/55 mt-0.5">{p.note}</div>
+                      )}
+                    </div>
+                    <div className="font-display font-bold text-brand-primary text-lg shrink-0 tabular-nums">
+                      {p.price}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-brand-ink/50 mt-6">
+                Members save up to 40% —{" "}
+                <Link href="/memberships" className="text-brand-primary font-semibold hover:underline">
+                  see membership perks
+                </Link>
+                .
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );

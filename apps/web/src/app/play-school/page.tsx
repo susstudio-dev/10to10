@@ -3,6 +3,9 @@ import {
   programs,
   curriculum,
   dailySchedule,
+  snacksMenu,
+  events,
+  fees,
   admissionSteps,
   whyUs,
   playSchoolFaqs,
@@ -28,14 +31,15 @@ import Script from "next/script";
 import { faqJsonLd, pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Play School in Khammam — Montessori Preschool | Admissions Open 2026",
+  title: "Play School in Khammam — Play-Based Preschool | Admissions Open 2026",
   description:
-    "10to10 Adventures Play School in Khammam is a Montessori-inspired preschool for ages 1.5 to 5.5. Trained teachers, 1:8 ratio, daily reports, free trial day. Admissions open for 2026.",
+    "A play-first preschool in Khammam where children learn through play, not rote teaching. No worksheets, no homework. Trained teachers, 1:8 ratio, free trial day. Admissions open for 2026.",
   path: "/play-school",
   keywords: [
     "play school Khammam",
     "preschool Khammam",
-    "Montessori Khammam",
+    "play-based preschool Khammam",
+    "activity-based learning Khammam",
     "best play school Khammam",
     "kindergarten Khammam admission 2026",
     "nursery Khammam",
@@ -57,7 +61,7 @@ const preschoolJsonLd = {
   "@id": `${siteConfig.url}/play-school#preschool`,
   name: "10to10 Adventures Play School",
   description:
-    "Montessori-inspired play school in Khammam offering Playgroup, Nursery, LKG, and UKG programs for children aged 1.5 to 5.5 years.",
+    "Play school in Khammam offering Playgroup, Nursery, LKG, and UKG programs for children aged 1.5 to 5.5 years.",
   url: `${siteConfig.url}/play-school`,
   logo: `${siteConfig.url}/icon.svg`,
   image: `${siteConfig.url}/icon.svg`,
@@ -70,7 +74,7 @@ const preschoolJsonLd = {
     addressRegion: "Telangana",
     addressCountry: "IN",
   },
-  hasCredential: "Montessori-certified educators",
+  hasCredential: "Certified educators",
   educationalLevel: "Preschool",
   areaServed: { "@type": "City", name: "Khammam" },
   parentOrganization: {
@@ -82,7 +86,13 @@ const preschoolJsonLd = {
     {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "09:00",
+      opens: "09:30",
+      closes: "15:30",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Saturday"],
+      opens: "09:30",
       closes: "12:30",
     },
   ],
@@ -127,17 +137,19 @@ export default function PlaySchoolPage() {
               Admissions open for 2026 · 12 seats remaining
             </span>
             <h1 className="heading-xl mt-5">
-              Montessori play school in Khammam where little learners{" "}
+              Where curiosity{" "}
               <span className="relative inline-block">
-                <span className="accent">find their spark</span>
+                <span className="accent">beats curriculum</span>
                 <UnderlineSquiggle className="absolute -bottom-2 left-0 w-full h-3 text-brand-yellow" />
               </span>
               .
             </h1>
             <p className="mt-6 text-base md:text-lg text-brand-ink/65 leading-relaxed max-w-xl">
-              10to10 Adventures is a Montessori-inspired play school in the heart of Khammam.
-              Trained teachers, a 1:8 ratio, daily reports to your phone, and
-              an open-door policy that means you can drop in any time.
+              A play-first preschool in Khammam. No worksheets, no homework,
+              no rote drills — children read through stories, count through
+              cooking, and learn science by getting their hands dirty. With
+              trained educators, a 1:8 ratio, daily reports to your phone,
+              and an open-door policy.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -180,13 +192,13 @@ export default function PlaySchoolPage() {
               A program for every <span className="accent">tiny milestone.</span>
             </h2>
             <p className="mt-4 text-brand-ink/60 leading-relaxed">
-              Four progressive stages from confident toddler to school-ready learner.
+              Four progressive stages — each one play-first, each one age-right.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {programs.map((p) => (
-              <div key={p.slug} className="card card-hover p-6">
+              <div key={p.slug} className="card card-hover p-6 flex flex-col h-full">
                 <div className={`text-xs font-bold uppercase tracking-widest ${p.accent}`}>
                   {p.age}
                 </div>
@@ -194,7 +206,7 @@ export default function PlaySchoolPage() {
                   {p.name}
                 </h3>
                 <p className="text-sm text-brand-ink/65 mt-3 leading-relaxed">{p.desc}</p>
-                <div className="mt-5 pt-5 border-t border-black/[0.07] grid grid-cols-2 gap-3 text-xs">
+                <div className="mt-auto pt-5 border-t border-black/[0.07] grid grid-cols-2 gap-3 text-xs">
                   <div>
                     <div className="text-brand-ink/45 font-medium">Timing</div>
                     <div className="font-semibold text-brand-ink mt-0.5">{p.duration}</div>
@@ -216,7 +228,7 @@ export default function PlaySchoolPage() {
           <div className="max-w-xl mb-12">
             <span className="eyebrow">Curriculum</span>
             <h2 className="heading-lg mt-3">
-              Six pillars of <span className="accent">whole-child development.</span>
+              Six pillars — every one of them <span className="accent">learned by doing.</span>
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -241,13 +253,23 @@ export default function PlaySchoolPage() {
       {/* A DAY AT 10TO10 */}
       <section className="section">
         <div className="container">
-          <div className="max-w-xl mb-12">
+          <div className="max-w-2xl mb-12">
             <span className="eyebrow">A day at 10to10</span>
             <h2 className="heading-lg mt-3">
               Structure with <span className="accent">space to play.</span>
             </h2>
+            <div className="mt-5 flex flex-wrap gap-3 text-sm">
+              <span className="inline-flex items-center gap-2 chip bg-white border border-black/[0.08] font-semibold text-brand-ink">
+                <Clock className="h-3.5 w-3.5 text-brand-primary" />
+                Mon – Fri · 9:30 AM – 3:30 PM
+              </span>
+              <span className="inline-flex items-center gap-2 chip bg-white border border-black/[0.08] font-semibold text-brand-ink">
+                <Clock className="h-3.5 w-3.5 text-brand-primary" />
+                Saturday · half day · 9:30 AM – 12:30 PM
+              </span>
+            </div>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {dailySchedule.map((s, i) => (
               <div key={i} className="card p-5 flex gap-4 items-start">
                 <div className="shrink-0 w-12 h-12 rounded-xl bg-brand-primary/10 text-brand-primary grid place-items-center">
@@ -262,6 +284,127 @@ export default function PlaySchoolPage() {
               </div>
             ))}
           </div>
+
+          {/* SNACKS MENU — small companion strip */}
+          <div className="mt-10 rounded-3xl bg-white border border-black/[0.07] p-6 md:p-8">
+            <div className="flex items-baseline justify-between flex-wrap gap-2 mb-5">
+              <h3 className="font-display text-xl font-bold text-brand-ink">
+                Snacks menu
+              </h3>
+              <span className="text-xs font-semibold uppercase tracking-widest text-brand-ink/45">
+                Weekly rotation
+              </span>
+            </div>
+            <p className="text-sm text-brand-ink/60 mb-5 max-w-2xl">
+              Two fresh snacks daily — one mid-morning, one mid-afternoon — rotating across these three nutritionist-approved categories.
+            </p>
+            <div className="grid sm:grid-cols-3 gap-3">
+              {snacksMenu.map((s) => (
+                <div key={s.name} className="rounded-2xl bg-brand-cloud border border-black/[0.06] p-5">
+                  <div className="font-display font-bold text-brand-ink">{s.name}</div>
+                  <p className="text-sm text-brand-ink/65 mt-1.5 leading-relaxed">{s.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* EVENTS & CELEBRATIONS — festive card grid */}
+      <section id="events" className="section">
+        <div className="container">
+          <div className="max-w-xl mb-12">
+            <span className="eyebrow">Events &amp; celebrations</span>
+            <h2 className="heading-lg mt-3">
+              Every day worth marking, <span className="accent">we mark together.</span>
+            </h2>
+            <p className="mt-4 text-brand-ink/60 leading-relaxed">
+              From national days to regional festivals, our calendar is built around
+              the moments that matter — celebrated through stories, food, songs and
+              crafts the kids will remember.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {events.map((e) => (
+              <div
+                key={e.name}
+                className={`relative rounded-3xl bg-gradient-to-br ${e.color} p-6 border-2 border-white shadow-lifted hover:-translate-y-1 hover:scale-[1.01] transition`}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div
+                    className="text-5xl"
+                    style={{ filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.12))" }}
+                  >
+                    {e.icon}
+                  </div>
+                  <span className={`text-xs font-bold uppercase tracking-widest ${e.accent}`}>
+                    {e.date}
+                  </span>
+                </div>
+                <h3 className="font-display text-xl font-bold text-brand-ink">{e.name}</h3>
+                <p className="text-sm text-brand-ink/75 mt-2 leading-relaxed">{e.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-brand-ink/50 text-xs mt-8">
+            Plus regional days, themed weeks, and small in-class moments year-round.
+          </p>
+        </div>
+      </section>
+
+      {/* FEES */}
+      <section className="section bg-white border-y border-black/[0.07]">
+        <div className="container">
+          <div className="max-w-xl mb-12">
+            <span className="eyebrow">Fees</span>
+            <h2 className="heading-lg mt-3">
+              Simple pricing, <span className="accent">no hidden costs.</span>
+            </h2>
+            <p className="mt-4 text-brand-ink/60 leading-relaxed">
+              Same fee across all four programs. Pay-as-you-go for flexibility, or
+              save with the annual plan.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {fees.map((f) => (
+              <div
+                key={f.plan}
+                className={`relative rounded-3xl p-8 border-2 transition hover:-translate-y-1 ${
+                  f.popular
+                    ? "bg-gradient-to-br from-brand-primary to-brand-grape border-transparent shadow-glow md:scale-105 text-white"
+                    : "bg-white border-black/[0.06] hover:border-brand-primary/20 shadow-lifted"
+                }`}
+              >
+                {f.popular && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 chip bg-brand-yellow text-brand-ink font-bold">
+                    Most popular
+                  </span>
+                )}
+                <div className={`text-xs font-bold uppercase tracking-widest ${f.popular ? "text-white/75" : "text-brand-primary"}`}>
+                  {f.plan}
+                </div>
+                <div className="mt-3 flex items-baseline gap-1">
+                  <span className="font-display text-4xl font-bold">{f.price}</span>
+                  <span className={f.popular ? "text-white/70 text-sm" : "text-brand-ink/55 text-sm"}>
+                    {f.period}
+                  </span>
+                </div>
+                <div className={`text-xs font-medium mt-2 ${f.popular ? "text-white/65" : "text-brand-ink/50"}`}>
+                  {f.program}
+                </div>
+                <div className={`h-px my-5 ${f.popular ? "bg-white/15" : "bg-black/[0.06]"}`} />
+                <div className={`text-sm leading-relaxed ${f.popular ? "text-white/85" : "text-brand-ink/70"}`}>
+                  {f.note}
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-brand-ink/55 text-xs mt-8">
+            Fees include all activities, snacks, and reports. Annual fee includes
+            books, uniform and one off-campus trip per term.
+          </p>
         </div>
       </section>
 
@@ -296,9 +439,9 @@ export default function PlaySchoolPage() {
       <section className="section bg-white border-y border-black/[0.07]">
         <div className="container">
           <div className="max-w-xl mb-12">
-            <span className="eyebrow">Why parents choose us</span>
+            <span className="eyebrow">Why we&apos;re different</span>
             <h2 className="heading-lg mt-3">
-              A play school Khammam parents can <span className="accent">trust.</span>
+              A Khammam preschool where play <span className="accent">IS the curriculum.</span>
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -400,8 +543,9 @@ export default function PlaySchoolPage() {
                 The best way to know is to <span className="text-brand-primary">visit.</span>
               </h2>
               <p className="mt-5 text-white/65 leading-relaxed">
-                Bring your child for a free trial day. Watch them play, meet our
-                teachers, ask everything. No commitment, no pressure.
+                Bring your child for a free trial day. Watch them play — and
+                watch them learn. You&apos;ll see the difference in twenty
+                minutes. No commitment, no pressure.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
                 <a href="#admission" className="btn-primary">

@@ -1,5 +1,11 @@
 export type Accent = "primary" | "turquoise" | "yellow" | "grape" | "orange" | "mint" | "sky";
 
+export type ZonePricing = {
+  label: string;
+  price: string;
+  note?: string;
+};
+
 export type Zone = {
   slug: string;
   name: string;
@@ -9,6 +15,7 @@ export type Zone = {
   highlights: string[];
   accent: Accent;
   icon: string;
+  pricing?: ZonePricing[];
 };
 
 export const zones: Zone[] = [
@@ -22,15 +29,22 @@ export const zones: Zone[] = [
     highlights: ["Sensory zones", "Climbing structures", "Ball pit", "Toddler-safe"],
     accent: "primary",
     icon: "🧸",
+    pricing: [
+      { label: "1 hour", price: "₹300", note: "per child" },
+      { label: "2 hours", price: "₹500", note: "per child" },
+      { label: "3 hours", price: "₹600", note: "per child" },
+      { label: "Monthly subscription", price: "₹5,000", note: "1 hour daily" },
+      { label: "Annual subscription", price: "₹40,000", note: "all-year access" },
+    ],
   },
   {
     slug: "play-school",
     name: "Play School",
-    tagline: "Where learning meets adventure",
+    tagline: "We don't teach. Kids learn by playing.",
     description:
-      "Montessori-inspired early-childhood program nurturing curiosity, independence, and joyful learning — with trained educators and an open-door policy.",
+      "Khammam's only play-first preschool. No worksheets, no rote drills, no homework — children pick up reading, writing and numbers through stories, songs, and hands-on discovery. Trained educators, daily reports, open-door policy.",
     ages: "18 mo – 5 yrs",
-    highlights: ["Montessori method", "Trained educators", "Daily reports", "Free trial"],
+    highlights: ["No worksheets, no homework", "Trained educators", "1:8 ratio", "Free trial day"],
     accent: "grape",
     icon: "✏️",
   },
@@ -44,6 +58,11 @@ export const zones: Zone[] = [
     highlights: ["PS5 library", "VR headsets", "Racing rigs", "Tournaments"],
     accent: "turquoise",
     icon: "🎮",
+    pricing: [
+      { label: "PS4 / PS5 — Single Player", price: "₹200", note: "per 30 min" },
+      { label: "PS4 / PS5 — Multi Player", price: "₹300", note: "per 30 min" },
+      { label: "VR (one game)", price: "₹200", note: "up to 10 min" },
+    ],
   },
   {
     slug: "private-theatre-room",
@@ -55,6 +74,12 @@ export const zones: Zone[] = [
     highlights: ["Dolby audio", "Custom playlists", "Snack service", "Dim lighting"],
     accent: "grape",
     icon: "🎬",
+    pricing: [
+      { label: "Movie booking", price: "₹1,000", note: "3 hours, room only" },
+      { label: "Per person — with snacks", price: "₹250", note: "popcorn + drink" },
+      { label: "Per person — without snacks", price: "₹200" },
+      { label: "Decoration & photography", price: "Add-on", note: "ask at reception" },
+    ],
   },
   {
     slug: "party-room",

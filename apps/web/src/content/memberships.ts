@@ -12,50 +12,64 @@ export const tiers: Tier[] = [
   {
     slug: "silver",
     name: "Silver",
-    price: "₹899",
+    price: "₹599",
     period: "/ month",
     tagline: "Dip your toes in. Great for occasional visits.",
     perks: [
-      "30% off play area & gaming",
-      "20% off summer camp",
-      "Discounts on refreshments",
-      "Member-only events",
+      "1 free play hour",
+      "1 free theatre hour",
+      "25% off on play hours",
+      "10% off on snacks",
+      "10% off on gaming",
     ],
   },
   {
     slug: "gold",
     name: "Gold",
-    price: "₹1,499",
-    period: "/ quarter",
-    tagline: "For regulars who want more play and priority.",
+    price: "₹2,000",
+    period: "/ half year",
+    tagline: "For regulars who want more play and a private movie night.",
     highlight: true,
     perks: [
-      "1 FREE play visit every month",
-      "40% off play area & gaming",
-      "Priority booking access",
-      "Free birthday decor voucher",
-      "Member-only events",
+      "1 free private movie screening",
+      "6 free play hours",
+      "Extra 30% off on play hours",
+      "10% off on snacks, gaming, theatre, parties",
+      "Birthday perks: surprise gift + 20% off on party area",
     ],
   },
   {
     slug: "platinum",
     name: "Platinum",
-    price: "₹4,999",
+    price: "₹3,499",
     period: "/ year",
     tagline: "The royal pass. Best value for families.",
     perks: [
-      "2 FREE play visits every month",
-      "50% off play area & gaming",
-      "1 FREE quarterly theatre booking",
-      "Exclusive early-bird offers",
-      "Free annual photoshoot",
-      "Priority booking access",
+      "12 free play hours",
+      "2 free private movie screenings",
+      "40% off on play hours",
+      "10% off on snacks, gaming, theatre, parties",
+      "Birthday perks: surprise gift + 20% off on party area",
     ],
   },
 ];
 
-export const sessionPricing = [
-  { label: "Single Pass", price: "₹499", note: "1 person" },
-  { label: "Couple Pass", price: "₹799", note: "2 people" },
-  { label: "Family Pass", price: "₹1,199", note: "Up to 4 people" },
-];
+export type MultiPlan = {
+  name: string;
+  tagline: string;
+  perks: string[];
+  example: string;
+};
+
+export const multiPlan: MultiPlan = {
+  name: "Multi Members Plan",
+  tagline:
+    "Add cousins, siblings, or friends to any base plan and save 50% on every extra member.",
+  perks: [
+    "50% off any plan for additional child (siblings, cousins, friends)",
+    "Each linked member gets the same benefits as the base plan",
+    "Ideal for families with 2+ kids",
+  ],
+  example:
+    "1st child on annual Platinum: ₹3,499 · 2nd child on the same plan: ₹1,749",
+};
