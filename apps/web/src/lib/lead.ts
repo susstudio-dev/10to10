@@ -21,15 +21,29 @@ export type SubmitLeadResult = {
   ok: boolean;
   whatsapp: boolean;
   email: boolean;
+  /** Prefilled wa.me link — show as manual fallback if the popup was blocked */
+  whatsappUrl: string;
   error?: string;
 };
+
+export function buildWhatsappText(source: LeadSource, fields: LeadFields) {
+  return (
+    `Hi 10to10! I'd like to inquire about: ${source}\n\n` +
+    Object.entries(fields)
+      .filter(([, v]) => v !== undefined && v !== "")
+      .map(([k, v]) => `• ${humanize(k)}: ${v}`)
+      .join("\n")
+  );
+}
 
 /**
  * Submit a lead to BOTH Web3Forms (email + Sheets backend) AND WhatsApp.
  *
- * Web3Forms is non-blocking — even if the network fails, WhatsApp still
- * opens so the parent has a fallback path. The form's email backup ensures
- * the owner sees every inquiry even if WhatsApp isn't sent.
+ * IMPORTANT ordering: window.open() must run synchronously inside the
+ * user's click/submit gesture — any `await` before it lets popup blockers
+ * silently swallow the WhatsApp tab (our primary lead channel). So we open
+ * WhatsApp first, then fire the email backup with `keepalive` so it
+ * survives even if the user navigates away.
  */
 export async function submitLead(
   source: LeadSource,
@@ -38,10 +52,20 @@ export async function submitLead(
 ): Promise<SubmitLeadResult> {
   const { whatsappBody, openWhatsapp = true } = options;
 
-  // Compose the Web3Forms payload
+  const text = whatsappBody ?? buildWhatsappText(source, fields);
+  const whatsappUrl = `${siteConfig.whatsapp}?text=${encodeURIComponent(text)}`;
+
+  // 1. WhatsApp — synchronously, before any await
+  let whatsappOk = false;
+  if (openWhatsapp && typeof window !== "undefined") {
+    const win = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    whatsappOk = win !== null;
+  }
+
+  // 2. Email backup via Web3Forms — non-blocking, tolerant of failure
   const payload: Record<string, string | number> = {
     access_key: WEB3FORMS_KEY,
-    subject: `[10to10] ${source} inquiry — ${fields.name ?? "anonymous"}`,
+    subject: `[10to10] ${source} inquiry — ${fields.name ?? fields.parent_name ?? "anonymous"}`,
     from_name: "10to10 Adventures Website",
     source,
     submitted_at: new Date().toISOString(),
@@ -58,6 +82,7 @@ export async function submitLead(
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(payload),
+        keepalive: true,
       });
       emailOk = res.ok;
     } catch {
@@ -65,24 +90,11 @@ export async function submitLead(
     }
   }
 
-  let whatsappOk = false;
-  if (openWhatsapp && typeof window !== "undefined") {
-    const text =
-      whatsappBody ??
-      `Hi 10to10! I'd like to inquire about: ${source}\n\n` +
-        Object.entries(fields)
-          .filter(([, v]) => v !== undefined && v !== "")
-          .map(([k, v]) => `• ${humanize(k)}: ${v}`)
-          .join("\n");
-    const url = `${siteConfig.whatsapp}?text=${encodeURIComponent(text)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-    whatsappOk = true;
-  }
-
   return {
     ok: emailOk || whatsappOk,
     email: emailOk,
     whatsapp: whatsappOk,
+    whatsappUrl,
   };
 }
 

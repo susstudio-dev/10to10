@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MessageCircle, Phone } from "lucide-react";
+import { MessageCircle, Phone, CalendarCheck } from "lucide-react";
 import { siteConfig } from "@/lib/utils";
 import { useBooking } from "./booking-modal";
 
 /**
  * Floating mobile-only CTA that appears after the user scrolls past the hero.
- * Provides one-tap access to Book and Call without scrolling back to the navbar.
+ * One-tap access to the three conversion paths: Call, WhatsApp, Book.
  */
 export function StickyMobileCta() {
   const { open } = useBooking();
@@ -34,19 +34,29 @@ export function StickyMobileCta() {
           <div className="pointer-events-auto rounded-2xl bg-white/95 backdrop-blur-xl border border-brand-ink/10 shadow-[0_10px_40px_-10px_rgba(26,16,51,0.3)] p-2.5 flex gap-2 max-w-md mx-auto">
             <a
               href={siteConfig.phoneHref}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-brand-ink/5 hover:bg-brand-ink/10 active:scale-95 transition py-3 text-sm font-bold text-brand-ink"
+              className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand-ink/5 hover:bg-brand-ink/10 active:scale-95 transition py-3 text-sm font-bold text-brand-ink"
               aria-label="Call us"
             >
               <Phone className="h-4 w-4" />
               Call
             </a>
+            <a
+              href={`${siteConfig.whatsapp}?text=${encodeURIComponent("Hi 10to10! I have a question.")}`}
+              target="_blank"
+              rel="noreferrer"
+              className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#25D366]/15 text-emerald-800 hover:bg-[#25D366]/25 active:scale-95 transition py-3 text-sm font-bold"
+              aria-label="Chat on WhatsApp"
+            >
+              <MessageCircle className="h-4 w-4" />
+              WhatsApp
+            </a>
             <button
               type="button"
               onClick={() => open()}
-              className="flex-[2] inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-brand-primary to-brand-primary-deep text-white py-3 text-sm font-bold shadow-glow active:scale-95 transition"
+              className="flex-[1.4] inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-br from-brand-primary to-brand-primary-deep text-white py-3 text-sm font-bold shadow-glow active:scale-95 transition"
             >
-              <MessageCircle className="h-4 w-4" />
-              Book a Visit
+              <CalendarCheck className="h-4 w-4" />
+              Book
             </button>
           </div>
         </motion.div>

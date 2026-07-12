@@ -135,8 +135,8 @@ export const whyUs = [
     desc: "Every educator holds a Montessori or early-childhood certification with 3+ years of experience.",
   },
   {
-    title: "1:8 child-teacher ratio",
-    desc: "We deliberately stay below the industry standard so every child is genuinely seen.",
+    title: "Small class ratios (1:6 – 1:10)",
+    desc: "From 1:6 for toddlers to 1:10 in KG — always below the industry standard so every child is genuinely seen.",
   },
   {
     title: "Daily reports app",

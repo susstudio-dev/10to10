@@ -91,7 +91,7 @@ export const steps = [
   {
     n: "03",
     title: "Pay 30% deposit",
-    desc: "Secure the date with a ₹2,000 (or 30%) refundable deposit. Balance payable on event day.",
+    desc: "Secure the date with a refundable 30% deposit. Balance payable on event day.",
   },
   {
     n: "04",

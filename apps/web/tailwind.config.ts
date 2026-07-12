@@ -50,6 +50,7 @@ const config: Config = {
           "radial-gradient(circle at 20% 10%, #ffd93d 2px, transparent 3px), radial-gradient(circle at 60% 30%, #ff5a8a 2px, transparent 3px), radial-gradient(circle at 85% 70%, #00d4c8 2px, transparent 3px), radial-gradient(circle at 35% 80%, #8b5cf6 2px, transparent 3px)",
       },
       animation: {
+        marquee: "marquee 32s linear infinite",
         float: "float 6s ease-in-out infinite",
         "float-slow": "float 9s ease-in-out infinite",
         "gradient-x": "gradient-x 8s ease infinite",
@@ -59,6 +60,10 @@ const config: Config = {
         pulse2: "pulse2 2.5s ease-in-out infinite",
       },
       keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
         float: {
           "0%,100%": { transform: "translateY(0) rotate(0deg)" },
           "50%": { transform: "translateY(-18px) rotate(3deg)" },

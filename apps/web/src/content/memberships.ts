@@ -25,7 +25,7 @@ export const tiers: Tier[] = [
   {
     slug: "gold",
     name: "Gold",
-    price: "₹1,499",
+    price: "₹3,999",
     period: "/ quarter",
     tagline: "For regulars who want more play and priority.",
     highlight: true,

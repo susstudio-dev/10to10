@@ -7,7 +7,15 @@ import { submitLead } from "@/lib/lead";
 import { ConfettiBurst } from "./confetti-burst";
 
 const programs = ["Playgroup (1.5–2.5)", "Nursery (2.5–3.5)", "LKG (3.5–4.5)", "UKG (4.5–5.5)"];
-const months = ["June 2026", "July 2026", "August 2026", "September 2026", "Later"];
+// Always offer the current month + next three, so the list never goes stale
+const months = (() => {
+  const fmt = new Intl.DateTimeFormat("en-IN", { month: "long", year: "numeric" });
+  const now = new Date();
+  const list = Array.from({ length: 4 }, (_, i) =>
+    fmt.format(new Date(now.getFullYear(), now.getMonth() + i, 1))
+  );
+  return [...list, "Later"];
+})();
 const sources = ["Google search", "Friend/family", "Instagram", "Walked past", "Other"];
 
 export function AdmissionForm() {
@@ -24,12 +32,14 @@ export function AdmissionForm() {
     company: "", // honeypot
   });
   const [state, setState] = useState<"idle" | "submitting" | "sent">("idle");
+  const [waUrl, setWaUrl] = useState<string | null>(null);
+  const [waOpened, setWaOpened] = useState(true);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.company) return; // bot detected
     setState("submitting");
-    await submitLead("Play School Admission", {
+    const result = await submitLead("Play School Admission", {
       parent_name: form.parentName,
       phone: form.phone,
       email: form.email,
@@ -40,6 +50,8 @@ export function AdmissionForm() {
       heard_from: form.heardFrom,
       notes: form.notes,
     });
+    setWaUrl(result.whatsappUrl);
+    setWaOpened(result.whatsapp);
     setState("sent");
   };
 
@@ -56,10 +68,15 @@ export function AdmissionForm() {
         </div>
         <h3 className="font-display text-2xl font-bold text-brand-ink">Inquiry received!</h3>
         <p className="text-brand-ink/65 mt-2 max-w-md mx-auto">
-          We&apos;ve emailed your details to our admissions team and opened
-          WhatsApp so you can chat with us directly. We respond within 4 hours
-          on weekdays.
+          {waOpened
+            ? "We've sent your details to our admissions team and opened WhatsApp so you can chat with us directly. We respond within 4 hours on weekdays."
+            : "We've sent your details to our admissions team. Tap below to open WhatsApp and chat with us directly — we respond within 4 hours on weekdays."}
         </p>
+        {waUrl && (
+          <a href={waUrl} target="_blank" rel="noreferrer" className={`${waOpened ? "btn-ghost" : "btn-primary"} mt-5`}>
+            {waOpened ? "WhatsApp didn't open? Tap here" : "Open WhatsApp"}
+          </a>
+        )}
         <button
           type="button"
           onClick={() => {
@@ -95,6 +112,7 @@ export function AdmissionForm() {
         className="absolute -left-[9999px]"
         tabIndex={-1}
         autoComplete="off"
+        aria-hidden="true"
       />
 
       <div className="mt-5 grid sm:grid-cols-2 gap-4">

@@ -200,12 +200,12 @@ export function Hero() {
           >
             Seven zones of{" "}
             <span className="relative inline-block">
-              <span className="text-brand-turquoise italic">play</span>
+              <span className="text-brand-turquoise">play</span>
               <UnderlineSquiggle className="absolute -bottom-1 left-0 w-full h-2 text-brand-yellow" />
             </span>
             ,
             <br />
-            <span className="accent">one unforgettable day.</span>
+            <span className="gradient-text">one unforgettable day.</span>
           </motion.h1>
 
           <motion.p
@@ -234,8 +234,49 @@ export function Hero() {
               Explore the venue
             </a>
           </motion.div>
+
+          {/* Trust stickers */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+            className="mt-10 flex flex-wrap items-center justify-center gap-3"
+            style={{ transform: "translateZ(30px)" }}
+          >
+            <span className="sticker rotate-[-2deg]">🧒 Ages 0 – 12</span>
+            <span className="sticker rotate-[1.5deg]">🛡️ Trained staff & CCTV</span>
+            <span className="sticker rotate-[-1deg]">💛 10,000+ happy visits a year</span>
+            <span className="sticker rotate-[2deg]">📍 Mamatha College Road, Khammam</span>
+          </motion.div>
         </div>
       </motion.div>
+
+      {/* Zone ticker — playful marquee strip */}
+      <div
+        aria-hidden
+        className="absolute bottom-0 inset-x-0 z-10 border-y-2 border-brand-ink/10 bg-white/70 backdrop-blur-sm overflow-hidden py-2.5"
+      >
+        <div className="flex w-max animate-marquee whitespace-nowrap text-sm font-display font-bold text-brand-ink/70">
+          {[0, 1].map((copy) => (
+            <span key={copy} className="flex shrink-0">
+              {[
+                "🧸 Soft Play Arena",
+                "✏️ Play School",
+                "🎮 Gaming Arena",
+                "🎬 Private Theatre",
+                "🎉 Party Room",
+                "🍿 Snack Bar",
+                "🎁 Toy Stall",
+              ].map((z) => (
+                <span key={z} className="mx-6 inline-flex items-center gap-2">
+                  {z}
+                  <span className="text-brand-turquoise">•</span>
+                </span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
 
       {/* Crisp scroll cue */}
       {!reduce && (
@@ -243,7 +284,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.5 }}
           transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 text-[10px] font-semibold tracking-[0.2em] uppercase text-brand-ink/50 z-20"
+          className="absolute bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-2 text-[10px] font-semibold tracking-[0.2em] uppercase text-brand-ink/50 z-20"
         >
           <span className="h-px w-6 bg-brand-ink/30" />
           Scroll

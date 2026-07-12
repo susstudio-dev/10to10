@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/utils";
 import { BookButton } from "./book-button";
+import { Bunting, Float, BalloonDoodle, StarDoodle, SwirlDoodle } from "@/components/playful";
 
 export function CtaBanner() {
   return (
@@ -14,19 +15,31 @@ export function CtaBanner() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="relative overflow-hidden rounded-3xl bg-brand-ink p-10 md:p-14 text-white"
+          className="relative overflow-hidden rounded-[2.5rem] bg-brand-ink p-10 md:p-14 text-white"
         >
           {/* Subtle accent glow, not rainbow */}
           <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-brand-primary/15 blur-3xl pointer-events-none" />
 
+          {/* party garnish along the top edge + floating doodles in the gutters */}
+          <Bunting className="pointer-events-none absolute top-0 right-10 w-52 opacity-90 hidden sm:block" />
+          <Float speed="wiggle" className="top-5 left-12 w-7 text-white/25 hidden md:block">
+            <StarDoodle className="w-full" />
+          </Float>
+          <Float speed="slow" className="bottom-5 right-8 w-8 text-white/25 hidden md:block">
+            <BalloonDoodle className="w-full" />
+          </Float>
+          <Float speed="spin" className="bottom-4 left-[38%] w-8 text-white/15 hidden lg:block">
+            <SwirlDoodle className="w-full" />
+          </Float>
+
           <div className="relative grid md:grid-cols-5 gap-10 items-center">
             <div className="md:col-span-3">
-              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-brand-primary">
-                Birthday parties & private events
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-brand-yellow">
+                <span aria-hidden="true">🎈</span> Birthday parties & private events
               </span>
               <h2 className="heading-lg mt-4">
                 Birthdays they&apos;ll<br />
-                <span className="text-brand-primary">remember forever.</span>
+                <span className="text-brand-turquoise">remember forever.</span>
               </h2>
               <p className="mt-5 text-white/70 max-w-lg leading-relaxed">
                 Theming, decor, hosts, cake, private theatre — we handle every detail.

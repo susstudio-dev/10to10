@@ -41,6 +41,8 @@ export function Navbar() {
           : "bg-transparent"
       )}
     >
+      {/* playschool signature: rainbow crayon strip */}
+      <div aria-hidden className="rainbow-strip h-1" />
       <div className="container">
         <nav className="flex items-center justify-between h-16 md:h-[72px]" aria-label="Main">
           <Link href="/" aria-label="10to10 Adventures home" className="active:scale-95 transition">

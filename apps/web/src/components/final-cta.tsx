@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { BookButton } from "./book-button";
 import { siteConfig } from "@/lib/utils";
+import { Bunting, Float, SunDoodle, RainbowDoodle } from "@/components/playful";
+import { PopIn } from "@/components/reveal";
 
 export function FinalCta() {
   return (
@@ -14,14 +16,25 @@ export function FinalCta() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="relative overflow-hidden rounded-3xl border border-black/[0.06] bg-white p-12 md:p-20 text-center"
+          className="relative overflow-hidden rounded-[2.5rem] border border-black/[0.06] bg-white p-12 md:p-20 text-center"
         >
           {/* subtle corner accents */}
           <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-brand-primary/8 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-brand-turquoise/8 blur-3xl pointer-events-none" />
 
+          {/* bunting hung from the top edge + crayon doodles in the corners */}
+          <Bunting className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-60 md:w-72" />
+          <Float speed="slow" className="top-10 right-8 w-10 text-brand-yellow opacity-70 hidden md:block">
+            <SunDoodle className="w-full" />
+          </Float>
+          <Float speed="fast" className="bottom-8 left-8 w-14 opacity-80 hidden md:block">
+            <RainbowDoodle className="w-full" />
+          </Float>
+
           <div className="relative max-w-2xl mx-auto">
-            <span className="eyebrow">First visit complimentary</span>
+            <PopIn>
+              <span className="sticker rotate-[-2deg]"><span aria-hidden="true">🎟️</span> First visit complimentary</span>
+            </PopIn>
             <h2 className="heading-lg mt-4">
               Come meet us.<br />
               <span className="accent">The first one&apos;s on us.</span>

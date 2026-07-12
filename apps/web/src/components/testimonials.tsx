@@ -2,6 +2,15 @@
 
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import { Tape, Float, HeartDoodle, SmileDoodle } from "@/components/playful";
+
+const tapes = [
+  "-top-3 left-7 -rotate-6",
+  "-top-3 right-8 rotate-3",
+  "-top-3 left-1/2 -translate-x-1/2 rotate-2",
+];
+
+const tilts = [-1.4, 1.2, -1];
 
 const items = [
   {
@@ -26,25 +35,40 @@ const items = [
 
 export function Testimonials() {
   return (
-    <section className="section">
+    <section className="section relative">
+      <Float speed="wiggle" className="top-14 right-[6%] w-9 text-brand-grape opacity-60 hidden md:block">
+        <HeartDoodle className="w-full" />
+      </Float>
+      <Float speed="slow" className="bottom-12 left-[4%] w-9 text-brand-yellow opacity-70 hidden md:block">
+        <SmileDoodle className="w-full" />
+      </Float>
+
       <div className="container">
-        <div className="max-w-xl mb-12 md:mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5 }}
+          className="max-w-xl mb-12 md:mb-16"
+        >
           <span className="eyebrow">Testimonials</span>
           <h2 className="heading-lg mt-3">
             Trusted by families<br className="hidden md:inline" /> across <span className="accent">Khammam.</span>
           </h2>
-        </div>
+        </motion.div>
         <div className="grid md:grid-cols-3 gap-4">
           {items.map((t, i) => (
             <motion.blockquote
               key={t.name}
               initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0, rotate: tilts[i % tilts.length] }}
+              whileHover={{ rotate: 0, y: -4 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.06 }}
-              className="card p-7"
+              className="card p-7 relative"
             >
-              <div className="flex gap-0.5 text-brand-primary mb-5">
+              <Tape className={tapes[i % tapes.length]} />
+              <div className="flex gap-0.5 text-amber-500 mb-5">
                 {[...Array(5)].map((_, idx) => (
                   <Star key={idx} className="h-3.5 w-3.5 fill-current" />
                 ))}

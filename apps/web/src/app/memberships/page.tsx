@@ -2,6 +2,17 @@ import { Check, X, Crown, Sparkles } from "lucide-react";
 import { MembershipStrip } from "@/components/membership-strip";
 import { BookButton } from "@/components/book-button";
 import { sessionPricing } from "@/content/memberships";
+import { Reveal } from "@/components/reveal";
+import {
+  WaveDivider,
+  Bunting,
+  Float,
+  StarDoodle,
+  SwirlDoodle,
+  SmileDoodle,
+  HeartDoodle,
+  BalloonDoodle,
+} from "@/components/playful";
 
 export const metadata = {
   title: "Memberships — Kids Play Area Khammam | 10to10 Adventures",
@@ -15,6 +26,9 @@ export const metadata = {
   ],
   alternates: { canonical: "/memberships" },
 };
+
+/* hand-placed ticket tilts for the session-pass cards */
+const ticketTilt = ["rotate-[-1.5deg]", "rotate-[1.5deg]", "rotate-[-1deg]"];
 
 const compare = [
   { feature: "Play area discount", silver: "30%", gold: "40%", platinum: "50%" },
@@ -56,9 +70,23 @@ const faqs = [
   },
 ];
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export default function MembershipsPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* HERO — Memberships theme: premium indigo + turquoise tonal wash, fades into body */}
       <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
@@ -82,6 +110,12 @@ export default function MembershipsPage() {
           {/* bottom fade to body cream */}
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-[#fdfbf7]" />
         </div>
+        <Float className="top-24 left-[7%] w-10 text-brand-yellow opacity-70 hidden md:block" speed="slow">
+          <StarDoodle className="w-full" />
+        </Float>
+        <Float className="top-40 right-[9%] w-12 text-brand-turquoise opacity-60 hidden md:block" speed="wiggle">
+          <SwirlDoodle className="w-full" />
+        </Float>
         <div className="container relative text-center max-w-3xl">
           <span className="inline-flex items-center gap-2 chip bg-white/85 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary">
             <Crown className="h-3.5 w-3.5" /> Memberships & passes
@@ -97,55 +131,75 @@ export default function MembershipsPage() {
       </section>
 
       {/* SINGLE SESSION PASSES */}
-      <section className="pb-20">
+      <section className="relative pb-20">
+        <Float className="top-2 right-[6%] w-10 text-brand-orange opacity-70 hidden md:block" speed="slow">
+          <StarDoodle className="w-full" />
+        </Float>
         <div className="container">
-          <div className="text-center mb-10">
-            <span className="eyebrow">
-              <span className="h-px w-8 bg-brand-primary" /> Drop-in pricing
-            </span>
-            <h2 className="heading-lg mt-4">Single session passes</h2>
-            <p className="mt-3 text-brand-ink/60 max-w-xl mx-auto">
-              No commitment, just fun. All passes include 1-hour play, 15-min
-              theatre, games, and a snack pack.
-            </p>
-          </div>
+          <Reveal>
+            <div className="text-center mb-10">
+              <span className="eyebrow">
+                <span className="h-px w-8 bg-brand-primary" /> <span aria-hidden="true">🎟️</span> Drop-in pricing
+              </span>
+              <h2 className="heading-lg mt-4">Single session passes</h2>
+              <p className="mt-3 text-brand-ink/60 max-w-xl mx-auto">
+                No commitment, just fun. All passes include 1-hour play, 15-min
+                theatre, games, and a snack pack.
+              </p>
+              <Bunting className="block mx-auto mt-5" />
+            </div>
+          </Reveal>
           <div className="grid md:grid-cols-3 gap-5 max-w-4xl mx-auto">
-            {sessionPricing.map((p) => (
-              <div
-                key={p.label}
-                className="rounded-3xl border-2 border-brand-ink/5 bg-white p-8 shadow-lifted text-center hover:-translate-y-1 hover:border-brand-primary/20 transition"
-              >
-                <div className="text-xs font-bold uppercase tracking-wider text-brand-ink/50">
-                  {p.label}
+            {sessionPricing.map((p, i) => (
+              <Reveal key={p.label} delay={i * 0.08}>
+                <div
+                  className={`relative h-full rounded-3xl border-2 border-brand-ink/5 bg-white p-8 shadow-lifted text-center hover:-translate-y-1 hover:rotate-0 hover:border-brand-primary/20 transition ${ticketTilt[i % ticketTilt.length]}`}
+                >
+                  <div className="text-xs font-bold uppercase tracking-wider text-brand-ink/50">
+                    {p.label}
+                  </div>
+                  <div className="font-display text-5xl font-bold mt-3 gradient-text">
+                    {p.price}
+                  </div>
+                  <div className="text-sm text-brand-ink/60 mt-2">{p.note}</div>
+                  {/* ticket perforation with punched notches */}
+                  <div aria-hidden className="relative -mx-8 my-6 border-t-2 border-dashed border-brand-ink/10">
+                    <span className="absolute -top-2.5 -left-2.5 h-5 w-5 rounded-full bg-[#fdfbf7]" />
+                    <span className="absolute -top-2.5 -right-2.5 h-5 w-5 rounded-full bg-[#fdfbf7]" />
+                  </div>
+                  <BookButton preset="Play Session" className="w-full">
+                    Book now
+                  </BookButton>
                 </div>
-                <div className="font-display text-5xl font-bold mt-3 gradient-text">
-                  {p.price}
-                </div>
-                <div className="text-sm text-brand-ink/60 mt-2">{p.note}</div>
-                <BookButton preset="Play Session" className="w-full mt-6">
-                  Book now
-                </BookButton>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* TIER CARDS */}
+      <WaveDivider fillClass="fill-brand-ink" />
       <MembershipStrip />
+      <WaveDivider fillClass="fill-brand-ink" flip />
 
       {/* COMPARISON TABLE */}
-      <section className="section">
+      <section className="section relative">
+        <Float className="top-16 right-[12%] w-9 text-brand-grape opacity-60 hidden lg:block" speed="wiggle">
+          <SmileDoodle className="w-full" />
+        </Float>
         <div className="container max-w-5xl">
-          <div className="text-center mb-12">
-            <span className="eyebrow">
-              <span className="h-px w-8 bg-brand-primary" /> Compare every perk
-            </span>
-            <h2 className="heading-lg mt-4">
-              Every perk, <span className="gradient-text">side by side</span>
-            </h2>
-          </div>
+          <Reveal>
+            <div className="text-center mb-12">
+              <span className="eyebrow">
+                <span className="h-px w-8 bg-brand-primary" /> Compare every perk
+              </span>
+              <h2 className="heading-lg mt-4">
+                Every perk, <span className="gradient-text">side by side</span>
+              </h2>
+            </div>
+          </Reveal>
 
+          <Reveal delay={0.1}>
           <div className="rounded-3xl border-2 border-brand-ink/5 bg-white shadow-lifted overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm md:text-base">
@@ -187,6 +241,7 @@ export default function MembershipsPage() {
               </table>
             </div>
           </div>
+          </Reveal>
 
           <p className="text-center text-brand-ink/55 text-sm mt-6">
             Multi-member families get an additional 10% off. All memberships auto-renew but can be cancelled any time.
@@ -195,41 +250,61 @@ export default function MembershipsPage() {
       </section>
 
       {/* FAQ */}
-      <section className="section bg-white/50">
+      <WaveDivider fillClass="fill-white/50" />
+      <section className="section relative bg-white/50">
+        <Float className="bottom-16 left-[4%] w-10 text-brand-orange opacity-60 hidden md:block" speed="slow">
+          <HeartDoodle className="w-full" />
+        </Float>
         <div className="container max-w-3xl">
-          <div className="text-center mb-12">
-            <span className="eyebrow">
-              <span className="h-px w-8 bg-brand-primary" /> Common questions
-            </span>
-            <h2 className="heading-lg mt-4">Before you pick a plan</h2>
-          </div>
+          <Reveal>
+            <div className="text-center mb-12">
+              <span className="eyebrow">
+                <span className="h-px w-8 bg-brand-primary" /> Common questions
+              </span>
+              <h2 className="heading-lg mt-4">Before you pick a plan</h2>
+            </div>
+          </Reveal>
           <div className="space-y-3">
             {faqs.map((f, i) => (
-              <details
-                key={i}
-                className="group rounded-2xl bg-white border-2 border-brand-ink/5 hover:border-brand-primary/20 transition overflow-hidden"
-              >
-                <summary className="flex items-center justify-between gap-4 p-5 cursor-pointer list-none font-semibold">
-                  <span>{f.q}</span>
-                  <span className="w-8 h-8 rounded-full bg-brand-ink/5 flex items-center justify-center text-xl group-open:rotate-45 transition shrink-0">
-                    +
-                  </span>
-                </summary>
-                <p className="px-5 pb-5 text-brand-ink/70 leading-relaxed">
-                  {f.a}
-                </p>
-              </details>
+              <Reveal key={i} delay={Math.min(i * 0.05, 0.3)}>
+                <details
+                  className={`group bg-white border-2 border-brand-ink/5 hover:border-brand-primary/20 transition overflow-hidden ${
+                    i % 2 ? "crayon-card-alt" : "crayon-card"
+                  }`}
+                >
+                  <summary className="flex items-center justify-between gap-4 p-5 cursor-pointer list-none font-semibold">
+                    <span>{f.q}</span>
+                    <span className="w-8 h-8 rounded-full bg-brand-ink/5 flex items-center justify-center text-xl group-open:rotate-45 transition shrink-0">
+                      +
+                    </span>
+                  </summary>
+                  <p className="px-5 pb-5 text-brand-ink/70 leading-relaxed">
+                    {f.a}
+                  </p>
+                </details>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
+      <WaveDivider fillClass="fill-white/50" flip />
 
       {/* CTA */}
       <section className="section">
         <div className="container">
           <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-primary via-brand-primary-deep to-brand-grape p-10 md:p-16 text-white text-center shadow-glow">
             <div className="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-brand-yellow/30 blur-3xl" />
-            <div className="relative max-w-2xl mx-auto">
+            <Float className="top-10 left-10 w-12 text-white/25 hidden md:block" speed="slow">
+              <StarDoodle className="w-full" />
+            </Float>
+            <Float className="bottom-10 right-12 w-14 text-white/20 hidden md:block" speed="wiggle">
+              <SwirlDoodle className="w-full" />
+            </Float>
+            <Float className="top-14 right-[16%] w-9 text-white/25 hidden lg:block" speed="fast">
+              <BalloonDoodle className="w-full" />
+            </Float>
+            <Reveal className="relative max-w-2xl mx-auto">
+              <Bunting className="block mx-auto mb-6" />
               <div className="text-5xl mb-4">
                 <Sparkles className="inline h-12 w-12 text-brand-yellow" />
               </div>
@@ -237,8 +312,8 @@ export default function MembershipsPage() {
                 Lock in the <span className="text-brand-yellow">best rates</span> today
               </h2>
               <p className="mt-4 text-white/85">
-                Prices go up in April. Sign up before then and we lock your rate
-                for the full term.
+                Rates rise as new zones open — sign up now and your price stays
+                locked for your full term, guaranteed.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
                 <BookButton preset="Play Session" variant="white">
@@ -248,7 +323,7 @@ export default function MembershipsPage() {
                   Have questions? Call us
                 </a>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>

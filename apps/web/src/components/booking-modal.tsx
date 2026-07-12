@@ -1,9 +1,17 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Check, MessageCircle, Phone } from "lucide-react";
+import { X, Check, MessageCircle, Phone, ExternalLink } from "lucide-react";
 import { siteConfig } from "@/lib/utils";
+import { submitLead } from "@/lib/lead";
 import { ConfettiBurst } from "./confetti-burst";
 
 type Ctx = { open: (preset?: string) => void; close: () => void };
@@ -25,10 +33,20 @@ const zoneOptions: ZonePick[] = [
   "Summer Camp",
 ];
 
+function todayISO() {
+  const d = new Date();
+  const m = `${d.getMonth() + 1}`.padStart(2, "0");
+  const day = `${d.getDate()}`.padStart(2, "0");
+  return `${d.getFullYear()}-${m}-${day}`;
+}
+
 export function BookingProvider({ children }: { children: ReactNode }) {
   const [isOpen, setOpen] = useState(false);
-  const [preset, setPreset] = useState<string | undefined>();
   const [step, setStep] = useState<"form" | "sent">("form");
+  const [submitting, setSubmitting] = useState(false);
+  const [waUrl, setWaUrl] = useState<string | null>(null);
+  const [waOpened, setWaOpened] = useState(true);
+  const sheetRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -39,7 +57,6 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   });
 
   const open = (p?: string) => {
-    setPreset(p);
     if (p && zoneOptions.includes(p as ZonePick)) {
       setForm((f) => ({ ...f, zone: p as ZonePick }));
     }
@@ -51,22 +68,41 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     // Reset to fresh form on next open (after exit animation)
     setTimeout(() => {
       setStep("form");
-      setPreset(undefined);
+      setSubmitting(false);
     }, 300);
   };
 
+  // Escape to close + move focus into the dialog on open
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
+    window.addEventListener("keydown", onKey);
+    sheetRef.current?.focus();
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { submitLead } = await import("@/lib/lead");
-    await submitLead("Booking Modal", {
-      name: form.name,
-      phone: form.phone,
-      zone: form.zone,
-      guests: form.guests,
-      preferred_date: form.date || "Flexible",
-      notes: form.notes,
-    });
-    setStep("sent");
+    if (submitting) return;
+    setSubmitting(true);
+    try {
+      const result = await submitLead("Booking Modal", {
+        name: form.name,
+        phone: form.phone,
+        zone: form.zone,
+        guests: form.guests,
+        preferred_date: form.date || "Flexible",
+        notes: form.notes,
+      });
+      setWaUrl(result.whatsappUrl);
+      setWaOpened(result.whatsapp);
+      setStep("sent");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -90,7 +126,12 @@ export function BookingProvider({ children }: { children: ReactNode }) {
             />
             {/* sheet */}
             <motion.div
-              className="relative w-full sm:max-w-lg bg-white rounded-t-[2rem] sm:rounded-[2rem] shadow-lifted max-h-[95vh] overflow-y-auto"
+              ref={sheetRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Book a visit"
+              tabIndex={-1}
+              className="relative w-full sm:max-w-lg bg-white rounded-t-[2rem] sm:rounded-[2rem] shadow-lifted max-h-[95vh] overflow-y-auto focus:outline-none"
               initial={{ y: "100%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "100%", opacity: 0 }}
@@ -126,6 +167,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         placeholder="Priya Kumar"
+                        autoComplete="name"
                         className="input"
                       />
                     </Field>
@@ -138,6 +180,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
                         placeholder="+91 98765 43210"
+                        autoComplete="tel"
                         className="input"
                       />
                     </Field>
@@ -173,6 +216,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                       <Field label="Preferred date">
                         <input
                           type="date"
+                          min={todayISO()}
                           value={form.date}
                           onChange={(e) => setForm({ ...form, date: e.target.value })}
                           className="input"
@@ -190,9 +234,22 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                     </Field>
                   </div>
 
-                  <button type="submit" className="btn-primary w-full mt-6 text-base">
-                    <MessageCircle className="h-5 w-5" />
-                    Send via WhatsApp
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="btn-primary w-full mt-6 text-base disabled:cursor-wait"
+                  >
+                    {submitting ? (
+                      <>
+                        <span className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+                        Opening WhatsApp…
+                      </>
+                    ) : (
+                      <>
+                        <MessageCircle className="h-5 w-5" />
+                        Send via WhatsApp
+                      </>
+                    )}
                   </button>
                   <div className="mt-3 flex items-center gap-2">
                     <div className="h-px flex-1 bg-brand-ink/10" />
@@ -220,10 +277,22 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                   </motion.div>
                   <h2 className="font-display text-2xl font-bold">You&apos;re all set! 🎊</h2>
                   <p className="text-brand-ink/65 mt-2">
-                    WhatsApp should have opened with your request. Hit send and we&apos;ll
-                    confirm shortly!
+                    {waOpened
+                      ? "WhatsApp should have opened with your request. Hit send and we'll confirm shortly!"
+                      : "One more tap — open WhatsApp below to send us your request."}
                   </p>
-                  <button onClick={close} className="btn-primary mt-6 w-full">
+                  {waUrl && (
+                    <a
+                      href={waUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`${waOpened ? "btn-ghost" : "btn-primary"} mt-5 w-full`}
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      {waOpened ? "WhatsApp didn't open? Tap here" : "Open WhatsApp"}
+                    </a>
+                  )}
+                  <button onClick={close} className={`${waOpened ? "btn-primary" : "btn-ghost"} mt-3 w-full`}>
                     Got it
                   </button>
                 </div>

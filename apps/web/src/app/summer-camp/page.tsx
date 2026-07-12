@@ -15,14 +15,26 @@ import {
   Sun,
 } from "lucide-react";
 import { BookButton } from "@/components/book-button";
+import {
+  WaveDivider,
+  Bunting,
+  Tape,
+  Float,
+  SunDoodle,
+  CloudDoodle,
+  RainbowDoodle,
+  PaperPlaneDoodle,
+  StarDoodle,
+} from "@/components/playful";
+import { Reveal, PopIn } from "@/components/reveal";
 
 export const metadata = {
-  title: "Summer Camp Khammam 2026 — Ages 3-12 | 10to10 Adventures",
+  title: "Summer Camp Khammam 2027 — Ages 3-12 | 10to10 Adventures",
   description:
-    "Khammam's most loved summer camp for kids ages 3–12. Two months of dance, art, sports, brain games, yoga and more. Daily snacks, trained staff, 1:8 ratio. Limited seats.",
+    "Khammam's most loved summer camp for kids ages 3–12. Two months of dance, art, sports, brain games, yoga and more. Daily snacks, trained staff, 1:8 ratio. Join the 2027 waitlist for early-bird rates.",
   keywords: [
     "summer camp Khammam",
-    "kids summer camp 2026",
+    "kids summer camp 2027",
     "kids holiday camp Khammam",
     "summer activities for kids Khammam",
     "summer classes Khammam",
@@ -76,6 +88,16 @@ const schedule = [
   { time: "11:00 – 12:00", activity: "Activity Block 2 — Yoga / Games / Music", tag: "Active" },
   { time: "12:00 – 12:30", activity: "Free play in soft-play arena", tag: "Play" },
   { time: "12:30 – 13:00", activity: "Story time & wrap-up", tag: "Wind-down" },
+];
+
+/* Playful timeline dots — one hand-tilted colour per schedule stop */
+const dotStyles = [
+  "bg-brand-yellow rotate-[-8deg]",
+  "bg-brand-turquoise rotate-[6deg]",
+  "bg-brand-orange rotate-[-6deg]",
+  "bg-brand-grape rotate-[8deg]",
+  "bg-brand-mint rotate-[-8deg]",
+  "bg-brand-sky rotate-[6deg]",
 ];
 
 const ageGroups = [
@@ -144,7 +166,7 @@ const pricing = [
 const faqs = [
   {
     q: "What are the camp dates?",
-    a: "April 1 – May 31, 2026. Monday to Friday, 9 AM to 1 PM. Weekends off. You can join weekly, monthly, or for the full 2 months.",
+    a: "Camp runs every April and May, Monday to Friday, 9 AM to 1 PM (weekends off). Exact 2027 dates are announced by February — join the waitlist and you'll be the first to know. You can join weekly, monthly, or for the full 2 months.",
   },
   {
     q: "Is food provided?",
@@ -184,8 +206,21 @@ const included = [
 ];
 
 export default function SummerCampPage() {
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* HERO — Summer Camp theme: sunlit outdoor (sun + grass), fades into body */}
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
@@ -208,11 +243,22 @@ export default function SummerCampPage() {
           <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-b from-transparent to-[#fdfbf7]" />
         </div>
 
+        {/* crayon sunshine doodles */}
+        <Float className="top-24 right-[8%] w-16 text-brand-orange opacity-70 hidden md:block" speed="spin">
+          <SunDoodle className="w-full" />
+        </Float>
+        <Float className="top-48 right-[22%] w-14 text-brand-sky opacity-60 hidden lg:block" speed="slow">
+          <CloudDoodle className="w-full" />
+        </Float>
+        <Float className="bottom-24 right-[10%] w-12 text-brand-turquoise opacity-60 hidden md:block" speed="wiggle">
+          <PaperPlaneDoodle className="w-full" />
+        </Float>
+
         <div className="container relative">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 chip bg-white/80 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary">
               <Sun className="h-3.5 w-3.5" />
-              Summer Camp 2026
+              Summer Camp 2027 · waitlist open
             </span>
             <h1 className="heading-xl mt-5">
               Where summer turns into{" "}
@@ -226,7 +272,7 @@ export default function SummerCampPage() {
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <BookButton preset="Summer Camp" className="text-base">
-                Reserve a Spot
+                Join the 2027 waitlist
               </BookButton>
               <a href="#schedule" className="btn-ghost text-base">
                 See the daily schedule
@@ -236,14 +282,16 @@ export default function SummerCampPage() {
             {/* Quick facts row */}
             <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { icon: Calendar, label: "Apr 1 – May 31", sub: "2026" },
+                { icon: Calendar, label: "April – May", sub: "2027 · dates soon" },
                 { icon: Clock, label: "9 AM – 1 PM", sub: "Mon – Fri" },
                 { icon: Users, label: "Ages 3 – 12", sub: "3 batches" },
-                { icon: ShieldCheck, label: "Limited seats", sub: "Book early" },
-              ].map((f) => (
+                { icon: ShieldCheck, label: "Limited seats", sub: "Waitlist first" },
+              ].map((f, i) => (
                 <div
                   key={f.label}
-                  className="rounded-2xl bg-white/80 backdrop-blur border-2 border-white p-4 shadow-lifted"
+                  className={`rounded-2xl bg-white/80 backdrop-blur border-2 border-white p-4 shadow-lifted transition hover:rotate-0 ${
+                    i % 2 ? "rotate-[1deg]" : "rotate-[-1deg]"
+                  }`}
                 >
                   <f.icon className="h-5 w-5 text-brand-primary mb-2" />
                   <div className="font-bold text-sm">{f.label}</div>
@@ -256,39 +304,54 @@ export default function SummerCampPage() {
       </section>
 
       {/* ACTIVITIES */}
-      <section className="section">
+      <section className="section relative">
+        <Float className="top-14 left-[4%] w-16 opacity-70 hidden md:block" speed="slow">
+          <RainbowDoodle className="w-full" />
+        </Float>
+        <Float className="top-24 right-[5%] w-12 text-brand-sky opacity-60 hidden md:block" speed="fast">
+          <CloudDoodle className="w-full" />
+        </Float>
         <div className="container">
-          <div className="text-center max-w-2xl mx-auto mb-14">
+          <Reveal className="text-center max-w-2xl mx-auto mb-14">
             <span className="eyebrow">
               <span className="h-px w-8 bg-brand-primary" /> What's inside
             </span>
             <h2 className="heading-lg mt-4">
               Six activity tracks. <span className="gradient-text">Zero boring days.</span>
             </h2>
-          </div>
+          </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {activities.map((a) => (
-              <div
-                key={a.title}
-                className="rounded-3xl border-2 border-brand-ink/5 bg-white p-7 hover:-translate-y-1 hover:shadow-lifted transition"
-              >
-                <div className={`inline-flex w-12 h-12 rounded-2xl items-center justify-center ${a.color}`}>
-                  <a.icon className="h-6 w-6" />
+            {activities.map((a, i) => (
+              <Reveal key={a.title} delay={Math.min(i * 0.06, 0.3)}>
+                <div
+                  className={`group h-full rounded-3xl border-2 border-brand-ink/5 bg-white p-7 hover:-translate-y-1 hover:shadow-lifted transition hover:rotate-0 ${
+                    i % 3 === 0 ? "rotate-[-1deg]" : i % 3 === 2 ? "rotate-[1deg]" : ""
+                  }`}
+                >
+                  <div
+                    className={`inline-flex w-12 h-12 rounded-2xl items-center justify-center transition group-hover:rotate-6 group-hover:scale-110 ${a.color}`}
+                  >
+                    <a.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="font-display text-xl font-bold mt-5">{a.title}</h3>
+                  <p className="text-sm text-brand-ink/70 mt-2 leading-relaxed">
+                    {a.desc}
+                  </p>
                 </div>
-                <h3 className="font-display text-xl font-bold mt-5">{a.title}</h3>
-                <p className="text-sm text-brand-ink/70 mt-2 leading-relaxed">
-                  {a.desc}
-                </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* AGE GROUPS */}
-      <section className="section bg-white/50">
+      <WaveDivider fillClass="fill-white/50" />
+      <section className="section bg-white/50 relative">
+        <Float className="top-16 right-[6%] w-10 text-brand-yellow opacity-70 hidden md:block" speed="wiggle">
+          <StarDoodle className="w-full" />
+        </Float>
         <div className="container">
-          <div className="text-center max-w-2xl mx-auto mb-14">
+          <Reveal className="text-center max-w-2xl mx-auto mb-14">
             <span className="eyebrow">
               <span className="h-px w-8 bg-brand-primary" /> Age-based batches
             </span>
@@ -299,55 +362,63 @@ export default function SummerCampPage() {
               Every age group gets its own curriculum, mentor, and pace — because
               a 4-year-old and a 10-year-old need very different kinds of fun.
             </p>
-          </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {ageGroups.map((g) => (
-              <div
-                key={g.name}
-                className={`relative rounded-3xl border-2 p-8 bg-gradient-to-br ${g.color} ${g.ring} ${
-                  g.highlight ? "md:scale-105 shadow-glow" : ""
-                }`}
-              >
-                {g.highlight && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 chip bg-brand-primary text-white font-bold">
-                    Most popular
-                  </span>
-                )}
-                <div className="text-xs font-bold uppercase tracking-wider text-brand-ink/55">
-                  {g.age}
+            {ageGroups.map((g, i) => (
+              <Reveal key={g.name} delay={Math.min(i * 0.08, 0.3)}>
+                <div
+                  className={`relative h-full rounded-3xl border-2 p-8 bg-gradient-to-br transition ${g.color} ${g.ring} ${
+                    g.highlight
+                      ? "md:scale-105 shadow-glow"
+                      : `hover:rotate-0 ${i === 0 ? "rotate-[-1.5deg]" : "rotate-[1.5deg]"}`
+                  }`}
+                >
+                  {g.highlight && (
+                    <PopIn delay={0.25} className="absolute -top-3 inset-x-0 flex justify-center">
+                      <span className="chip bg-brand-primary text-white font-bold">
+                        Most popular
+                      </span>
+                    </PopIn>
+                  )}
+                  <div className="text-xs font-bold uppercase tracking-wider text-brand-ink/55">
+                    {g.age}
+                  </div>
+                  <h3 className="font-display text-2xl font-bold mt-2">{g.name}</h3>
+                  <p className="text-sm text-brand-ink/75 mt-3 leading-relaxed">
+                    {g.desc}
+                  </p>
                 </div>
-                <h3 className="font-display text-2xl font-bold mt-2">{g.name}</h3>
-                <p className="text-sm text-brand-ink/75 mt-3 leading-relaxed">
-                  {g.desc}
-                </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
+      <WaveDivider flip fillClass="fill-white/50" />
 
       {/* DAILY SCHEDULE */}
       <section id="schedule" className="section">
         <div className="container">
           <div className="grid lg:grid-cols-5 gap-10">
             <div className="lg:col-span-2">
-              <span className="eyebrow">A day at camp</span>
-              <h2 className="heading-lg mt-4">
-                Four hours of <span className="gradient-text">pure magic</span>
-              </h2>
-              <p className="mt-5 text-brand-ink/70 leading-relaxed">
-                Our day is carefully balanced between structured learning and
-                free play, so kids stay engaged without ever feeling rushed.
-                Parents drop off at 9 AM and pick up at 1 PM — stress-free.
-              </p>
+              <Reveal>
+                <span className="eyebrow">A day at camp <span aria-hidden="true">☀️</span></span>
+                <h2 className="heading-lg mt-4">
+                  Four hours of <span className="gradient-text">pure magic</span>
+                </h2>
+                <p className="mt-5 text-brand-ink/70 leading-relaxed">
+                  Our day is carefully balanced between structured learning and
+                  free play, so kids stay engaged without ever feeling rushed.
+                  Parents drop off at 9 AM and pick up at 1 PM — stress-free.
+                </p>
+              </Reveal>
               <div className="mt-8 grid grid-cols-2 gap-3">
                 {included.map((i) => (
                   <div
                     key={i.label}
                     className="flex items-center gap-3 rounded-2xl bg-white border-2 border-brand-ink/5 p-3"
                   >
-                    <i.icon className="h-5 w-5 text-brand-primary shrink-0" />
+                    <i.icon className="h-5 w-5 text-brand-primary shrink-0 hover-wiggle" />
                     <span className="text-sm font-semibold">{i.label}</span>
                   </div>
                 ))}
@@ -358,22 +429,37 @@ export default function SummerCampPage() {
               <ol className="relative border-l-2 border-dashed border-brand-primary/30 ml-4 space-y-5">
                 {schedule.map((s, i) => (
                   <li key={s.time} className="relative pl-6">
-                    <span className="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-brand-primary ring-4 ring-white" />
-                    <div className="rounded-2xl bg-white border-2 border-brand-ink/5 p-5 hover:border-brand-primary/30 transition">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="text-xs font-bold text-brand-primary">
-                          {s.time}
+                    <span
+                      aria-hidden
+                      className={`absolute -left-[11px] top-2 w-5 h-5 rounded-[35%] ring-4 ring-white ${dotStyles[i % dotStyles.length]}`}
+                    />
+                    <Reveal delay={Math.min(i * 0.05, 0.3)}>
+                      <div className="rounded-2xl bg-white border-2 border-brand-ink/5 p-5 hover:border-brand-primary/30 transition">
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="text-xs font-bold text-brand-primary">
+                            {s.time}
+                          </div>
+                          <span className="chip bg-brand-ink/5 text-brand-ink/60">
+                            {s.tag}
+                          </span>
                         </div>
-                        <span className="chip bg-brand-ink/5 text-brand-ink/60">
-                          {s.tag}
-                        </span>
+                        <div className="font-semibold mt-1">{s.activity}</div>
                       </div>
-                      <div className="font-semibold mt-1">{s.activity}</div>
-                    </div>
+                    </Reveal>
                     {i === 0 && (
-                      <span className="hidden lg:block absolute -left-20 top-3 text-xs font-bold text-brand-primary">
-                        START
-                      </span>
+                      <>
+                        <span className="hidden lg:block absolute -left-20 top-3 text-xs font-bold text-brand-primary">
+                          START
+                        </span>
+                        <Float className="-left-[4.5rem] top-9 w-9 text-brand-yellow opacity-70 hidden lg:block" speed="spin">
+                          <SunDoodle className="w-full" />
+                        </Float>
+                      </>
+                    )}
+                    {i === schedule.length - 1 && (
+                      <Float className="-left-16 top-4 w-7 text-brand-grape opacity-60 hidden lg:block" speed="wiggle">
+                        <StarDoodle className="w-full" />
+                      </Float>
                     )}
                   </li>
                 ))}
@@ -384,10 +470,20 @@ export default function SummerCampPage() {
       </section>
 
       {/* PRICING */}
+      <WaveDivider fillClass="fill-[#1a1033]" />
       <section className="section bg-brand-ink text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-mesh-dark opacity-50" />
+        <Float className="top-20 left-[5%] w-14 text-white/30 hidden md:block" speed="spin">
+          <SunDoodle className="w-full" />
+        </Float>
+        <Float className="top-36 right-[7%] w-12 text-white/25 hidden md:block" speed="slow">
+          <CloudDoodle className="w-full" />
+        </Float>
+        <Float className="bottom-24 left-[10%] w-10 text-white/25 hidden lg:block" speed="wiggle">
+          <PaperPlaneDoodle className="w-full" />
+        </Float>
         <div className="container relative">
-          <div className="text-center max-w-2xl mx-auto mb-14">
+          <Reveal className="text-center max-w-2xl mx-auto mb-14">
             <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-brand-yellow">
               Pricing
             </span>
@@ -397,28 +493,38 @@ export default function SummerCampPage() {
                 Pack the sunscreen.
               </span>
             </h2>
+            <div aria-hidden className="flex justify-center mt-4">
+              <Bunting />
+            </div>
             <p className="mt-4 text-white/70">
               All passes include every activity, daily snacks, trained mentors,
-              and access to the full 10to10 Adventures playground.
+              and access to the full 10to10 Adventures playground. 2026-season
+              pricing shown — 2027 rates are announced with the dates, and
+              waitlisted families lock in early-bird prices.
             </p>
-          </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {pricing.map((p) => (
-              <div
-                key={p.name}
-                className={`relative rounded-3xl p-8 border ${
-                  p.popular
-                    ? "bg-gradient-to-br from-brand-primary to-brand-grape border-transparent shadow-glow md:scale-105"
-                    : "glass-dark"
-                }`}
-              >
-                {p.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 chip bg-brand-yellow text-brand-ink font-bold">
-                    Best value
-                  </span>
-                )}
-                <h3 className="font-display text-2xl font-bold">{p.name}</h3>
+            {pricing.map((p, i) => (
+              <Reveal key={p.name} delay={Math.min(i * 0.08, 0.3)}>
+                <div
+                  className={`relative h-full rounded-3xl p-8 border ${
+                    p.popular
+                      ? "bg-gradient-to-br from-brand-primary to-brand-grape border-transparent shadow-glow md:scale-105"
+                      : "glass-dark"
+                  }`}
+                >
+                  {p.popular && (
+                    <>
+                      <Tape className="-top-3 -left-4 -rotate-12" />
+                      <PopIn delay={0.25} className="absolute -top-3 inset-x-0 flex justify-center">
+                        <span className="chip bg-brand-yellow text-brand-ink font-bold">
+                          Best value
+                        </span>
+                      </PopIn>
+                    </>
+                  )}
+                  <h3 className="font-display text-2xl font-bold">{p.name}</h3>
                 <div className="mt-5 flex items-baseline gap-1">
                   <span className="font-display text-5xl font-bold">
                     {p.price}
@@ -438,9 +544,10 @@ export default function SummerCampPage() {
                   variant={p.popular ? "white" : "ghost"}
                   className="w-full mt-8"
                 >
-                  Reserve {p.name}
-                </BookButton>
-              </div>
+                    Reserve {p.name}
+                  </BookButton>
+                </div>
+              </Reveal>
             ))}
           </div>
 
@@ -450,33 +557,37 @@ export default function SummerCampPage() {
           </p>
         </div>
       </section>
+      <WaveDivider flip fillClass="fill-[#1a1033]" />
 
       {/* FAQ */}
       <section className="section">
         <div className="container max-w-3xl">
-          <div className="text-center mb-12">
+          <Reveal className="text-center mb-12">
             <span className="eyebrow">
               <span className="h-px w-8 bg-brand-primary" /> Parent questions
             </span>
             <h2 className="heading-lg mt-4">Everything parents ask us</h2>
-          </div>
+          </Reveal>
 
           <div className="space-y-3">
             {faqs.map((f, i) => (
-              <details
-                key={i}
-                className="group rounded-2xl bg-white border-2 border-brand-ink/5 hover:border-brand-primary/20 transition overflow-hidden"
-              >
-                <summary className="flex items-center justify-between gap-4 p-5 cursor-pointer list-none font-semibold">
-                  <span>{f.q}</span>
-                  <span className="w-8 h-8 rounded-full bg-brand-ink/5 flex items-center justify-center text-xl group-open:rotate-45 transition shrink-0">
-                    +
-                  </span>
-                </summary>
-                <p className="px-5 pb-5 text-brand-ink/70 leading-relaxed">
-                  {f.a}
-                </p>
-              </details>
+              <Reveal key={i} delay={Math.min(i * 0.04, 0.24)}>
+                <details
+                  className={`group bg-white border-2 border-brand-ink/5 hover:border-brand-primary/20 transition overflow-hidden ${
+                    i % 2 ? "crayon-card-alt" : "crayon-card"
+                  }`}
+                >
+                  <summary className="flex items-center justify-between gap-4 p-5 cursor-pointer list-none font-semibold">
+                    <span>{f.q}</span>
+                    <span className="w-8 h-8 rounded-full bg-brand-ink/5 flex items-center justify-center text-xl group-open:rotate-45 transition shrink-0">
+                      +
+                    </span>
+                  </summary>
+                  <p className="px-5 pb-5 text-brand-ink/70 leading-relaxed">
+                    {f.a}
+                  </p>
+                </details>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -487,19 +598,28 @@ export default function SummerCampPage() {
         <div className="container">
           <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-primary via-brand-primary-deep to-brand-grape p-10 md:p-16 text-white text-center shadow-glow">
             <div className="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-brand-yellow/30 blur-3xl" />
+            <Float className="top-10 left-[7%] w-12 text-white/30 hidden md:block" speed="slow">
+              <CloudDoodle className="w-full" />
+            </Float>
+            <Float className="bottom-10 right-[8%] w-10 text-white/30 hidden md:block" speed="wiggle">
+              <PaperPlaneDoodle className="w-full" />
+            </Float>
             <div className="relative max-w-2xl mx-auto">
-              <div className="text-5xl mb-4">☀️</div>
+              <div className="text-5xl mb-4" aria-hidden="true">☀️</div>
               <h2 className="heading-lg">
-                Limited seats. Filling fast.
+                The 2026 camp sold out. 2027 will too.
               </h2>
+              <div aria-hidden className="flex justify-center mt-3">
+                <Bunting />
+              </div>
               <p className="mt-4 text-white/85">
-                Last year's camp sold out 3 weeks before the start date. Reserve
-                your child's spot today with a ₹500 deposit — fully refundable
-                until March 15.
+                This year's camp filled up 3 weeks before the start date. Join
+                the 2027 waitlist now — waitlisted families get first pick of
+                batches and early-bird pricing before public booking opens.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
                 <BookButton preset="Summer Camp" variant="white">
-                  Reserve with ₹500
+                  Join the waitlist — it's free
                 </BookButton>
                 <a href="tel:+919256787788" className="btn-ghost bg-white/10 !text-white !border-white/30">
                   Talk to us first

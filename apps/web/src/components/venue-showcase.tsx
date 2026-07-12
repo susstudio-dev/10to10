@@ -1178,7 +1178,7 @@ export function VenueShowcase() {
                     </div>
                   </div>
                   <Link
-                    href={`/zones/${zone.slug}`}
+                    href={zone.slug === "play-school" ? "/play-school" : `/zones/${zone.slug}`}
                     className="btn btn-ghost group shrink-0"
                   >
                     Explore zone{" "}

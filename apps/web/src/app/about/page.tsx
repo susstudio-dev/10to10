@@ -1,5 +1,15 @@
 import { Heart, Users, Shield, Sparkles } from "lucide-react";
 import { BookButton } from "@/components/book-button";
+import {
+  WaveDivider,
+  Bunting,
+  Float,
+  HeartDoodle,
+  SmileDoodle,
+  RainbowDoodle,
+  StarDoodle,
+} from "@/components/playful";
+import { Reveal, PopIn } from "@/components/reveal";
 
 export const metadata = {
   title: "About 10to10 Adventures — Khammam's Family Playground",
@@ -65,18 +75,36 @@ export default function AboutPage() {
           />
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-[#fdfbf7]" />
         </div>
+
+        {/* storybook corner doodles */}
+        <Float className="top-24 left-[6%] w-10 text-brand-grape opacity-70 hidden md:block" speed="slow">
+          <HeartDoodle className="w-full" />
+        </Float>
+        <Float className="top-36 right-[9%] w-12 text-brand-turquoise opacity-70 hidden md:block" speed="wiggle">
+          <SmileDoodle className="w-full" />
+        </Float>
+        <Float className="bottom-16 right-[7%] w-16 opacity-80 hidden md:block" speed="slow">
+          <RainbowDoodle className="w-full" />
+        </Float>
+
         <div className="container relative max-w-3xl">
-          <span className="inline-flex items-center gap-2 chip bg-white/80 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary">
-            <Heart className="h-3.5 w-3.5" /> Our story
-          </span>
-          <h1 className="heading-xl mt-5">
-            We built <span className="gradient-text">the playground</span> we wished we had.
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed">
-            10to10 Adventures started with a simple idea: every kid in Khammam
-            deserves a place that&apos;s safe, vibrant, and genuinely fun — and every
-            parent deserves a break without the guilt.
-          </p>
+          <PopIn className="inline-block">
+            <span className="inline-flex items-center gap-2 chip bg-white/80 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary rotate-[-1.5deg]">
+              <Heart className="h-3.5 w-3.5" /> Our story
+            </span>
+          </PopIn>
+          <Reveal delay={0.05}>
+            <h1 className="heading-xl mt-5">
+              We built <span className="gradient-text">the playground</span> we wished we had.
+            </h1>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed">
+              10to10 Adventures started with a simple idea: every kid in Khammam
+              deserves a place that&apos;s safe, vibrant, and genuinely fun — and every
+              parent deserves a break without the guilt.
+            </p>
+          </Reveal>
         </div>
       </section>
 
@@ -84,83 +112,103 @@ export default function AboutPage() {
       <section className="section">
         <div className="container max-w-3xl">
           <div className="prose prose-lg text-brand-ink/75 leading-relaxed space-y-5 text-lg">
-            <p>
-              Khammam has a lot to love, but for years, parents had to choose between
-              cramped play zones, pricey chain outlets, or long drives to Hyderabad
-              for a decent birthday venue. We knew our city deserved better.
-            </p>
-            <p>
-              So we built 10to10 Adventures — seven distinct zones under one roof,
-              designed around a single question: what would make a child&apos;s eyes
-              light up the moment they walk in? The answer turned into a 2,400 sq ft
-              soft-play arena, a Montessori-inspired play school, a gaming lounge,
-              a private theatre, a themed party room, a snack bar, and a curated
-              toy stall.
-            </p>
-            <p>
-              We&apos;re a small team — just 23 of us — but every one of us takes this
-              personally. Our play-school teachers know each child&apos;s favourite book.
-              Our party hosts remember the kids who came last year and greet them
-              by name. Our cleaning crew sanitises the ball pit three times a day.
-              This isn&apos;t a franchise formula. It&apos;s our home town, and these are our
-              kids.
-            </p>
-            <p>
-              If you have a child in Khammam, we want to know you. Come say hi.
-              The first visit is on us.
-            </p>
+            <Reveal>
+              <p>
+                Khammam has a lot to love, but for years, parents had to choose between
+                cramped play zones, pricey chain outlets, or long drives to Hyderabad
+                for a decent birthday venue. We knew our city deserved better.
+              </p>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <p>
+                So we built 10to10 Adventures — seven distinct zones under one roof,
+                designed around a single question: what would make a child&apos;s eyes
+                light up the moment they walk in? The answer turned into a 2,400 sq ft
+                soft-play arena, a Montessori-inspired play school, a gaming lounge,
+                a private theatre, a themed party room, a snack bar, and a curated
+                toy stall.
+              </p>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <p>
+                We&apos;re a small team — just 23 of us — but every one of us takes this
+                personally. Our play-school teachers know each child&apos;s favourite book.
+                Our party hosts remember the kids who came last year and greet them
+                by name. Our cleaning crew sanitises the ball pit three times a day.
+                This isn&apos;t a franchise formula. It&apos;s our home town, and these are our
+                kids.
+              </p>
+            </Reveal>
+            <Reveal delay={0.18}>
+              <p>
+                If you have a child in Khammam, we want to know you. Come say hi.
+                The first visit is on us.
+              </p>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* VALUES */}
+      <WaveDivider fillClass="fill-white/50" />
       <section className="section bg-white/50">
         <div className="container">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="eyebrow">
-              <span className="h-px w-8 bg-brand-primary" /> What we believe
-            </span>
-            <h2 className="heading-lg mt-4">
-              Four things we <span className="gradient-text">never compromise</span> on
-            </h2>
-          </div>
+          <Reveal>
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="eyebrow">
+                <span className="h-px w-8 bg-brand-primary" /> What we believe
+              </span>
+              <h2 className="heading-lg mt-4">
+                Four things we <span className="gradient-text">never compromise</span> on
+              </h2>
+              <Bunting className="block mx-auto mt-5" />
+            </div>
+          </Reveal>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {values.map((v) => (
-              <div
-                key={v.title}
-                className="rounded-3xl bg-white border-2 border-brand-ink/5 p-7 hover:-translate-y-1 hover:border-brand-primary/20 hover:shadow-lifted transition"
-              >
-                <div className="inline-flex w-12 h-12 rounded-2xl bg-brand-primary/10 text-brand-primary items-center justify-center">
-                  <v.icon className="h-6 w-6" />
+            {values.map((v, i) => (
+              <Reveal key={v.title} delay={i * 0.08} className="h-full">
+                <div
+                  className={`${
+                    i % 2 === 0
+                      ? "crayon-card rotate-[-1.5deg]"
+                      : "crayon-card-alt rotate-[1.5deg]"
+                  } group h-full bg-white border-2 border-brand-ink/10 p-7 hover:rotate-0 hover:-translate-y-1 hover:border-brand-primary/20 hover:shadow-lifted transition`}
+                >
+                  <div className="inline-flex w-12 h-12 rounded-2xl bg-brand-primary/10 text-brand-primary items-center justify-center hover-wiggle group-hover:rotate-6 group-hover:scale-110 transition">
+                    <v.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="font-display text-xl font-bold mt-5">{v.title}</h3>
+                  <p className="text-sm text-brand-ink/70 mt-2 leading-relaxed">
+                    {v.desc}
+                  </p>
                 </div>
-                <h3 className="font-display text-xl font-bold mt-5">{v.title}</h3>
-                <p className="text-sm text-brand-ink/70 mt-2 leading-relaxed">
-                  {v.desc}
-                </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
+      <WaveDivider fillClass="fill-white/50" flip />
 
       {/* STATS */}
       <section className="section">
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {[
-              { n: "7", l: "Zones under one roof" },
-              { n: "2,400", l: "Sq ft of play" },
-              { n: "23", l: "Team members" },
-              { n: "10,000+", l: "Happy visits a year" },
-            ].map((s) => (
+              { n: "7", l: "Zones under one roof", tilt: "rotate-[-2deg]" },
+              { n: "2,400", l: "Sq ft of play", tilt: "rotate-[1.5deg]" },
+              { n: "23", l: "Team members", tilt: "rotate-[-1deg]" },
+              { n: "10,000+", l: "Happy visits a year", tilt: "rotate-[2deg]" },
+            ].map((s, i) => (
               <div
                 key={s.l}
-                className="rounded-3xl bg-white border-2 border-brand-ink/5 p-6 text-center shadow-lifted"
+                className={`rounded-3xl bg-white border-2 border-brand-ink/5 p-6 text-center shadow-lifted ${s.tilt} hover:rotate-0 transition`}
               >
-                <div className="font-display text-4xl md:text-5xl font-bold gradient-text">
-                  {s.n}
-                </div>
+                <PopIn delay={i * 0.1}>
+                  <div className="font-display text-4xl md:text-5xl font-bold gradient-text">
+                    {s.n}
+                  </div>
+                </PopIn>
                 <div className="text-xs md:text-sm text-brand-ink/60 mt-2 font-semibold">
                   {s.l}
                 </div>
@@ -175,7 +223,17 @@ export default function AboutPage() {
         <div className="container">
           <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-primary via-brand-primary-deep to-brand-grape p-10 md:p-16 text-white text-center shadow-glow">
             <div className="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-brand-yellow/30 blur-3xl" />
-            <div className="relative max-w-2xl mx-auto">
+            <Float className="top-8 left-8 w-10 text-white/30" speed="slow">
+              <HeartDoodle className="w-full" />
+            </Float>
+            <Float className="bottom-8 right-10 w-10 text-white/30" speed="wiggle">
+              <StarDoodle className="w-full" />
+            </Float>
+            <Float className="top-1/2 right-[12%] w-8 text-white/20 hidden md:block" speed="fast">
+              <SmileDoodle className="w-full" />
+            </Float>
+            <Reveal className="relative max-w-2xl mx-auto">
+              <Bunting className="block mx-auto mb-6 opacity-90" />
               <h2 className="heading-lg">
                 Come meet us. <span className="text-brand-yellow">First visit&apos;s on us.</span>
               </h2>
@@ -187,7 +245,7 @@ export default function AboutPage() {
                   Book my free visit
                 </BookButton>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>

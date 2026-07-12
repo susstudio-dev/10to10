@@ -48,7 +48,7 @@ export function ZoneGrid() {
               >
                 <TiltCard intensity={6} className="h-full">
                   <Link
-                    href={`/zones/${zone.slug}`}
+                    href={zone.slug === "play-school" ? "/play-school" : `/zones/${zone.slug}`}
                     className={cn(
                       "group card relative block h-full p-6 overflow-hidden transition",
                       a.glow
