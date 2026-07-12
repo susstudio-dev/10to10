@@ -173,7 +173,7 @@ export default function ContactPage() {
 
   const directions =
     "https://www.google.com/maps/dir/?api=1&destination=" +
-    encodeURIComponent("10to10 Adventures, Mamatha College Road, Khammam");
+    encodeURIComponent("10to10 Adventures, Mamatha College Road, Near SBI Bank, Khammam");
 
   return (
     <>
@@ -596,7 +596,7 @@ export default function ContactPage() {
             <div className="grid grid-cols-3 gap-2">
               <MiniStat icon={Timer}     value="<5 min"   label="Avg. reply"  tint="from-emerald-100 to-teal-50"  iconColor="text-emerald-700" tilt="rotate-[-1deg]" />
               <MiniStat icon={Languages} value="EN·TE·HI" label="Spoken"      tint="from-purple-100 to-violet-50" iconColor="text-brand-grape" tilt="rotate-[1deg]" />
-              <MiniStat icon={Sparkles}  value="7 days"   label="Open weekly" tint="from-amber-100 to-orange-50"  iconColor="text-brand-orange" tilt="rotate-[-1deg]" />
+              <MiniStat icon={Sparkles}  value="7 days"   label="Always open" tint="from-amber-100 to-orange-50"  iconColor="text-brand-orange" tilt="rotate-[-1deg]" />
             </div>
           </div>
         </div>

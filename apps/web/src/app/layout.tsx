@@ -11,6 +11,7 @@ import { RouteScrollTop } from "@/components/route-scroll-top";
 import { StickyMobileCta } from "@/components/sticky-mobile-cta";
 import { WhatsappFab } from "@/components/whatsapp-fab";
 import { siteConfig } from "@/lib/utils";
+import { localBusinessJsonLd } from "@/lib/seo";
 
 // Baloo 2 — chunky, rounded, joyful display face (headings)
 const displayFont = Baloo_2({
@@ -34,6 +35,9 @@ const playfulFont = Fredoka({
   display: "swap",
 });
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const withBasePath = (path: string) => `${basePath}${path}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -41,6 +45,7 @@ export const metadata: Metadata = {
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  alternates: { canonical: "/" },
   keywords: [
     "10to10 Adventures",
     "play school in Khammam",
@@ -75,60 +80,18 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: ["/og.png"],
   },
+  icons: {
+    icon: [{ url: withBasePath("/icon.svg"), type: "image/svg+xml" }],
+    shortcut: [{ url: withBasePath("/icon.svg"), type: "image/svg+xml" }],
+    apple: [{ url: withBasePath("/apple-icon.svg"), type: "image/svg+xml" }],
+  },
   robots: { index: true, follow: true },
-  alternates: { canonical: "/" },
 };
 
 export const viewport: Viewport = {
   themeColor: "#2c3873",
   width: "device-width",
   initialScale: 1,
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": ["EntertainmentBusiness", "LocalBusiness"],
-  "@id": `${siteConfig.url}/#business`,
-  name: siteConfig.name,
-  description: siteConfig.description,
-  url: siteConfig.url,
-  telephone: siteConfig.phone,
-  email: siteConfig.email,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Mamatha College Road, Above Just Bake, Near SBI Bank",
-    addressLocality: "Khammam",
-    addressRegion: "Telangana",
-    addressCountry: "IN",
-  },
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ],
-      opens: "10:00",
-      closes: "22:00",
-    },
-  ],
-  hasMap:
-    "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent("10to10 Adventures, Mamatha College Road, Khammam"),
-  areaServed: { "@type": "City", name: "Khammam" },
-  priceRange: "₹₹",
-  sameAs: [siteConfig.instagram],
-  department: {
-    "@type": "Preschool",
-    name: "10to10 Adventures Play School",
-    url: `${siteConfig.url}/play-school`,
-    telephone: siteConfig.phone,
-  },
 };
 
 export default function RootLayout({
@@ -141,7 +104,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col" suppressHydrationWarning>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }}
         />
         <a href="#main" className="skip-link">Skip to main content</a>
         <SmoothScroll>

@@ -28,6 +28,7 @@ import {
   partyFaqs,
   partyTestimonials,
 } from "@/content/parties";
+import { faqJsonLd, pageMetadata } from "@/lib/seo";
 
 const stepTints = [
   "bg-brand-yellow/50",
@@ -37,10 +38,11 @@ const stepTints = [
   "bg-brand-mint/50",
 ];
 
-export const metadata = {
-  title: "Birthday Party Venue Khammam — Kids Party Hall | 10to10 Adventures",
+export const metadata = pageMetadata({
+  title: "Birthday Party Venue Khammam — Kids Party Hall",
   description:
-    "Khammam's premier birthday party venue for kids. Themed decor, hosts, cake, private theatre. Packages from ₹7,999 for up to 15 guests. Book your party today.",
+    "Khammam's premier birthday party venue for kids. Pick a private party room (₹10,000 / 15 kids), a private theatre, or the full combo (₹15,000 / 30 kids). Themed decor, hosts, cake, photos, photography included.",
+  path: "/party-planner",
   keywords: [
     "birthday party venue Khammam",
     "kids party hall Khammam",
@@ -48,24 +50,14 @@ export const metadata = {
     "kids birthday party Khammam",
     "themed birthday Khammam",
   ],
-  alternates: { canonical: "/party-planner" },
-};
+});
 
 export default function PartyPlannerPage() {
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: partyFaqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  };
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(partyFaqs)) }}
       />
       {/* HERO — Parties theme: celebratory (rose + sunshine + lavender), fades into body */}
       <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
@@ -114,8 +106,8 @@ export default function PartyPlannerPage() {
             </h1>
             <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed max-w-2xl">
               Private venue, themed decor, cake, hosts, games, photography — we
-              handle every tiny detail so you can actually enjoy your kid's big
-              day. Packages from ₹7,999.
+              handle every tiny detail so you can actually enjoy your kid&apos;s big
+              day. Private theatre from ₹1,000, party packages from ₹10,000.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -163,7 +155,10 @@ export default function PartyPlannerPage() {
               <Bunting className="block mx-auto mt-4" />
               <p className="mt-4 text-brand-ink/65">
                 All packages include private venue, party host, decor, and full setup
-                & cleanup. Pick the one that fits your headcount and vibe.
+                &amp; cleanup &mdash; and every one is{" "}
+                <strong className="font-semibold text-brand-ink">fully customisable</strong>.
+                Pick your theme, swap the decor, mix in add-ons. Pick the package that
+                fits your headcount; we&apos;ll tailor the rest.
               </p>
             </div>
           </Reveal>
@@ -227,7 +222,8 @@ export default function PartyPlannerPage() {
 
           <p className="text-center mt-10">
             <span className="sticker rotate-[-1deg]">
-              <span aria-hidden="true">🎁</span> Member discount: Silver 10% · Gold 15% · Platinum 20% off all party packages.
+              <span aria-hidden="true">🎁</span> Gold &amp; Platinum members: 10% off party packages, 20% off party-area on birthday, plus a surprise gift.{" "}
+              <a href="/memberships" className="text-brand-primary font-semibold hover:underline">See memberships</a>.
             </span>
           </p>
         </div>

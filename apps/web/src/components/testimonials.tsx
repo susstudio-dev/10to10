@@ -27,7 +27,7 @@ const items = [
   },
   {
     quote:
-      "The play school is Montessori done right — open-door, warm, thoughtful. Teachers actually care about each kid individually.",
+      "The play school is done right — open-door, warm, thoughtful. Teachers actually care about each kid individually.",
     name: "Sushma V.",
     role: "Mom of twins",
   },

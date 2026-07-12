@@ -1,7 +1,6 @@
 import {
   Palette,
   Music,
-  Brain,
   Heart,
   Trophy,
   Sparkles,
@@ -13,6 +12,7 @@ import {
   Bus,
   Check,
   Sun,
+  Pencil,
 } from "lucide-react";
 import { BookButton } from "@/components/book-button";
 import {
@@ -27,11 +27,13 @@ import {
   StarDoodle,
 } from "@/components/playful";
 import { Reveal, PopIn } from "@/components/reveal";
+import { faqJsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Summer Camp Khammam 2027 — Ages 3-12 | 10to10 Adventures",
+export const metadata = pageMetadata({
+  title: "Summer Camp Khammam 2026 — Ages 3-12",
   description:
-    "Khammam's most loved summer camp for kids ages 3–12. Two months of dance, art, sports, brain games, yoga and more. Daily snacks, trained staff, 1:8 ratio. Join the 2027 waitlist for early-bird rates.",
+    "Khammam's most loved summer camp for kids ages 3–12. Two months of dance, art, sports, brain games, yoga and more. Daily snacks, trained staff, 1:8 ratio. Limited seats.",
+  path: "/summer-camp",
   keywords: [
     "summer camp Khammam",
     "kids summer camp 2027",
@@ -39,55 +41,59 @@ export const metadata = {
     "summer activities for kids Khammam",
     "summer classes Khammam",
   ],
-  alternates: { canonical: "/summer-camp" },
-};
+});
 
 const activities = [
   {
+    icon: Heart,
+    title: "Meditation",
+    desc: "Kid-friendly mindfulness, gentle breathing, and quiet-time stories to start the day grounded.",
+    color: "bg-brand-mint/20 text-brand-turquoise",
+  },
+  {
     icon: Palette,
     title: "Art & Craft",
-    desc: "Painting, clay, origami, recycling crafts, and themed art projects that unlock creative confidence.",
+    desc: "Painting, clay, origami, recycled crafts, and themed projects to spark creative confidence.",
     color: "bg-brand-primary/10 text-brand-primary",
   },
   {
     icon: Music,
-    title: "Dance & Music",
-    desc: "Freestyle, hip-hop basics, rhythm games, and a final showcase for parents at the closing ceremony.",
+    title: "Storytelling & Dance",
+    desc: "Two daily sessions — narrative play and freestyle moves with a closing showcase for parents.",
     color: "bg-brand-grape/10 text-brand-grape",
   },
   {
-    icon: Brain,
-    title: "Brain Games",
-    desc: "Puzzles, memory challenges, chess intro, Rubik's cube, coding basics and logic puzzles.",
+    icon: Pencil,
+    title: "Drawing",
+    desc: "Mark-making, doodling, sketching, and turning imagination into colour on the page.",
     color: "bg-brand-turquoise/10 text-brand-turquoise",
   },
   {
-    icon: Heart,
-    title: "Yoga & Meditation",
-    desc: "Kid-friendly yoga, breathing techniques, mindfulness and story-based meditation sessions.",
-    color: "bg-brand-mint/20 text-brand-turquoise",
-  },
-  {
     icon: Trophy,
-    title: "Sports & Games",
-    desc: "Indoor sports, relay races, obstacle courses, team games and daily free-play in the soft-play arena.",
+    title: "Fun Sessions & Games",
+    desc: "Indoor sports, relay races, obstacle courses, team challenges and daily soft-play.",
     color: "bg-brand-orange/10 text-brand-orange",
   },
   {
     icon: Sparkles,
-    title: "Special Days",
-    desc: "Theme days — pyjama party, superhero day, cultural day, water day, movie day and a grand finale.",
+    title: "Theme Celebrations",
+    desc: "Pyjama day, superhero day, cultural day, water day, movie day and a grand finale.",
     color: "bg-brand-yellow/20 text-brand-orange",
   },
 ];
 
 const schedule = [
-  { time: "09:00 – 09:30", activity: "Welcome circle & warm-up", tag: "Morning" },
-  { time: "09:30 – 10:30", activity: "Activity Block 1 — Art / Dance / Brain", tag: "Creative" },
-  { time: "10:30 – 11:00", activity: "Healthy snack break", tag: "Break" },
-  { time: "11:00 – 12:00", activity: "Activity Block 2 — Yoga / Games / Music", tag: "Active" },
-  { time: "12:00 – 12:30", activity: "Free play in soft-play arena", tag: "Play" },
-  { time: "12:30 – 13:00", activity: "Story time & wrap-up", tag: "Wind-down" },
+  { time: "09:30 – 10:10", activity: "Meditation", tag: "Morning" },
+  { time: "10:10 – 10:50", activity: "Art & Craft", tag: "Morning" },
+  { time: "10:50 – 11:10", activity: "Snacks break", tag: "Break" },
+  { time: "11:10 – 11:40", activity: "Storytelling / Dance", tag: "Morning" },
+  { time: "11:40 – 12:30", activity: "Drawing", tag: "Morning" },
+  { time: "12:30 – 14:00", activity: "Lunch break", tag: "Lunch" },
+  { time: "14:00 – 14:40", activity: "Fun session (Games)", tag: "Noon" },
+  { time: "14:40 – 15:20", activity: "Dance / Storytelling", tag: "Noon" },
+  { time: "15:20 – 15:40", activity: "Snacks break", tag: "Break" },
+  { time: "15:40 – 16:20", activity: "Phoenix", tag: "Noon" },
+  { time: "16:20 – 17:00", activity: "Theme celebration", tag: "Noon" },
 ];
 
 /* Playful timeline dots — one hand-tilted colour per schedule stop */
@@ -166,7 +172,7 @@ const pricing = [
 const faqs = [
   {
     q: "What are the camp dates?",
-    a: "Camp runs every April and May, Monday to Friday, 9 AM to 1 PM (weekends off). Exact 2027 dates are announced by February — join the waitlist and you'll be the first to know. You can join weekly, monthly, or for the full 2 months.",
+    a: "April 1 – May 31, 2026. Monday to Friday, 9:30 AM – 5 PM with a 90-minute lunch break (12:30 – 2 PM). Weekends off. You can join weekly, monthly, or for the full 2 months.",
   },
   {
     q: "Is food provided?",
@@ -206,20 +212,11 @@ const included = [
 ];
 
 export default function SummerCampPage() {
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  };
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqs)) }}
       />
       {/* HERO — Summer Camp theme: sunlit outdoor (sun + grass), fades into body */}
       <section className="relative pt-32 pb-24 overflow-hidden">
@@ -265,9 +262,9 @@ export default function SummerCampPage() {
               <span className="gradient-text">unforgettable</span>.
             </h1>
             <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed max-w-2xl">
-              Two months of art, dance, games, yoga, brain challenges and pure
-              joy — for kids aged 3 to 12. Small batches, trained mentors, and
-              a day your child will beg to repeat tomorrow.
+              Two months of meditation, art, dance, games, drawing and theme
+              celebrations — for kids aged 3 to 12. Two-session days with a long
+              lunch break, small batches, trained mentors.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -282,8 +279,8 @@ export default function SummerCampPage() {
             {/* Quick facts row */}
             <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { icon: Calendar, label: "April – May", sub: "2027 · dates soon" },
-                { icon: Clock, label: "9 AM – 1 PM", sub: "Mon – Fri" },
+                { icon: Calendar, label: "Apr 1 – May 31", sub: "2026" },
+                { icon: Clock, label: "9:30 AM – 5 PM", sub: "Mon – Fri" },
                 { icon: Users, label: "Ages 3 – 12", sub: "3 batches" },
                 { icon: ShieldCheck, label: "Limited seats", sub: "Waitlist first" },
               ].map((f, i) => (
@@ -404,12 +401,12 @@ export default function SummerCampPage() {
               <Reveal>
                 <span className="eyebrow">A day at camp <span aria-hidden="true">☀️</span></span>
                 <h2 className="heading-lg mt-4">
-                  Four hours of <span className="gradient-text">pure magic</span>
+                  Two sessions of <span className="gradient-text">pure magic</span>
                 </h2>
                 <p className="mt-5 text-brand-ink/70 leading-relaxed">
-                  Our day is carefully balanced between structured learning and
-                  free play, so kids stay engaged without ever feeling rushed.
-                  Parents drop off at 9 AM and pick up at 1 PM — stress-free.
+                  Mornings focus on meditation, art, storytelling and drawing.
+                  Afternoons bring games, dance, Phoenix and theme celebrations.
+                  Drop off at 9:30 AM, lunch break 12:30–2 PM, pick up at 5 PM.
                 </p>
               </Reveal>
               <div className="mt-8 grid grid-cols-2 gap-3">
@@ -552,8 +549,8 @@ export default function SummerCampPage() {
           </div>
 
           <p className="text-center text-white/50 text-sm mt-8">
-            Sibling discount: 10% off the second child. Membership discount: Silver
-            20% · Gold 30% · Platinum 40%.
+            Sibling discount: 10% off the second child. Members get an additional
+            discount — see the memberships page for details.
           </p>
         </div>
       </section>

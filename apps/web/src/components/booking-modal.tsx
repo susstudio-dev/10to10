@@ -46,6 +46,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [submitting, setSubmitting] = useState(false);
   const [waUrl, setWaUrl] = useState<string | null>(null);
   const [waOpened, setWaOpened] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState({
     name: "",
@@ -54,6 +55,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     guests: "2",
     date: "",
     notes: "",
+    company: "", // honeypot
   });
 
   const open = (p?: string) => {
@@ -61,6 +63,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       setForm((f) => ({ ...f, zone: p as ZonePick }));
     }
     setStep("form");
+    setErrorMsg(null);
     setOpen(true);
   };
   const close = () => {
@@ -69,6 +72,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     setTimeout(() => {
       setStep("form");
       setSubmitting(false);
+      setErrorMsg(null);
     }, 300);
   };
 
@@ -87,6 +91,13 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
+    if (form.company) return; // bot detected
+    const digitCount = form.phone.replace(/\D/g, "").length;
+    if (digitCount < 10) {
+      setErrorMsg("Please enter a valid phone number with at least 10 digits.");
+      return;
+    }
+    setErrorMsg(null);
     setSubmitting(true);
     try {
       const result = await submitLead("Booking Modal", {
@@ -100,6 +111,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       setWaUrl(result.whatsappUrl);
       setWaOpened(result.whatsapp);
       setStep("sent");
+    } catch {
+      setErrorMsg("Something went wrong. Please try again or call us directly.");
     } finally {
       setSubmitting(false);
     }
@@ -131,7 +144,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
               aria-modal="true"
               aria-label="Book a visit"
               tabIndex={-1}
-              className="relative w-full sm:max-w-lg bg-white rounded-t-[2rem] sm:rounded-[2rem] shadow-lifted max-h-[95vh] overflow-y-auto focus:outline-none"
+              className="relative w-full sm:max-w-lg bg-white rounded-t-[2rem] sm:rounded-[2rem] shadow-lifted max-h-[95vh] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden focus:outline-none"
               initial={{ y: "100%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "100%", opacity: 0 }}
@@ -160,10 +173,24 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                     Fill this out and we'll confirm on WhatsApp within minutes.
                   </p>
 
+                  {/* honeypot */}
+                  <input
+                    type="text"
+                    name="company"
+                    value={form.company}
+                    onChange={(e) => setForm({ ...form, company: e.target.value })}
+                    className="absolute -left-[9999px]"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                  />
+
                   <div className="mt-6 space-y-4">
                     <Field label="Your name">
                       <input
                         required
+                        minLength={2}
+                        maxLength={80}
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         placeholder="Priya Kumar"
@@ -176,7 +203,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                         required
                         type="tel"
                         inputMode="tel"
-                        pattern="[0-9+\s\-]{10,15}"
+                        pattern="\+?[0-9][0-9\s\-]{9,14}"
+                        title="Enter a valid phone number with at least 10 digits"
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
                         placeholder="+91 98765 43210"
@@ -228,11 +256,18 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                         value={form.notes}
                         onChange={(e) => setForm({ ...form, notes: e.target.value })}
                         rows={2}
+                        maxLength={500}
                         placeholder="Birthday theme, allergies, special requests..."
                         className="input resize-none"
                       />
                     </Field>
                   </div>
+
+                  {errorMsg && (
+                    <p role="alert" className="mt-4 text-sm text-rose-600 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+                      {errorMsg}
+                    </p>
+                  )}
 
                   <button
                     type="submit"
@@ -242,7 +277,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                     {submitting ? (
                       <>
                         <span className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin" />
-                        Opening WhatsApp…
+                        Sending…
                       </>
                     ) : (
                       <>

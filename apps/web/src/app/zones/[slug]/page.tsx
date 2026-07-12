@@ -6,6 +6,7 @@ import { siteConfig } from "@/lib/utils";
 import { BookButton } from "@/components/book-button";
 import { Float, Tape, BalloonDoodle, StarDoodle, SwirlDoodle } from "@/components/playful";
 import { Reveal, PopIn } from "@/components/reveal";
+import { absoluteUrl, breadcrumbJsonLd } from "@/lib/seo";
 
 /** Zone-accent tints for hero halos, doodles, and highlight check circles. */
 const accentTint: Record<Accent, { doodle: string; halo: string; check: string }> = {
@@ -28,12 +29,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const zone = zones.find((z) => z.slug === slug);
   if (!zone) return {};
+  const path = `/zones/${zone.slug}`;
+  const title = `${zone.name} Khammam`;
   return {
-    title: `${zone.name} — Khammam`,
+    title,
     description: zone.description,
     alternates: {
       // The play-school zone is a teaser; the full page is the canonical one
-      canonical: slug === "play-school" ? "/play-school" : `/zones/${slug}`,
+      canonical: slug === "play-school" ? "/play-school" : path,
+    },
+    openGraph: {
+      title,
+      description: zone.description,
+      url: absoluteUrl(path),
+      siteName: siteConfig.name,
+      locale: "en_IN",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: zone.description,
     },
   };
 }
@@ -42,11 +58,41 @@ export default async function ZonePage({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const zone = zones.find((z) => z.slug === slug);
   if (!zone) notFound();
+  const path = `/zones/${zone.slug}`;
+  const zoneJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `${zone.name} at ${siteConfig.name}`,
+    description: zone.description,
+    url: absoluteUrl(path),
+    provider: {
+      "@type": "EntertainmentBusiness",
+      "@id": `${siteConfig.url}/#business`,
+      name: siteConfig.name,
+    },
+    areaServed: { "@type": "City", name: "Khammam" },
+    audience: { "@type": "Audience", audienceType: zone.ages },
+  };
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Zones", path: "/#zones" },
+    { name: zone.name, path },
+  ]);
 
   const tint = accentTint[zone.accent];
 
   return (
     <article className="relative">
+      {/* SEO structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(zoneJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
+      />
+
       {/* Soft cream hero wash with a zone-tinted halo instead of the flat mesh strip */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[60vh] -z-10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-brand-cloud via-brand-cloud/60 to-transparent" />
@@ -132,6 +178,44 @@ export default async function ZonePage({ params }: { params: Promise<{ slug: str
             </div>
           </Reveal>
         </div>
+
+        {zone.pricing && zone.pricing.length > 0 && (
+          <div className="mt-12">
+            <div className="rounded-3xl border-2 border-brand-ink/5 bg-white p-8 md:p-10 shadow-lifted">
+              <div className="flex items-baseline justify-between flex-wrap gap-3 mb-6">
+                <h2 className="font-display text-2xl font-bold">Pricing</h2>
+                <span className="text-xs font-semibold uppercase tracking-widest text-brand-ink/45">
+                  Walk-in rates
+                </span>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {zone.pricing.map((p) => (
+                  <div
+                    key={p.label}
+                    className="flex items-center justify-between gap-4 rounded-2xl bg-brand-cloud border border-black/[0.06] px-5 py-4"
+                  >
+                    <div className="min-w-0">
+                      <div className="font-semibold text-brand-ink text-sm">{p.label}</div>
+                      {p.note && (
+                        <div className="text-xs text-brand-ink/55 mt-0.5">{p.note}</div>
+                      )}
+                    </div>
+                    <div className="font-display font-bold text-brand-primary text-lg shrink-0 tabular-nums">
+                      {p.price}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-brand-ink/50 mt-6">
+                Members save up to 40% —{" "}
+                <Link href="/memberships" className="text-brand-primary font-semibold hover:underline">
+                  see membership perks
+                </Link>
+                .
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );

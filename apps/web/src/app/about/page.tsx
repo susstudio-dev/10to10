@@ -10,14 +10,15 @@ import {
   StarDoodle,
 } from "@/components/playful";
 import { Reveal, PopIn } from "@/components/reveal";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "About 10to10 Adventures — Khammam's Family Playground",
+export const metadata = pageMetadata({
+  title: "About Khammam's Family Playground",
   description:
     "Why we built 10to10 Adventures, what we believe, and the small team behind Khammam's favourite play school and family entertainment venue.",
+  path: "/about",
   keywords: ["about 10to10", "10to10 Khammam", "play school owner Khammam"],
-  alternates: { canonical: "/about" },
-};
+});
 
 const values = [
   {
@@ -46,7 +47,7 @@ export default function AboutPage() {
   return (
     <>
       {/* HERO — About theme: warm storybook (heart-pink + butter + indigo trust), fades into body */}
-      <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
+      <section className="relative pt-28 md:pt-32 pb-8 md:pb-10 overflow-hidden">
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
           {/* heart-pink storybook glow top-left */}
           <div className="absolute -top-32 -left-24 w-[640px] h-[640px] rounded-full bg-rose-300/30 blur-3xl" />
@@ -109,7 +110,7 @@ export default function AboutPage() {
       </section>
 
       {/* STORY */}
-      <section className="section">
+      <section className="pb-10 md:pb-14">
         <div className="container max-w-3xl">
           <div className="prose prose-lg text-brand-ink/75 leading-relaxed space-y-5 text-lg">
             <Reveal>
@@ -124,7 +125,7 @@ export default function AboutPage() {
                 So we built 10to10 Adventures — seven distinct zones under one roof,
                 designed around a single question: what would make a child&apos;s eyes
                 light up the moment they walk in? The answer turned into a 2,400 sq ft
-                soft-play arena, a Montessori-inspired play school, a gaming lounge,
+                soft-play arena, a play school, a gaming lounge,
                 a private theatre, a themed party room, a snack bar, and a curated
                 toy stall.
               </p>
@@ -191,7 +192,7 @@ export default function AboutPage() {
       <WaveDivider fillClass="fill-white/50" flip />
 
       {/* STATS */}
-      <section className="section">
+      <section className="py-10 md:py-14">
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {[
@@ -219,7 +220,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="section">
+      <section className="pt-10 md:pt-14 pb-20 md:pb-28">
         <div className="container">
           <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-primary via-brand-primary-deep to-brand-grape p-10 md:p-16 text-white text-center shadow-glow">
             <div className="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-brand-yellow/30 blur-3xl" />

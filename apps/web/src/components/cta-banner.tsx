@@ -43,7 +43,7 @@ export function CtaBanner() {
               </h2>
               <p className="mt-5 text-white/70 max-w-lg leading-relaxed">
                 Theming, decor, hosts, cake, private theatre — we handle every detail.
-                Packages from ₹7,999 for up to 15 guests.
+                Party Place ₹10,000 (15 kids) · Combo ₹15,000 (30 kids).
               </p>
             </div>
             <div className="md:col-span-2 flex flex-col gap-3">

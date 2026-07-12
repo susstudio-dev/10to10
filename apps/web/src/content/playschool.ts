@@ -3,7 +3,7 @@ export const programs = [
     slug: "playgroup",
     name: "Playgroup",
     age: "1.5 – 2.5 yrs",
-    duration: "9 AM – 12 PM",
+    duration: "9:30 AM – 3:30 PM",
     ratio: "1 : 6",
     desc: "Sensory play, music, story time and gentle separation from parents in a warm, secure environment.",
     color: "from-amber-100 to-amber-50",
@@ -13,9 +13,9 @@ export const programs = [
     slug: "nursery",
     name: "Nursery",
     age: "2.5 – 3.5 yrs",
-    duration: "9 AM – 12 PM",
+    duration: "9:30 AM – 3:30 PM",
     ratio: "1 : 8",
-    desc: "Pre-writing, basic phonics, motor skills and structured group play introducing routine and friendship.",
+    desc: "Phonics through songs and stories, pre-writing through sand-tracing and clay-shaping, motor skills through climbing and pouring. Friendship grows in the process.",
     color: "from-rose-100 to-rose-50",
     accent: "text-rose-700",
   },
@@ -23,9 +23,9 @@ export const programs = [
     slug: "lkg",
     name: "Lower KG",
     age: "3.5 – 4.5 yrs",
-    duration: "9 AM – 12:30 PM",
+    duration: "9:30 AM – 3:30 PM",
     ratio: "1 : 10",
-    desc: "Reading, writing, numeracy, science exploration and confidence-building through Montessori materials.",
+    desc: "Reading through story-acting, writing through letter-tracing in sand, numbers through cooking and counting games. Science is mud, magnets, and curiosity — not lectures.",
     color: "from-teal-100 to-teal-50",
     accent: "text-teal-700",
   },
@@ -33,9 +33,9 @@ export const programs = [
     slug: "ukg",
     name: "Upper KG",
     age: "4.5 – 5.5 yrs",
-    duration: "9 AM – 12:30 PM",
+    duration: "9:30 AM – 3:30 PM",
     ratio: "1 : 10",
-    desc: "School-readiness in language, math and science with leadership opportunities and creative expression.",
+    desc: "School-ready in language, math and science — but built through projects, debates, and discovery. Leadership grows from running their own corners and choosing their own work.",
     color: "from-indigo-100 to-indigo-50",
     accent: "text-indigo-700",
   },
@@ -69,39 +69,102 @@ export const curriculum = [
 ];
 
 export const dailySchedule = [
-  { time: "9:00 AM", activity: "Arrival & free play" },
-  { time: "9:30 AM", activity: "Circle time & morning ritual" },
-  { time: "10:00 AM", activity: "Theme of the day" },
-  { time: "10:45 AM", activity: "Snack & hydration" },
-  { time: "11:00 AM", activity: "Outdoor / soft-play break" },
-  { time: "11:30 AM", activity: "Activity stations" },
-  { time: "12:00 PM", activity: "Story time & wind down" },
-  { time: "12:30 PM", activity: "Pickup" },
+  { time: "9:30 – 10:00", activity: "Play area (play time)" },
+  { time: "10:00 – 11:00", activity: "Activity — art, stories, puzzles, basic numbers & letters" },
+  { time: "11:00 – 11:30", activity: "Snack time" },
+  { time: "11:30 – 12:30", activity: "Structured play — group games, interactions" },
+  { time: "12:30 – 1:30", activity: "Lunch time" },
+  { time: "1:30 – 2:00", activity: "Nap time" },
+  { time: "2:00 – 2:45", activity: "Learning time — colouring, tracing letters" },
+  { time: "2:45 – 3:00", activity: "Snack time" },
+  { time: "3:00 – 3:30", activity: "Activities — alphabets & numbers, identification of things" },
+];
+
+export const schoolHours = {
+  weekday: "Monday – Friday · 9:30 AM – 3:30 PM",
+  saturday: "Saturday · half day · 9:30 AM – 12:30 PM",
+};
+
+export const snacksMenu = [
+  { name: "Healthy Bites", desc: "Fresh fruit, nuts, sprouts, and seasonal produce." },
+  { name: "Munchies", desc: "Light savouries — millet snacks, baked treats, no fried." },
+  { name: "Balanced Drinks", desc: "Buttermilk, fresh juice, milk, and infused water." },
+];
+
+export const events = [
+  {
+    name: "Children's Day",
+    date: "Nov 14",
+    icon: "🎈",
+    color: "from-sky-100 to-blue-50",
+    accent: "text-sky-700",
+    desc: "The day belongs to the kids. Surprise activities, special treats, and zero academics — just play, laughter, and tiny celebrations of being little.",
+  },
+  {
+    name: "Teachers' Day",
+    date: "Sep 5",
+    icon: "🍎",
+    color: "from-purple-100 to-violet-50",
+    accent: "text-purple-700",
+    desc: "Kids 'become teachers' for an hour, decorate the staff room, and write thank-you cards. A gentle introduction to gratitude.",
+  },
+  {
+    name: "Diwali",
+    date: "Oct / Nov",
+    icon: "🪔",
+    color: "from-amber-100 to-orange-50",
+    accent: "text-orange-700",
+    desc: "Diyas, rangoli, dressy clothes, and stories about light winning over dark. Festive snacks shared across every classroom.",
+  },
+  {
+    name: "Christmas",
+    date: "Dec 25",
+    icon: "🎄",
+    color: "from-emerald-100 to-green-50",
+    accent: "text-emerald-700",
+    desc: "A tiny tree in every classroom, hand-made ornaments, carols on the playground, and a small gift exchange before the winter break.",
+  },
+  {
+    name: "Pongal",
+    date: "Jan 14",
+    icon: "🌾",
+    color: "from-yellow-100 to-amber-50",
+    accent: "text-yellow-700",
+    desc: "Traditional pots, sugarcane decor, and the story of the harvest season. Kids help cook a simple sweet Pongal in class.",
+  },
+  {
+    name: "Holi",
+    date: "March",
+    icon: "🎨",
+    color: "from-pink-100 to-rose-50",
+    accent: "text-rose-700",
+    desc: "Safe, organic colours, sprinklers, music, and the messiest, most joyful play day of the year. Parents invited.",
+  },
 ];
 
 export const fees = [
   {
-    plan: "Quarterly",
-    program: "Playgroup / Nursery",
-    price: "₹18,000",
-    period: "/ quarter",
-    note: "3-month commitment",
+    plan: "Per Day",
+    program: "All programs",
+    price: "₹800",
+    period: "/ day",
+    note: "Try us before committing",
     popular: false,
   },
   {
-    plan: "Annual",
-    program: "Playgroup / Nursery",
-    price: "₹62,000",
-    period: "/ year",
-    note: "Best value · Save ₹10,000",
+    plan: "Monthly",
+    program: "All programs",
+    price: "₹8,000",
+    period: "/ month",
+    note: "Most popular · pay as you go",
     popular: true,
   },
   {
     plan: "Annual",
-    program: "LKG / UKG",
-    price: "₹78,000",
+    program: "All programs",
+    price: "₹80,000",
     period: "/ year",
-    note: "Includes books, uniform, activities",
+    note: "Best value · save vs monthly",
     popular: false,
   },
 ];
@@ -131,39 +194,51 @@ export const admissionSteps = [
 
 export const whyUs = [
   {
-    title: "Montessori-certified teachers",
-    desc: "Every educator holds a Montessori or early-childhood certification with 3+ years of experience.",
+    title: "We don't teach. Kids learn by playing.",
+    desc: "Phonics through songs, math through cooking, science through mud puddles. No worksheets, no flashcards, no drills.",
   },
   {
-    title: "Small class ratios (1:6 – 1:10)",
-    desc: "From 1:6 for toddlers to 1:10 in KG — always below the industry standard so every child is genuinely seen.",
+    title: "No homework. Ever.",
+    desc: "When school's out, kids are kids. Curiosity gets fed at home — assignments don't.",
+  },
+  {
+    title: "Discovery over instruction",
+    desc: "Teachers set up the environment; children choose where to dive in. Self-directed exploration with gentle guidance.",
+  },
+  {
+    title: "1:8 child–teacher ratio",
+    desc: "Deliberately below the industry standard so every child is genuinely seen — not crowd-managed.",
   },
   {
     title: "Daily reports app",
     desc: "Photos, meals, mood and milestones delivered to your phone before pickup every day.",
   },
   {
-    title: "CCTV + biometric entry",
-    desc: "Full premises monitoring and authorised-pickup biometrics. Parents can view anytime.",
-  },
-  {
     title: "Open-door policy",
     desc: "Visit unannounced any time. We have nothing to hide and everything to show.",
-  },
-  {
-    title: "Sanitised hourly",
-    desc: "Toys, surfaces and bathrooms cleaned every hour during operating hours.",
   },
 ];
 
 export const playSchoolFaqs = [
+  {
+    q: "Do you actually teach lessons?",
+    a: "Not the way most preschools do. There are no desks-and-blackboard sessions. Children learn through play, projects, and exploration — reading happens through stories, math through cooking, science through curiosity. The academic skills are real and measurable; the method is different.",
+  },
+  {
+    q: "Will my child be ready for Class 1 in a regular school?",
+    a: "Yes. Our Upper KG graduates enter primary school with strong reading, math, language and — most importantly — the curiosity and self-direction that rote-trained kids often lose. Parents tell us their children stand out for being engaged, not just informed.",
+  },
+  {
+    q: "Is there homework?",
+    a: "No. A four-year-old's evening should be family time, free play, and rest. Learning happens in our hours; home is for being a kid.",
+  },
   {
     q: "What is the minimum age for admission?",
     a: "We accept children from 18 months for Playgroup. They should ideally be walking confidently and able to spend ~3 hours away from a parent.",
   },
   {
     q: "What are the school timings?",
-    a: "Playgroup and Nursery: 9 AM – 12 PM. LKG and UKG: 9 AM – 12:30 PM. We're open Monday to Friday. Saturday is reserved for parent-engagement events.",
+    a: "Monday to Friday: 9:30 AM – 3:30 PM. Saturday: half day, 9:30 AM – 12:30 PM. All four programs (Playgroup, Nursery, LKG, UKG) follow the same daily schedule with age-appropriate activities at each station.",
   },
   {
     q: "Do you provide transport?",
@@ -171,7 +246,7 @@ export const playSchoolFaqs = [
   },
   {
     q: "What about food and snacks?",
-    a: "We provide a fresh, nutritionist-approved snack mid-morning. Lunch is parent-packed. We strictly enforce a no-junk-food policy and accommodate allergies.",
+    a: "We provide two fresh, nutritionist-approved snacks daily — one mid-morning and one mid-afternoon — rotating between Healthy Bites (fruit, nuts, sprouts), Munchies (millet snacks, baked treats), and Balanced Drinks (buttermilk, fresh juice, milk). Lunch is parent-packed. Strict no-junk-food policy and we accommodate allergies.",
   },
   {
     q: "What happens if my child is sick?",
@@ -208,7 +283,7 @@ export const parentStories = [
   },
   {
     quote:
-      "The daily reports are a game-changer. We see exactly what our son ate, when he napped, what he learned. No more 'how was school today?' interrogations at dinner.",
+      "Our older daughter went to a 'top' preschool in Khammam — phonics flashcards at 2, homework at 3, tears every morning. We didn't want the same for our son. At 10to10 he comes home talking about what he discovered. He's reading at the same pace — but he's still in love with books.",
     name: "Sneha P.",
     program: "Playgroup, enrolled 2026",
   },
