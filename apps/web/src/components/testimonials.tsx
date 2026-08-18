@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
-import { Tape, Float, HeartDoodle, SmileDoodle } from "@/components/playful";
+import { Tape, Float, HeartDoodle, SmileDoodle, WaveDivider } from "@/components/playful";
 
 const tapes = [
   "-top-3 left-7 -rotate-6",
@@ -35,7 +35,10 @@ const items = [
 
 export function Testimonials() {
   return (
-    <section className="section relative">
+    <section className="relative">
+      {/* warm "loved by families" world, distinct from the turquoise band above */}
+      <WaveDivider fillClass="fill-[#fff4e3]" />
+      <div className="relative overflow-hidden bg-[#fff4e3] section">
       <Float speed="wiggle" className="top-14 right-[6%] w-9 text-brand-grape opacity-60 hidden md:block">
         <HeartDoodle className="w-full" />
       </Float>
@@ -84,6 +87,8 @@ export function Testimonials() {
           ))}
         </div>
       </div>
+      </div>
+      <WaveDivider fillClass="fill-[#fdfbf7]" className="bg-[#fff4e3] -scale-x-100" />
     </section>
   );
 }

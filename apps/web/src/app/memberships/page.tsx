@@ -1,7 +1,11 @@
 import { Check, X, Crown, Sparkles, Users } from "lucide-react";
 import { MembershipStrip } from "@/components/membership-strip";
 import { BookButton } from "@/components/book-button";
-import { sessionPricing, multiPlan } from "@/content/memberships";
+import {
+  tiers as tiersDefault,
+  sessionPricing as sessionPricingDefault,
+  multiPlan as multiPlanDefault,
+} from "@/content/memberships";
 import { Reveal } from "@/components/reveal";
 import {
   WaveDivider,
@@ -13,7 +17,9 @@ import {
   HeartDoodle,
   BalloonDoodle,
 } from "@/components/playful";
+import { PageHeroBackdrop } from "@/components/page-hero-backdrop";
 import { faqJsonLd, pageMetadata } from "@/lib/seo";
+import { getContentMap, parseList } from "@/lib/content";
 
 export const metadata = pageMetadata({
   title: "Kids Play Area Memberships Khammam",
@@ -31,7 +37,7 @@ export const metadata = pageMetadata({
 /* hand-placed ticket tilts for the session-pass cards */
 const ticketTilt = ["rotate-[-1.5deg]", "rotate-[1.5deg]", "rotate-[-1deg]"];
 
-const compare = [
+const compareDefault = [
   { feature: "Price", silver: "₹599 / mo", gold: "₹2,000 / 6 mo", platinum: "₹3,499 / yr" },
   { feature: "Free play hours", silver: "1 hour", gold: "6 hours", platinum: "12 hours" },
   { feature: "Free private movie screenings", silver: "1 theatre hour", gold: "1 screening", platinum: "2 screenings" },
@@ -44,7 +50,7 @@ const compare = [
   { feature: "Multi-member family add-on", silver: "50% off", gold: "50% off", platinum: "50% off" },
 ];
 
-const faqs = [
+const faqsDefault = [
   {
     q: "How do I sign up for a membership?",
     a: "Tap any 'Choose plan' button or send us a WhatsApp message with your preferred tier. We'll activate your membership within 30 minutes. Payment via UPI, card, or cash at the venue.",
@@ -67,7 +73,21 @@ const faqs = [
   },
 ];
 
-export default function MembershipsPage() {
+export default async function MembershipsPage() {
+  const c = await getContentMap("memberships");
+  const badge = c["memberships.badge"] ?? "Memberships & passes";
+  const headingPre = c["memberships.heading_pre"] ?? "Pick your";
+  const headingEmphasis = c["memberships.heading_emphasis"] ?? "play plan";
+  const subheading =
+    c["memberships.subheading"] ??
+    "Three tiers and a multi-member family add-on. Free play hours, private movie screenings, birthday perks. Upgrade any time.";
+
+  const tiers = parseList(c["memberships.tiers"], tiersDefault);
+  const sessionPricing = parseList(c["memberships.sessionPricing"], sessionPricingDefault);
+  const multiPlan = parseList(c["memberships.multiPlan"], [multiPlanDefault])[0] ?? multiPlanDefault;
+  const compare = parseList(c["memberships.compare"], compareDefault);
+  const faqs = parseList(c["memberships.faqs"], faqsDefault);
+
   return (
     <>
       <script
@@ -76,6 +96,7 @@ export default function MembershipsPage() {
       />
       {/* HERO — Memberships theme: premium indigo + turquoise tonal wash, fades into body */}
       <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
+        <PageHeroBackdrop tintFrom="from-[#f3f1ff]/85" objectPosition="center 62%" />
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
           <div className="absolute -top-40 -left-32 w-[720px] h-[720px] rounded-full bg-brand-primary/14 blur-3xl" />
           <div className="absolute -top-20 right-0 w-[560px] h-[560px] rounded-full bg-brand-turquoise/14 blur-3xl" />
@@ -105,14 +126,13 @@ export default function MembershipsPage() {
         </Float>
         <div className="container relative text-center max-w-3xl">
           <span className="inline-flex items-center gap-2 chip bg-white/85 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary">
-            <Crown className="h-3.5 w-3.5" /> Memberships & passes
+            <Crown className="h-3.5 w-3.5" /> {badge}
           </span>
           <h1 className="heading-xl mt-5">
-            Pick your <span className="gradient-text">play plan</span>.
+            {headingPre} <span className="gradient-text">{headingEmphasis}</span>.
           </h1>
           <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed">
-            Three tiers and a multi-member family add-on. Free play hours,
-            private movie screenings, birthday perks. Upgrade any time.
+            {subheading}
           </p>
         </div>
       </section>
@@ -166,7 +186,7 @@ export default function MembershipsPage() {
 
       {/* TIER CARDS */}
       <WaveDivider fillClass="fill-brand-ink" />
-      <MembershipStrip />
+      <MembershipStrip tiers={tiers} />
       <WaveDivider fillClass="fill-brand-ink" flip />
 
       {/* MULTI MEMBERS PLAN */}

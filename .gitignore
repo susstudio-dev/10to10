@@ -12,3 +12,8 @@ coverage
 .vercel
 next-env.d.ts
 *.tsbuildinfo
+
+# local admin database + uploads (not committed — each environment has its own)
+apps/web/prisma/**/dev.db
+apps/web/prisma/**/dev.db-journal
+apps/web/public/uploads/

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Instagram, Phone, Mail, MapPin, Clock } from "lucide-react";
 import { siteConfig } from "@/lib/utils";
 import { zones } from "@/content/zones";
-import { LogoV4 as Logo } from "./logo-v4";
+import { Logo } from "./logo";
 
 const programs = [
   { label: "Play School in Khammam", href: "/play-school" },
@@ -22,7 +22,7 @@ export function Footer() {
         <div className="grid md:grid-cols-5 gap-12">
           <div className="md:col-span-2">
             <div className="text-white">
-              <Logo size="lg" />
+              <Logo size="lg" variant="full" />
             </div>
             <p className="mt-4 max-w-sm text-white/70 leading-relaxed">
               {siteConfig.description}

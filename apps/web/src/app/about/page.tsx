@@ -10,7 +10,15 @@ import {
   StarDoodle,
 } from "@/components/playful";
 import { Reveal, PopIn } from "@/components/reveal";
+import { PageHeroBackdrop } from "@/components/page-hero-backdrop";
 import { pageMetadata } from "@/lib/seo";
+import { getContentMap, parseList } from "@/lib/content";
+import type { ComponentType } from "react";
+
+const ICONS: Record<string, ComponentType<{ className?: string }>> = { Heart, Shield, Users, Sparkles };
+function resolveIcon(name: string) {
+  return ICONS[name] ?? Sparkles;
+}
 
 export const metadata = pageMetadata({
   title: "About Khammam's Family Playground",
@@ -20,34 +28,46 @@ export const metadata = pageMetadata({
   keywords: ["about 10to10", "10to10 Khammam", "play school owner Khammam"],
 });
 
-const values = [
+const valuesDefault = [
   {
-    icon: Heart,
+    icon: "Heart",
     title: "Joy first",
     desc: "Every decision we make starts with the question: will this make a kid smile? If the answer is yes, it's in.",
   },
   {
-    icon: Shield,
+    icon: "Shield",
     title: "Safety, always",
     desc: "Trained staff, sanitised equipment, padded everything, and eyes on every corner. Your child is in good hands.",
   },
   {
-    icon: Users,
+    icon: "Users",
     title: "Family feels",
     desc: "We're not a factory — we know kids by name. Parents are friends. Staff stick around for years.",
   },
   {
-    icon: Sparkles,
+    icon: "Sparkles",
     title: "Wonder fuel",
     desc: "We believe play is learning, celebration is memory, and the best childhood is the one kids remember forever.",
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const c = await getContentMap("about");
+  const badge = c["about.badge"] ?? "Our story";
+  const headingPre = c["about.heading_pre"] ?? "We built";
+  const headingEmphasis = c["about.heading_emphasis"] ?? "the playground";
+  const headingPost = c["about.heading_post"] ?? "we wished we had.";
+  const subheading =
+    c["about.subheading"] ??
+    "10to10 Adventures started with a simple idea: every kid in Khammam deserves a place that's safe, vibrant, and genuinely fun — and every parent deserves a break without the guilt.";
+
+  const values = parseList(c["about.values"], valuesDefault);
+
   return (
     <>
       {/* HERO — About theme: warm storybook (heart-pink + butter + indigo trust), fades into body */}
       <section className="relative pt-28 md:pt-32 pb-8 md:pb-10 overflow-hidden">
+        <PageHeroBackdrop tintFrom="from-[#fff8f0]/85" objectPosition="center 55%" />
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
           {/* heart-pink storybook glow top-left */}
           <div className="absolute -top-32 -left-24 w-[640px] h-[640px] rounded-full bg-rose-300/30 blur-3xl" />
@@ -91,19 +111,17 @@ export default function AboutPage() {
         <div className="container relative max-w-3xl">
           <PopIn className="inline-block">
             <span className="inline-flex items-center gap-2 chip bg-white/80 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary rotate-[-1.5deg]">
-              <Heart className="h-3.5 w-3.5" /> Our story
+              <Heart className="h-3.5 w-3.5" /> {badge}
             </span>
           </PopIn>
           <Reveal delay={0.05}>
             <h1 className="heading-xl mt-5">
-              We built <span className="gradient-text">the playground</span> we wished we had.
+              {headingPre} <span className="gradient-text">{headingEmphasis}</span> {headingPost}
             </h1>
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed">
-              10to10 Adventures started with a simple idea: every kid in Khammam
-              deserves a place that&apos;s safe, vibrant, and genuinely fun — and every
-              parent deserves a break without the guilt.
+              {subheading}
             </p>
           </Reveal>
         </div>
@@ -167,25 +185,28 @@ export default function AboutPage() {
           </Reveal>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {values.map((v, i) => (
-              <Reveal key={v.title} delay={i * 0.08} className="h-full">
-                <div
-                  className={`${
-                    i % 2 === 0
-                      ? "crayon-card rotate-[-1.5deg]"
-                      : "crayon-card-alt rotate-[1.5deg]"
-                  } group h-full bg-white border-2 border-brand-ink/10 p-7 hover:rotate-0 hover:-translate-y-1 hover:border-brand-primary/20 hover:shadow-lifted transition`}
-                >
-                  <div className="inline-flex w-12 h-12 rounded-2xl bg-brand-primary/10 text-brand-primary items-center justify-center hover-wiggle group-hover:rotate-6 group-hover:scale-110 transition">
-                    <v.icon className="h-6 w-6" />
+            {values.map((v, i) => {
+              const Icon = resolveIcon(v.icon);
+              return (
+                <Reveal key={v.title} delay={i * 0.08} className="h-full">
+                  <div
+                    className={`${
+                      i % 2 === 0
+                        ? "crayon-card rotate-[-1.5deg]"
+                        : "crayon-card-alt rotate-[1.5deg]"
+                    } group h-full bg-white border-2 border-brand-ink/10 p-7 hover:rotate-0 hover:-translate-y-1 hover:border-brand-primary/20 hover:shadow-lifted transition`}
+                  >
+                    <div className="inline-flex w-12 h-12 rounded-2xl bg-brand-primary/10 text-brand-primary items-center justify-center hover-wiggle group-hover:rotate-6 group-hover:scale-110 transition">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="font-display text-xl font-bold mt-5">{v.title}</h3>
+                    <p className="text-sm text-brand-ink/70 mt-2 leading-relaxed">
+                      {v.desc}
+                    </p>
                   </div>
-                  <h3 className="font-display text-xl font-bold mt-5">{v.title}</h3>
-                  <p className="text-sm text-brand-ink/70 mt-2 leading-relaxed">
-                    {v.desc}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>

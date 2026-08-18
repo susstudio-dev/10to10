@@ -20,15 +20,17 @@ import {
   SwirlDoodle,
 } from "@/components/playful";
 import { Reveal, PopIn } from "@/components/reveal";
+import { PageHeroBackdrop } from "@/components/page-hero-backdrop";
 import {
-  packages,
-  themes,
-  steps,
-  addons,
-  partyFaqs,
-  partyTestimonials,
+  packages as packagesDefault,
+  themes as themesDefault,
+  steps as stepsDefault,
+  addons as addonsDefault,
+  partyFaqs as partyFaqsDefault,
+  partyTestimonials as partyTestimonialsDefault,
 } from "@/content/parties";
 import { faqJsonLd, pageMetadata } from "@/lib/seo";
+import { getContentMap, parseList } from "@/lib/content";
 
 const stepTints = [
   "bg-brand-yellow/50",
@@ -52,7 +54,22 @@ export const metadata = pageMetadata({
   ],
 });
 
-export default function PartyPlannerPage() {
+export default async function PartyPlannerPage() {
+  const c = await getContentMap("party-planner");
+  const badge = c["party-planner.badge"] ?? "Birthday parties & private events";
+  const headingPre = c["party-planner.heading_pre"] ?? "Throw the party they'll";
+  const headingEmphasis = c["party-planner.heading_emphasis"] ?? "never forget";
+  const subheading =
+    c["party-planner.subheading"] ??
+    "Private venue, themed decor, cake, hosts, games, photography — we handle every tiny detail so you can actually enjoy your kid's big day. Private theatre from ₹1,000, party packages from ₹10,000.";
+
+  const packages = parseList(c["party-planner.packages"], packagesDefault);
+  const themes = parseList(c["party-planner.themes"], themesDefault);
+  const steps = parseList(c["party-planner.steps"], stepsDefault);
+  const addons = parseList(c["party-planner.addons"], addonsDefault);
+  const partyFaqs = parseList(c["party-planner.faqs"], partyFaqsDefault);
+  const partyTestimonials = parseList(c["party-planner.testimonials"], partyTestimonialsDefault);
+
   return (
     <>
       <script
@@ -61,6 +78,7 @@ export default function PartyPlannerPage() {
       />
       {/* HERO — Parties theme: celebratory (rose + sunshine + lavender), fades into body */}
       <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
+        <PageHeroBackdrop tintFrom="from-[#fff0f5]/85" objectPosition="center 65%" />
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
           {/* rose-pink balloon glow top-left */}
           <div className="absolute -top-32 -left-24 w-[600px] h-[600px] rounded-full bg-rose-300/35 blur-3xl" />
@@ -98,16 +116,14 @@ export default function PartyPlannerPage() {
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 chip bg-white/80 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary">
               <Cake className="h-3.5 w-3.5" />
-              Birthday parties & private events
+              {badge}
             </span>
             <h1 className="heading-xl mt-5">
-              Throw the party they'll{" "}
-              <span className="gradient-text">never forget</span>.
+              {headingPre}{" "}
+              <span className="gradient-text">{headingEmphasis}</span>.
             </h1>
             <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed max-w-2xl">
-              Private venue, themed decor, cake, hosts, games, photography — we
-              handle every tiny detail so you can actually enjoy your kid&apos;s big
-              day. Private theatre from ₹1,000, party packages from ₹10,000.
+              {subheading}
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">

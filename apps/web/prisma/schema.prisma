@@ -1,0 +1,74 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Generic editable text field — one row per piece of copy on the site.
+// `section` groups related fields in the admin UI (e.g. "hero").
+// `key` is the stable identifier the frontend looks up by.
+model ContentItem {
+  id        String   @id @default(cuid())
+  section   String
+  key       String   @unique
+  label     String
+  type      String   @default("text") // "text" | "richtext"
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+// Singleton row (id is always "default") holding site-wide theme controls
+// editable from /admin/appearance — brand colors and the animation toggle.
+model SiteSettings {
+  id                String   @id @default("default")
+  colorPrimary      String   @default("#2c3873")
+  colorTurquoise    String   @default("#00d4c8")
+  colorYellow       String   @default("#ffd93d")
+  colorOrange       String   @default("#ff8a3d")
+  colorGrape        String   @default("#8b5cf6")
+  colorMint         String   @default("#7ce2b5")
+  colorSky          String   @default("#7cc5ff")
+  colorInk          String   @default("#1a1033")
+  colorCloud        String   @default("#fff9f2")
+  animationsEnabled Boolean  @default(true)
+  updatedAt         DateTime @updatedAt
+}
+
+// Admin-created custom pages, served at /pages/[slug] — separate from the
+// fixed marketing pages (home/about/etc.) which are hardcoded components
+// with their own ContentItem sections.
+model Page {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  content   String   @default("") // legacy plain-text fallback, pre-block-editor
+  blocks    String   @default("[]") // JSON-encoded Block[] — see src/lib/blocks.ts
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MediaAsset {
+  id         String   @id @default(cuid())
+  filename   String
+  path       String
+  altText    String   @default("")
+  uploadedAt DateTime @default(now())
+}
+
+// Schema is ready to receive payment records once a provider (Razorpay,
+// Stripe, etc.) is wired up — no rows are written here yet.
+model PaymentRecord {
+  id            String   @id @default(cuid())
+  provider      String
+  reference     String
+  customerName  String
+  customerPhone String
+  amountPaise   Int
+  currency      String   @default("INR")
+  status        String
+  createdAt     DateTime @default(now())
+}

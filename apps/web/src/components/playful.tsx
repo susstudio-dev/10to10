@@ -1,12 +1,17 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useMotionSetting } from "@/components/motion-settings";
 import type { ReactNode } from "react";
 
 /**
- * Playschool design kit — server-safe decorations shared by every page.
- * All pieces are pure SVG/CSS (no framer-motion) so server components can
- * use them directly. Motion comes from the Tailwind keyframes (float,
- * float-slow, wiggle, bounce2, spin-slow) which are disabled globally for
- * prefers-reduced-motion users.
+ * Playschool design kit — decorations shared by every page. Static pieces
+ * (WaveDivider, Bunting, Tape, the doodle SVGs) stay plain markup so pages
+ * that render them don't need a client boundary. Float is the one client
+ * leaf: it pops each doodle in as it scrolls into view, then hands off to
+ * the Tailwind idle-loop keyframes (float, float-slow, wiggle, bounce2,
+ * spin-slow), which are disabled globally for prefers-reduced-motion users.
  */
 
 // ——— Section transitions ————————————————————————————————————————
@@ -87,7 +92,11 @@ export function Tape({ className }: { className?: string }) {
   );
 }
 
-/** Absolute, animated wrapper for corner doodles. Always decorative. */
+/**
+ * Absolute, animated wrapper for corner doodles. Pops in with a springy
+ * bounce the moment its section scrolls into view, then settles into its
+ * continuous idle loop. Always decorative.
+ */
 export function Float({
   className,
   speed = "slow",
@@ -97,15 +106,23 @@ export function Float({
   speed?: "slow" | "fast" | "wiggle" | "spin";
   children: ReactNode;
 }) {
+  const reduce = useMotionSetting();
   const anim =
     speed === "fast" ? "animate-float" :
     speed === "wiggle" ? "animate-wiggle" :
     speed === "spin" ? "animate-spin-slow" :
     "animate-float-slow";
   return (
-    <div aria-hidden className={cn("pointer-events-none absolute select-none", anim, className)}>
-      {children}
-    </div>
+    <motion.div
+      aria-hidden
+      className={cn("pointer-events-none absolute select-none", className)}
+      initial={reduce ? undefined : { opacity: 0, scale: 0.3, rotate: -20 }}
+      whileInView={reduce ? undefined : { opacity: 1, scale: 1, rotate: 0 }}
+      viewport={{ once: true, amount: 0.4, margin: "-60px" }}
+      transition={{ type: "spring", stiffness: 260, damping: 14, mass: 0.6 }}
+    >
+      <div className={anim}>{children}</div>
+    </motion.div>
   );
 }
 
@@ -249,6 +266,148 @@ export function StarDoodle({ className }: DoodleProps) {
         d="M 20 4 L 24.5 15 L 36 15.5 L 27 23 L 30 35 L 20 28.5 L 10 35 L 13 23 L 4 15.5 L 15.5 15 Z"
         {...stroke}
       />
+    </svg>
+  );
+}
+
+// ——— Playing-kid doodles — actual children figures, mid-stride/mid-jump ———
+
+export function RunningKidDoodle({ className }: DoodleProps) {
+  return (
+    <svg viewBox="0 0 44 44" className={className} aria-hidden>
+      <circle cx="23" cy="9" r="6" {...stroke} />
+      <path d="M 23 15 L 19 27" {...stroke} />
+      <path d="M 19 18 L 31 12" {...stroke} />
+      <path d="M 20 19 L 9 25" {...stroke} />
+      <path d="M 19 27 L 28 31 L 25 41" {...stroke} />
+      <path d="M 19 27 L 11 33 L 14 41" {...stroke} />
+      <path d="M 2 30 Q 6 28 10 29" {...stroke} strokeDasharray="2.5 4" />
+    </svg>
+  );
+}
+
+export function JumpingKidDoodle({ className }: DoodleProps) {
+  return (
+    <svg viewBox="0 0 40 44" className={className} aria-hidden>
+      <circle cx="20" cy="9" r="6" {...stroke} />
+      <path d="M 20 15 L 20 26" {...stroke} />
+      <path d="M 20 17 L 8 6" {...stroke} />
+      <path d="M 20 17 L 32 6" {...stroke} />
+      <path d="M 20 26 L 12 34 L 15 41" {...stroke} />
+      <path d="M 20 26 L 26 35 L 23 41" {...stroke} />
+      <path d="M 10 41 Q 13 43 16 41" {...stroke} strokeDasharray="2 3" />
+      <path d="M 24 41 Q 27 43 30 41" {...stroke} strokeDasharray="2 3" />
+    </svg>
+  );
+}
+
+// ——— Playground-scene doodles — bigger set-piece illustrations for the hero ———
+
+/** Ladder + curved slide, matching the crayon-stroke doodle style. */
+export function SlideDoodle({ className }: DoodleProps) {
+  return (
+    <svg viewBox="0 0 84 100" className={className} aria-hidden>
+      {/* ladder */}
+      <path d="M 12 94 L 18 30" {...stroke} />
+      <path d="M 26 94 L 30 30" {...stroke} />
+      {[42, 54, 66, 78].map((y) => (
+        <line key={y} x1={13.5 + ((94 - y) / 64) * 4.5} y1={y} x2={27.5 + ((94 - y) / 64) * 2.5} y2={y} {...stroke} />
+      ))}
+      {/* platform */}
+      <path d="M 16 30 Q 24 24 34 28 L 34 34 L 16 34 Z" {...stroke} />
+      {/* slide chute */}
+      <path
+        d="M 33 29 C 55 32 62 44 58 56 C 54 68 40 66 38 78 C 37 85 44 88 52 86"
+        {...stroke}
+      />
+      <path
+        d="M 33 34 C 52 37 58 47 55 57 C 51 68 38 67 36 78"
+        {...stroke}
+        strokeDasharray="1 5"
+      />
+    </svg>
+  );
+}
+
+/** Round ball pit — rim with a scatter of multicolour balls inside. */
+export function BallPitDoodle({ className }: DoodleProps) {
+  const balls = [
+    { x: 14, y: 30, c: "#ff5a8a" },
+    { x: 30, y: 22, c: "#ffd93d" },
+    { x: 47, y: 28, c: "#00d4c8" },
+    { x: 63, y: 24, c: "#8b5cf6" },
+    { x: 22, y: 40, c: "#7cc5ff" },
+    { x: 40, y: 36, c: "#ff8a3d" },
+    { x: 57, y: 40, c: "#7ce2b5" },
+    { x: 72, y: 34, c: "#ff5a8a" },
+    { x: 33, y: 48, c: "#ffd93d" },
+    { x: 50, y: 48, c: "#8b5cf6" },
+  ];
+  return (
+    <svg viewBox="0 0 86 62" className={className} aria-hidden>
+      <path d="M 4 30 Q 4 12 43 12 Q 82 12 82 30" {...stroke} />
+      {balls.map((b, i) => (
+        <circle key={i} cx={b.x} cy={b.y} r="6" fill={b.c} stroke="currentColor" strokeWidth="1.4" strokeOpacity="0.35" />
+      ))}
+      <path d="M 2 30 Q 43 44 84 30 L 84 46 Q 43 60 2 46 Z" {...stroke} />
+    </svg>
+  );
+}
+
+/** Slanted climbing wall with staggered grip holds. */
+export function ClimbingWallDoodle({ className }: DoodleProps) {
+  const holds = [
+    [16, 20, "#ff5a8a"],
+    [34, 14, "#ffd93d"],
+    [50, 24, "#00d4c8"],
+    [14, 42, "#8b5cf6"],
+    [32, 38, "#7cc5ff"],
+    [50, 46, "#ff8a3d"],
+    [16, 64, "#7ce2b5"],
+    [34, 60, "#ff5a8a"],
+    [50, 68, "#ffd93d"],
+  ] as const;
+  return (
+    <svg viewBox="0 0 68 90" className={className} aria-hidden>
+      <path d="M 6 88 L 30 4 L 62 4 L 62 88 Z" {...stroke} />
+      {holds.map(([x, y, c], i) => (
+        <circle key={i} cx={x} cy={y} r="4.2" fill={c} stroke="currentColor" strokeWidth="1.3" strokeOpacity="0.35" />
+      ))}
+    </svg>
+  );
+}
+
+/**
+ * Full-width wavy ground/grass band — sits along the bottom of a scene so
+ * standalone doodles (slide, climbing wall, kids) read as one continuous
+ * illustrated backdrop instead of scattered icons. Fill colour via
+ * `text-*` on the wrapper (uses currentColor).
+ */
+export function GroundBandDoodle({ className }: DoodleProps) {
+  return (
+    <svg
+      viewBox="0 0 1600 140"
+      preserveAspectRatio="none"
+      className={className}
+      aria-hidden
+    >
+      <path
+        d="M0,60 C120,20 260,90 420,55 C580,20 720,85 880,50 C1040,15 1180,80 1340,48 C1440,28 1520,55 1600,40 L1600,140 L0,140 Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+/** Little party-room tent with a pennant flag on top and bunting-style door. */
+export function PartyTentDoodle({ className }: DoodleProps) {
+  return (
+    <svg viewBox="0 0 72 68" className={className} aria-hidden>
+      <path d="M 6 66 L 6 34 L 36 10 L 66 34 L 66 66 Z" {...stroke} />
+      <path d="M 36 10 L 36 2" {...stroke} />
+      <path d="M 36 2 L 48 6 L 36 10 Z" fill="#ff5a8a" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M 24 66 L 24 44 Q 24 38 30 38 L 42 38 Q 48 38 48 44 L 48 66" {...stroke} />
+      <path d="M 6 34 L 66 34" {...stroke} strokeDasharray="2 5" />
     </svg>
   );
 }

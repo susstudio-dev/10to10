@@ -2,19 +2,43 @@
 
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useTransform,
   useMotionValue,
   useSpring,
 } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { BookButton } from "./book-button";
 import { SparkleIcon, StarIcon, HeartIcon, UnderlineSquiggle } from "./vectors";
+import { useMotionSetting } from "./motion-settings";
 
-export function Hero() {
-  const reduce = useReducedMotion();
+type HeroProps = {
+  badge?: string;
+  headingPre?: string;
+  headingEmphasis?: string;
+  headingLine2?: string;
+  subheading?: string;
+};
+
+const DEFAULTS = {
+  badge: "Open 10 AM – 10 PM · 7 days a week",
+  headingPre: "Seven zones of",
+  headingEmphasis: "play",
+  headingLine2: "one unforgettable day.",
+  subheading:
+    "Khammam's all-in-one family playground. Soft play, play school, gaming, private theatre, party rooms and more — thoughtfully designed under one roof.",
+};
+
+export function Hero({
+  badge = DEFAULTS.badge,
+  headingPre = DEFAULTS.headingPre,
+  headingEmphasis = DEFAULTS.headingEmphasis,
+  headingLine2 = DEFAULTS.headingLine2,
+  subheading = DEFAULTS.subheading,
+}: HeroProps = {}) {
+  const reduce = useMotionSetting();
   const ref = useRef<HTMLElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [inView, setInView] = useState(true);
@@ -89,24 +113,34 @@ export function Hero() {
       className="relative min-h-[92svh] overflow-hidden pt-28 md:pt-32 pb-24 md:pb-28"
       style={{ perspective: 1500 }}
     >
-      {/* Far depth: subtle grid, slowest parallax */}
+      {/* Photo backdrop — the playground illustration, desaturated and washed
+          out so it reads as ambience rather than competing with the
+          headline. Slow Ken Burns drift plus the same far-depth parallax
+          keeps it gently alive instead of static. */}
       <motion.div
         aria-hidden
         style={{ y: yFar }}
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none overflow-hidden"
       >
-        <div
+        <motion.div
           className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(17,12,35,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(17,12,35,0.04) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-            maskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.6), transparent 70%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.6), transparent 70%)",
-          }}
-        />
+          initial={{ scale: 1.06 }}
+          animate={reduce ? undefined : { scale: [1.06, 1.13, 1.06] }}
+          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <Image
+            src="/images/hero-playground.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[center_65%] saturate-[0.9] brightness-[1.03]"
+          />
+        </motion.div>
+        {/* wash: just enough to keep the headline legible without flattening
+            the photo's colour */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/10 to-[#fdfbf7]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_50%_34%,rgba(255,255,255,0.6),transparent_72%)]" />
       </motion.div>
 
       {/* Mid depth: colored blobs */}
@@ -159,6 +193,7 @@ export function Hero() {
           >
             <SparkleIcon className="h-6 w-6" />
           </motion.div>
+
         </motion.div>
       )}
 
@@ -188,7 +223,7 @@ export function Hero() {
               <span className="absolute inset-0 rounded-full bg-brand-primary animate-ping opacity-60" />
               <span className="relative h-2 w-2 rounded-full bg-brand-primary" />
             </span>
-            Open 10 AM – 10 PM · 7 days a week
+            {badge}
           </motion.div>
 
           <motion.h1
@@ -198,14 +233,14 @@ export function Hero() {
             className="heading-xl mt-6"
             style={{ transform: "translateZ(80px)" }}
           >
-            Seven zones of{" "}
+            {headingPre}{" "}
             <span className="relative inline-block">
-              <span className="text-brand-turquoise">play</span>
+              <span className="text-brand-turquoise">{headingEmphasis}</span>
               <UnderlineSquiggle className="absolute -bottom-1 left-0 w-full h-2 text-brand-yellow" />
             </span>
             ,
             <br />
-            <span className="gradient-text">one unforgettable day.</span>
+            <span className="gradient-text">{headingLine2}</span>
           </motion.h1>
 
           <motion.p
@@ -215,9 +250,7 @@ export function Hero() {
             className="mt-6 max-w-xl mx-auto text-base md:text-lg text-brand-ink/65 leading-relaxed"
             style={{ transform: "translateZ(50px)" }}
           >
-            Khammam&apos;s all-in-one family playground. Soft play, play school,
-            gaming, private theatre, party rooms and more — thoughtfully designed
-            under one roof.
+            {subheading}
           </motion.p>
 
           <motion.div

@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import {
-  programs,
-  curriculum,
-  dailySchedule,
-  snacksMenu,
-  events,
-  fees,
-  admissionSteps,
-  whyUs,
-  playSchoolFaqs,
-  parentStories,
+  programs as programsDefault,
+  curriculum as curriculumDefault,
+  dailySchedule as dailyScheduleDefault,
+  snacksMenu as snacksMenuDefault,
+  events as eventsDefault,
+  fees as feesDefault,
+  admissionSteps as admissionStepsDefault,
+  whyUs as whyUsDefault,
+  playSchoolFaqs as playSchoolFaqsDefault,
+  parentStories as parentStoriesDefault,
 } from "@/content/playschool";
 import { AdmissionForm } from "@/components/admission-form";
 import { BookButton } from "@/components/book-button";
@@ -41,9 +41,11 @@ import {
   BalloonDoodle,
 } from "@/components/playful";
 import { Reveal, PopIn } from "@/components/reveal";
+import { PageHeroBackdrop } from "@/components/page-hero-backdrop";
 import { siteConfig } from "@/lib/utils";
 import Script from "next/script";
 import { faqJsonLd, pageMetadata } from "@/lib/seo";
+import { getContentMap, parseList } from "@/lib/content";
 
 export const metadata: Metadata = pageMetadata({
   title: "Play School in Khammam — Play-Based Preschool | Admissions Open 2026",
@@ -131,7 +133,26 @@ const preschoolJsonLd = {
   ],
 };
 
-export default function PlaySchoolPage() {
+export default async function PlaySchoolPage() {
+  const c = await getContentMap("play-school");
+  const badge = c["play-school.badge"] ?? "Admissions open for 2026–27 · limited seats";
+  const headingPre = c["play-school.heading_pre"] ?? "Where curiosity";
+  const headingEmphasis = c["play-school.heading_emphasis"] ?? "beats curriculum";
+  const subheading =
+    c["play-school.subheading"] ??
+    "A play-first preschool in Khammam. No worksheets, no homework, no rote drills — children read through stories, count through cooking, and learn science by getting their hands dirty. With trained educators, a 1:8 ratio, daily reports to your phone, and an open-door policy.";
+
+  const programs = parseList(c["play-school.programs"], programsDefault);
+  const curriculum = parseList(c["play-school.curriculum"], curriculumDefault);
+  const dailySchedule = parseList(c["play-school.dailySchedule"], dailyScheduleDefault);
+  const snacksMenu = parseList(c["play-school.snacksMenu"], snacksMenuDefault);
+  const events = parseList(c["play-school.events"], eventsDefault);
+  const fees = parseList(c["play-school.fees"], feesDefault);
+  const admissionSteps = parseList(c["play-school.admissionSteps"], admissionStepsDefault);
+  const whyUs = parseList(c["play-school.whyUs"], whyUsDefault);
+  const playSchoolFaqs = parseList(c["play-school.faqs"], playSchoolFaqsDefault);
+  const parentStories = parseList(c["play-school.parentStories"], parentStoriesDefault);
+
   return (
     <>
       <Script id="ld-preschool" type="application/ld+json">
@@ -143,6 +164,7 @@ export default function PlaySchoolPage() {
 
       {/* HERO — Play School theme: warm butter-cream + scholarly accents, fades into body */}
       <section className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden">
+        <PageHeroBackdrop tintFrom="from-[#fff9ea]/85" objectPosition="center 55%" />
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
           {/* layered theme wash */}
           <div className="absolute -top-32 -left-32 w-[640px] h-[640px] rounded-full bg-brand-yellow/22 blur-3xl" />
@@ -176,23 +198,19 @@ export default function PlaySchoolPage() {
                   <span className="absolute inset-0 rounded-full bg-brand-primary animate-ping opacity-60" />
                   <span className="relative h-2 w-2 rounded-full bg-brand-primary" />
                 </span>
-                Admissions open for 2026–27 · limited seats
+                {badge}
               </span>
             </PopIn>
             <h1 className="heading-xl mt-5">
-              Where curiosity{" "}
+              {headingPre}{" "}
               <span className="relative inline-block">
-                <span className="gradient-text">beats curriculum</span>
+                <span className="gradient-text">{headingEmphasis}</span>
                 <UnderlineSquiggle className="absolute -bottom-2 left-0 w-full h-3 text-brand-yellow" />
               </span>
               .
             </h1>
             <p className="mt-6 text-base md:text-lg text-brand-ink/65 leading-relaxed max-w-xl">
-              A play-first preschool in Khammam. No worksheets, no homework,
-              no rote drills — children read through stories, count through
-              cooking, and learn science by getting their hands dirty. With
-              trained educators, a 1:8 ratio, daily reports to your phone,
-              and an open-door policy.
+              {subheading}
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">

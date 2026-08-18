@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, Phone } from "lucide-react";
 import { nav } from "@/content/nav";
 import { siteConfig, cn } from "@/lib/utils";
-import { LogoV4 as Logo } from "./logo-v4";
+import { Logo } from "./logo";
 import { BookButton } from "./book-button";
 
 export function Navbar() {
@@ -37,8 +37,8 @@ export function Navbar() {
       className={cn(
         "fixed top-0 inset-x-0 z-50 transition-all duration-300",
         scrolled
-          ? "bg-[#fdfbf7]/85 backdrop-blur-xl border-b border-black/[0.06]"
-          : "bg-transparent"
+          ? "bg-[#fdfbf7]/95 border-b border-black/[0.06] shadow-[0_1px_0_rgba(17,12,35,0.02)]"
+          : "bg-[#fdfbf7]/75 border-b border-black/[0.03]"
       )}
     >
       {/* playschool signature: rainbow crayon strip */}
@@ -46,7 +46,7 @@ export function Navbar() {
       <div className="container">
         <nav className="flex items-center justify-between h-16 md:h-[72px]" aria-label="Main">
           <Link href="/" aria-label="10to10 Adventures home" className="active:scale-95 transition">
-            <Logo />
+            <Logo variant="full" size="xs" onLight />
           </Link>
 
           <ul className="hidden lg:flex items-center gap-8">

@@ -10,8 +10,12 @@ import { BackToTop } from "@/components/back-to-top";
 import { RouteScrollTop } from "@/components/route-scroll-top";
 import { StickyMobileCta } from "@/components/sticky-mobile-cta";
 import { WhatsappFab } from "@/components/whatsapp-fab";
+import { AmbientDoodles } from "@/components/ambient-doodles";
+import { SiteChrome } from "@/components/site-chrome";
+import { MotionSettingsProvider } from "@/components/motion-settings";
 import { siteConfig } from "@/lib/utils";
 import { localBusinessJsonLd } from "@/lib/seo";
+import { getSiteSettings, hexToRgbTriplet } from "@/lib/settings";
 
 // Baloo 2 — chunky, rounded, joyful display face (headings)
 const displayFont = Baloo_2({
@@ -94,31 +98,63 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await getSiteSettings();
+  const themeVars = `:root{
+    --brand-primary-rgb: ${hexToRgbTriplet(settings.colorPrimary)};
+    --brand-turquoise-rgb: ${hexToRgbTriplet(settings.colorTurquoise)};
+    --brand-yellow-rgb: ${hexToRgbTriplet(settings.colorYellow)};
+    --brand-orange-rgb: ${hexToRgbTriplet(settings.colorOrange)};
+    --brand-grape-rgb: ${hexToRgbTriplet(settings.colorGrape)};
+    --brand-mint-rgb: ${hexToRgbTriplet(settings.colorMint)};
+    --brand-sky-rgb: ${hexToRgbTriplet(settings.colorSky)};
+    --brand-ink-rgb: ${hexToRgbTriplet(settings.colorInk)};
+    --brand-cloud-rgb: ${hexToRgbTriplet(settings.colorCloud)};
+  }`;
+
   return (
-    <html lang="en-IN" className={`${displayFont.variable} ${bodyFont.variable} ${playfulFont.variable}`} suppressHydrationWarning>
+    <html
+      lang="en-IN"
+      className={`${displayFont.variable} ${bodyFont.variable} ${playfulFont.variable}`}
+      data-motion={settings.animationsEnabled ? undefined : "off"}
+      suppressHydrationWarning
+    >
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: themeVars }} />
+      </head>
       <body className="min-h-screen flex flex-col" suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }}
         />
         <a href="#main" className="skip-link">Skip to main content</a>
-        <SmoothScroll>
-          <BookingProvider>
-            <ScrollProgress />
-            <RouteScrollTop />
-            <Navbar />
-            <main id="main" className="flex-1">{children}</main>
-            <Footer />
-            <WhatsappFab />
-            <BackToTop />
-            <StickyMobileCta />
-          </BookingProvider>
-        </SmoothScroll>
+        <MotionSettingsProvider animationsEnabled={settings.animationsEnabled}>
+          <SiteChrome>
+            <AmbientDoodles />
+          </SiteChrome>
+          <SmoothScroll>
+            <BookingProvider>
+              <SiteChrome>
+                <ScrollProgress />
+              </SiteChrome>
+              <RouteScrollTop />
+              <SiteChrome>
+                <Navbar />
+              </SiteChrome>
+              <main id="main" className="flex-1">{children}</main>
+              <SiteChrome>
+                <Footer />
+                <WhatsappFab />
+                <BackToTop />
+                <StickyMobileCta />
+              </SiteChrome>
+            </BookingProvider>
+          </SmoothScroll>
+        </MotionSettingsProvider>
       </body>
     </html>
   );

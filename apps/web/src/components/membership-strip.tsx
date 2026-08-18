@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import { tiers } from "@/content/memberships";
+import { tiers as tiersDefault, type Tier } from "@/content/memberships";
 import { cn } from "@/lib/utils";
 import { BookButton } from "./book-button";
 import { PopIn } from "./reveal";
-import { Float, Tape, StarDoodle, SwirlDoodle } from "./playful";
+import { Float, Tape, StarDoodle, SwirlDoodle, WaveDivider } from "./playful";
 
 const tierEmoji: Record<string, string> = {
   silver: "🎈",
@@ -17,7 +17,7 @@ const tierEmoji: Record<string, string> = {
 /* hand-placed tilts — Gold (highlight) stays straight */
 const tierTilt = [-1.2, 0, 1.2];
 
-export function MembershipStrip() {
+export function MembershipStrip({ tiers = tiersDefault }: { tiers?: Tier[] }) {
   return (
     <section className="section bg-brand-ink text-white relative overflow-hidden">
       <div className="absolute -top-40 -left-20 w-96 h-96 rounded-full bg-brand-primary/10 blur-3xl" />
@@ -106,6 +106,8 @@ export function MembershipStrip() {
           ))}
         </div>
       </div>
+      {/* melt out of the dark tier into the cream CTA below instead of a hard cut */}
+      <WaveDivider fillClass="fill-[#fdfbf7]" className="bg-brand-ink -scale-x-100" />
     </section>
   );
 }

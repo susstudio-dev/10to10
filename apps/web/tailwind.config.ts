@@ -12,18 +12,19 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          // vibrant, kid-joyful palette
-          primary: "#2c3873",        // deep indigo (premium, gender-neutral)
+          // vibrant, kid-joyful palette — the 5 below are admin-configurable
+          // at /admin/appearance via CSS vars set in globals.css/layout.tsx
+          primary: "rgb(var(--brand-primary-rgb) / <alpha-value>)",     // deep indigo (premium, gender-neutral)
           "primary-deep": "#1a2354",
-          turquoise: "#00d4c8",       // pool-party teal
-          yellow: "#ffd93d",          // happy sunshine
-          orange: "#ff8a3d",          // tangerine
-          grape: "#8b5cf6",           // dreamy purple
-          purple: "#8b5cf6",          // alias for grape (legacy compat)
-          mint: "#7ce2b5",            // fresh mint
-          sky: "#7cc5ff",             // bubble sky
-          ink: "#1a1033",             // deep blueberry (softer than black)
-          cloud: "#fff9f2",           // warm cream bg (replaces cold grey)
+          turquoise: "rgb(var(--brand-turquoise-rgb) / <alpha-value>)", // pool-party teal
+          yellow: "rgb(var(--brand-yellow-rgb) / <alpha-value>)",       // happy sunshine
+          orange: "rgb(var(--brand-orange-rgb) / <alpha-value>)",      // tangerine
+          grape: "rgb(var(--brand-grape-rgb) / <alpha-value>)",        // dreamy purple
+          purple: "rgb(var(--brand-grape-rgb) / <alpha-value>)",       // alias for grape (legacy compat)
+          mint: "rgb(var(--brand-mint-rgb) / <alpha-value>)",         // fresh mint
+          sky: "rgb(var(--brand-sky-rgb) / <alpha-value>)",           // bubble sky
+          ink: "rgb(var(--brand-ink-rgb) / <alpha-value>)",           // deep blueberry (softer than black)
+          cloud: "rgb(var(--brand-cloud-rgb) / <alpha-value>)",       // warm cream bg (replaces cold grey)
         },
       },
       fontFamily: {
@@ -58,8 +59,13 @@ const config: Config = {
         bounce2: "bounce2 3s ease-in-out infinite",
         "spin-slow": "spin 18s linear infinite",
         pulse2: "pulse2 2.5s ease-in-out infinite",
+        "run-bob": "run-bob 0.9s ease-in-out infinite",
       },
       keyframes: {
+        "run-bob": {
+          "0%,100%": { transform: "translateY(0) rotate(-4deg)" },
+          "50%": { transform: "translateY(-10px) rotate(4deg)" },
+        },
         marquee: {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },

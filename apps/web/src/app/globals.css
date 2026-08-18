@@ -9,6 +9,20 @@
   --font-accent: "Caveat", cursive;
   --shadow-card: 0 1px 2px rgba(17,12,35,0.04), 0 2px 8px -2px rgba(17,12,35,0.06);
   --shadow-lift: 0 2px 4px rgba(17,12,35,0.05), 0 12px 24px -8px rgba(17,12,35,0.1);
+
+  /* Admin-configurable brand colors (RGB channels for Tailwind's
+     rgb(var(...) / <alpha-value>) opacity pattern). Overridden per-request
+     by an inline <style> in layout.tsx from /admin/appearance settings —
+     these are just the fallback defaults. */
+  --brand-primary-rgb: 44 56 115;
+  --brand-turquoise-rgb: 0 212 200;
+  --brand-yellow-rgb: 255 217 61;
+  --brand-orange-rgb: 255 138 61;
+  --brand-grape-rgb: 139 92 246;
+  --brand-mint-rgb: 124 226 181;
+  --brand-sky-rgb: 124 197 255;
+  --brand-ink-rgb: 26 16 51;
+  --brand-cloud-rgb: 255 249 242;
 }
 
 @layer base {
@@ -168,4 +182,15 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Admin "animations off" switch (/admin/appearance) — same effect as
+   prefers-reduced-motion, applied regardless of OS setting. */
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }

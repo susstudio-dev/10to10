@@ -27,7 +27,28 @@ import {
   StarDoodle,
 } from "@/components/playful";
 import { Reveal, PopIn } from "@/components/reveal";
+import { PageHeroBackdrop } from "@/components/page-hero-backdrop";
 import { faqJsonLd, pageMetadata } from "@/lib/seo";
+import { getContentMap, parseList } from "@/lib/content";
+import type { ComponentType } from "react";
+
+// Icon fields in DB-editable lists (activities, included) store a lucide
+// icon NAME string (content must be JSON-serializable), resolved here.
+const ICONS: Record<string, ComponentType<{ className?: string }>> = {
+  Heart,
+  Palette,
+  Music,
+  Pencil,
+  Trophy,
+  Sparkles,
+  Utensils,
+  ShieldCheck,
+  Users,
+  Bus,
+};
+function resolveIcon(name: string) {
+  return ICONS[name] ?? Sparkles;
+}
 
 export const metadata = pageMetadata({
   title: "Summer Camp Khammam 2026 — Ages 3-12",
@@ -43,46 +64,46 @@ export const metadata = pageMetadata({
   ],
 });
 
-const activities = [
+const activitiesDefault = [
   {
-    icon: Heart,
+    icon: "Heart",
     title: "Meditation",
     desc: "Kid-friendly mindfulness, gentle breathing, and quiet-time stories to start the day grounded.",
     color: "bg-brand-mint/20 text-brand-turquoise",
   },
   {
-    icon: Palette,
+    icon: "Palette",
     title: "Art & Craft",
     desc: "Painting, clay, origami, recycled crafts, and themed projects to spark creative confidence.",
     color: "bg-brand-primary/10 text-brand-primary",
   },
   {
-    icon: Music,
+    icon: "Music",
     title: "Storytelling & Dance",
     desc: "Two daily sessions — narrative play and freestyle moves with a closing showcase for parents.",
     color: "bg-brand-grape/10 text-brand-grape",
   },
   {
-    icon: Pencil,
+    icon: "Pencil",
     title: "Drawing",
     desc: "Mark-making, doodling, sketching, and turning imagination into colour on the page.",
     color: "bg-brand-turquoise/10 text-brand-turquoise",
   },
   {
-    icon: Trophy,
+    icon: "Trophy",
     title: "Fun Sessions & Games",
     desc: "Indoor sports, relay races, obstacle courses, team challenges and daily soft-play.",
     color: "bg-brand-orange/10 text-brand-orange",
   },
   {
-    icon: Sparkles,
+    icon: "Sparkles",
     title: "Theme Celebrations",
     desc: "Pyjama day, superhero day, cultural day, water day, movie day and a grand finale.",
     color: "bg-brand-yellow/20 text-brand-orange",
   },
 ];
 
-const schedule = [
+const scheduleDefault = [
   { time: "09:30 – 10:10", activity: "Meditation", tag: "Morning" },
   { time: "10:10 – 10:50", activity: "Art & Craft", tag: "Morning" },
   { time: "10:50 – 11:10", activity: "Snacks break", tag: "Break" },
@@ -106,7 +127,7 @@ const dotStyles = [
   "bg-brand-sky rotate-[6deg]",
 ];
 
-const ageGroups = [
+const ageGroupsDefault = [
   {
     name: "Little Explorers",
     age: "3 – 5 yrs",
@@ -131,7 +152,7 @@ const ageGroups = [
   },
 ];
 
-const pricing = [
+const pricingDefault = [
   {
     name: "Weekly Pass",
     price: "₹2,499",
@@ -169,7 +190,7 @@ const pricing = [
   },
 ];
 
-const faqs = [
+const faqsDefault = [
   {
     q: "What are the camp dates?",
     a: "April 1 – May 31, 2026. Monday to Friday, 9:30 AM – 5 PM with a 90-minute lunch break (12:30 – 2 PM). Weekends off. You can join weekly, monthly, or for the full 2 months.",
@@ -204,14 +225,29 @@ const faqs = [
   },
 ];
 
-const included = [
-  { icon: Utensils, label: "Snacks & meals" },
-  { icon: ShieldCheck, label: "Trained staff" },
-  { icon: Users, label: "1:8 ratio" },
-  { icon: Bus, label: "Pickup (optional)" },
+const includedDefault = [
+  { icon: "Utensils", label: "Snacks & meals" },
+  { icon: "ShieldCheck", label: "Trained staff" },
+  { icon: "Users", label: "1:8 ratio" },
+  { icon: "Bus", label: "Pickup (optional)" },
 ];
 
-export default function SummerCampPage() {
+export default async function SummerCampPage() {
+  const c = await getContentMap("summer-camp");
+  const badge = c["summer-camp.badge"] ?? "Summer Camp 2027 · waitlist open";
+  const headingPre = c["summer-camp.heading_pre"] ?? "Where summer turns into";
+  const headingEmphasis = c["summer-camp.heading_emphasis"] ?? "unforgettable";
+  const subheading =
+    c["summer-camp.subheading"] ??
+    "Two months of meditation, art, dance, games, drawing and theme celebrations — for kids aged 3 to 12. Two-session days with a long lunch break, small batches, trained mentors.";
+
+  const activities = parseList(c["summer-camp.activities"], activitiesDefault);
+  const schedule = parseList(c["summer-camp.schedule"], scheduleDefault);
+  const ageGroups = parseList(c["summer-camp.ageGroups"], ageGroupsDefault);
+  const pricing = parseList(c["summer-camp.pricing"], pricingDefault);
+  const faqs = parseList(c["summer-camp.faqs"], faqsDefault);
+  const included = parseList(c["summer-camp.included"], includedDefault);
+
   return (
     <>
       <script
@@ -220,6 +256,7 @@ export default function SummerCampPage() {
       />
       {/* HERO — Summer Camp theme: sunlit outdoor (sun + grass), fades into body */}
       <section className="relative pt-32 pb-24 overflow-hidden">
+        <PageHeroBackdrop tintFrom="from-[#fff7df]/85" objectPosition="center 58%" />
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
           {/* sun in the top-right */}
           <div className="absolute -top-32 -right-24 w-[640px] h-[640px] rounded-full bg-brand-yellow/35 blur-3xl" />
@@ -255,16 +292,14 @@ export default function SummerCampPage() {
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 chip bg-white/80 backdrop-blur border-2 border-brand-primary/20 font-bold text-brand-primary">
               <Sun className="h-3.5 w-3.5" />
-              Summer Camp 2027 · waitlist open
+              {badge}
             </span>
             <h1 className="heading-xl mt-5">
-              Where summer turns into{" "}
-              <span className="gradient-text">unforgettable</span>.
+              {headingPre}{" "}
+              <span className="gradient-text">{headingEmphasis}</span>.
             </h1>
             <p className="mt-6 text-lg md:text-xl text-brand-ink/75 leading-relaxed max-w-2xl">
-              Two months of meditation, art, dance, games, drawing and theme
-              celebrations — for kids aged 3 to 12. Two-session days with a long
-              lunch break, small batches, trained mentors.
+              {subheading}
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -318,25 +353,28 @@ export default function SummerCampPage() {
             </h2>
           </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {activities.map((a, i) => (
-              <Reveal key={a.title} delay={Math.min(i * 0.06, 0.3)}>
-                <div
-                  className={`group h-full rounded-3xl border-2 border-brand-ink/5 bg-white p-7 hover:-translate-y-1 hover:shadow-lifted transition hover:rotate-0 ${
-                    i % 3 === 0 ? "rotate-[-1deg]" : i % 3 === 2 ? "rotate-[1deg]" : ""
-                  }`}
-                >
+            {activities.map((a, i) => {
+              const Icon = resolveIcon(a.icon);
+              return (
+                <Reveal key={a.title} delay={Math.min(i * 0.06, 0.3)}>
                   <div
-                    className={`inline-flex w-12 h-12 rounded-2xl items-center justify-center transition group-hover:rotate-6 group-hover:scale-110 ${a.color}`}
+                    className={`group h-full rounded-3xl border-2 border-brand-ink/5 bg-white p-7 hover:-translate-y-1 hover:shadow-lifted transition hover:rotate-0 ${
+                      i % 3 === 0 ? "rotate-[-1deg]" : i % 3 === 2 ? "rotate-[1deg]" : ""
+                    }`}
                   >
-                    <a.icon className="h-6 w-6" />
+                    <div
+                      className={`inline-flex w-12 h-12 rounded-2xl items-center justify-center transition group-hover:rotate-6 group-hover:scale-110 ${a.color}`}
+                    >
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="font-display text-xl font-bold mt-5">{a.title}</h3>
+                    <p className="text-sm text-brand-ink/70 mt-2 leading-relaxed">
+                      {a.desc}
+                    </p>
                   </div>
-                  <h3 className="font-display text-xl font-bold mt-5">{a.title}</h3>
-                  <p className="text-sm text-brand-ink/70 mt-2 leading-relaxed">
-                    {a.desc}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -410,15 +448,18 @@ export default function SummerCampPage() {
                 </p>
               </Reveal>
               <div className="mt-8 grid grid-cols-2 gap-3">
-                {included.map((i) => (
-                  <div
-                    key={i.label}
-                    className="flex items-center gap-3 rounded-2xl bg-white border-2 border-brand-ink/5 p-3"
-                  >
-                    <i.icon className="h-5 w-5 text-brand-primary shrink-0 hover-wiggle" />
-                    <span className="text-sm font-semibold">{i.label}</span>
-                  </div>
-                ))}
+                {included.map((i) => {
+                  const Icon = resolveIcon(i.icon);
+                  return (
+                    <div
+                      key={i.label}
+                      className="flex items-center gap-3 rounded-2xl bg-white border-2 border-brand-ink/5 p-3"
+                    >
+                      <Icon className="h-5 w-5 text-brand-primary shrink-0 hover-wiggle" />
+                      <span className="text-sm font-semibold">{i.label}</span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

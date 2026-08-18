@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ShieldCheck, HeartHandshake, Sparkles, Users2, Wifi, Coffee } from "lucide-react";
-import { Bunting, Float, SunDoodle, PuzzleDoodle } from "@/components/playful";
+import { Bunting, Float, SunDoodle, PuzzleDoodle, WaveDivider } from "@/components/playful";
 
 const tints = [
   "bg-brand-primary/10 text-brand-primary",
@@ -48,7 +48,11 @@ const reasons = [
 
 export function WhyUs() {
   return (
-    <section className="section relative">
+    <section className="relative">
+      {/* turquoise "safety & trust" world — its own tinted band instead of
+          another flat cream section, melted in/out with hand-drawn waves */}
+      <WaveDivider fillClass="fill-[#eafbf9]" />
+      <div className="relative overflow-hidden bg-[#eafbf9] section">
       <Float speed="slow" className="top-16 right-[5%] w-10 text-brand-yellow opacity-70 hidden md:block">
         <SunDoodle className="w-full" />
       </Float>
@@ -98,6 +102,8 @@ export function WhyUs() {
           ))}
         </div>
       </div>
+      </div>
+      <WaveDivider fillClass="fill-[#fdfbf7]" className="bg-[#eafbf9] -scale-x-100" />
     </section>
   );
 }
