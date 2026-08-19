@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { createSessionToken, SESSION_COOKIE } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   const { username, password } = await req.json();
-  const validUser = process.env.ADMIN_USERNAME;
-  const validPass = process.env.ADMIN_PASSWORD;
+  const env = getCloudflareContext().env;
+  const validUser = env.ADMIN_USERNAME;
+  const validPass = env.ADMIN_PASSWORD;
 
   if (!validUser || !validPass) {
     return NextResponse.json(

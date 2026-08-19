@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
 import { getAdminPage } from "@/lib/admin-pages";
 import { ContentEditor } from "../../content/content-editor";
 
@@ -8,10 +8,11 @@ export default async function AdminPageEditor({ params }: { params: Promise<{ sl
   const page = getAdminPage(slug);
   if (!page) notFound();
 
-  const items = await prisma.contentItem.findMany({
-    where: { section: page.section },
-    orderBy: { key: "asc" },
-  });
+  const db = getDB();
+  const { results: items } = await db
+    .prepare("SELECT * FROM ContentItem WHERE section = ? ORDER BY key ASC")
+    .bind(page.section)
+    .all<{ id: string; section: string; key: string; label: string; type: string; value: string }>();
 
   return (
     <div>

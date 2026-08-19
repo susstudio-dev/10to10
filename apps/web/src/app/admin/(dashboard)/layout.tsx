@@ -2,13 +2,13 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { LogoutButton } from "./logout-button";
 import { ADMIN_PAGES } from "@/lib/admin-pages";
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
-  const customPages = await prisma.page.findMany({
-    orderBy: { title: "asc" },
-    select: { id: true, title: true },
-  });
+  const db = getDB();
+  const { results: customPages } = await db
+    .prepare("SELECT id, title FROM Page ORDER BY title ASC")
+    .all<{ id: string; title: string }>();
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex">

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getDB, newId, nowIso } from "@/lib/db";
 import { serializeBlocks } from "@/lib/blocks";
 
 const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -22,8 +22,9 @@ const RESERVED_SLUGS = new Set([
 ]);
 
 export async function GET() {
-  const pages = await prisma.page.findMany({ orderBy: { updatedAt: "desc" } });
-  return NextResponse.json({ pages });
+  const db = getDB();
+  const { results } = await db.prepare("SELECT * FROM Page ORDER BY updatedAt DESC").all();
+  return NextResponse.json({ pages: results });
 }
 
 export async function POST(req: NextRequest) {
@@ -42,19 +43,31 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: `"${slug}" is reserved — pick another slug.` }, { status: 400 });
   }
 
-  const existing = await prisma.page.findUnique({ where: { slug } });
+  const db = getDB();
+  const existing = await db.prepare("SELECT id FROM Page WHERE slug = ?").bind(slug).first();
   if (existing) {
     return NextResponse.json({ error: "A page with that slug already exists." }, { status: 409 });
   }
 
-  const page = await prisma.page.create({
-    data: {
-      title,
-      slug,
-      content: typeof content === "string" ? content : "",
-      blocks: serializeBlocks(blocks),
-      published: published ?? true,
-    },
-  });
+  const id = newId();
+  const timestamp = nowIso();
+  const page = {
+    id,
+    slug,
+    title,
+    content: typeof content === "string" ? content : "",
+    blocks: serializeBlocks(blocks),
+    published: published ?? true,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  };
+
+  await db
+    .prepare(
+      "INSERT INTO Page (id, slug, title, content, blocks, published, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    )
+    .bind(page.id, page.slug, page.title, page.content, page.blocks, page.published ? 1 : 0, page.createdAt, page.updatedAt)
+    .run();
+
   return NextResponse.json({ page }, { status: 201 });
 }

@@ -1,20 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { unlink } from "fs/promises";
-import path from "path";
+import { getDB, getMediaBucket } from "@/lib/db";
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const asset = await prisma.mediaAsset.findUnique({ where: { id } });
+  const db = getDB();
+  const asset = await db
+    .prepare("SELECT * FROM MediaAsset WHERE id = ?")
+    .bind(id)
+    .first<{ id: string; path: string }>();
   if (!asset) {
     return NextResponse.json({ error: "Not found." }, { status: 404 });
   }
 
-  await prisma.mediaAsset.delete({ where: { id } });
+  await db.prepare("DELETE FROM MediaAsset WHERE id = ?").bind(id).run();
+
+  const objectKey = asset.path.replace(/^\/media\//, "");
   try {
-    await unlink(path.join(process.cwd(), "public", asset.path));
+    await getMediaBucket().delete(objectKey);
   } catch {
-    // file already gone — the DB row is the source of truth for the UI
+    // R2 object already gone — the DB row is the source of truth for the UI
   }
   return NextResponse.json({ ok: true });
 }

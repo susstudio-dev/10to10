@@ -1,8 +1,11 @@
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
 import { MediaManager } from "./media-manager";
 
 export default async function MediaPage() {
-  const assets = await prisma.mediaAsset.findMany({ orderBy: { uploadedAt: "desc" } });
+  const db = getDB();
+  const { results: assets } = await db
+    .prepare("SELECT * FROM MediaAsset ORDER BY uploadedAt DESC")
+    .all<{ id: string; filename: string; path: string; altText: string }>();
 
   return (
     <div>

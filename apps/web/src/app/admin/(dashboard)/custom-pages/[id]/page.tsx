@@ -1,10 +1,13 @@
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
 import { PageForm } from "../page-form";
+
+type PageRow = { id: string; slug: string; title: string; blocks: string; published: number };
 
 export default async function EditCustomPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const page = await prisma.page.findUnique({ where: { id } });
+  const db = getDB();
+  const page = await db.prepare("SELECT * FROM Page WHERE id = ?").bind(id).first<PageRow>();
   if (!page) notFound();
 
   return (
@@ -12,7 +15,7 @@ export default async function EditCustomPage({ params }: { params: Promise<{ id:
       <h1 className="text-2xl font-bold">Edit page</h1>
       <p className="mt-1 text-sm text-slate-500">/pages/{page.slug}</p>
       <div className="mt-8">
-        <PageForm initial={page} />
+        <PageForm initial={{ ...page, published: !!page.published }} />
       </div>
     </div>
   );

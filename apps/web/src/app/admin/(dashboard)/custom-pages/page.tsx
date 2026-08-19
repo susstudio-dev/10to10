@@ -1,8 +1,13 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
+
+type PageRow = { id: string; slug: string; title: string; published: number };
 
 export default async function CustomPagesList() {
-  const pages = await prisma.page.findMany({ orderBy: { updatedAt: "desc" } });
+  const db = getDB();
+  const { results: pages } = await db
+    .prepare("SELECT * FROM Page ORDER BY updatedAt DESC")
+    .all<PageRow>();
 
   return (
     <div>

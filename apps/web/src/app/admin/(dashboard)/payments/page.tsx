@@ -1,7 +1,20 @@
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
+
+type PaymentRow = {
+  id: string;
+  customerName: string;
+  amountPaise: number;
+  currency: string;
+  provider: string;
+  status: string;
+  createdAt: string;
+};
 
 export default async function PaymentsPage() {
-  const payments = await prisma.paymentRecord.findMany({ orderBy: { createdAt: "desc" } });
+  const db = getDB();
+  const { results: payments } = await db
+    .prepare("SELECT * FROM PaymentRecord ORDER BY createdAt DESC")
+    .all<PaymentRow>();
 
   return (
     <div>

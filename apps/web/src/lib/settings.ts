@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
 
 export const DEFAULT_SETTINGS = {
   colorPrimary: "#2c3873",
@@ -93,9 +93,25 @@ export type SiteSettingsData = typeof DEFAULT_SETTINGS;
  * Loads the singleton SiteSettings row, falling back to defaults if the
  * database isn't reachable yet so the site never breaks over this.
  */
+type SettingsRow = {
+  colorPrimary: string;
+  colorTurquoise: string;
+  colorYellow: string;
+  colorOrange: string;
+  colorGrape: string;
+  colorMint: string;
+  colorSky: string;
+  colorInk: string;
+  colorCloud: string;
+  animationsEnabled: number;
+};
+
 export async function getSiteSettings(): Promise<SiteSettingsData> {
   try {
-    const row = await prisma.siteSettings.findUnique({ where: { id: "default" } });
+    const db = getDB();
+    const row = await db
+      .prepare("SELECT * FROM SiteSettings WHERE id = 'default'")
+      .first<SettingsRow>();
     if (!row) return DEFAULT_SETTINGS;
     return {
       colorPrimary: row.colorPrimary,
@@ -107,7 +123,7 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
       colorSky: row.colorSky,
       colorInk: row.colorInk,
       colorCloud: row.colorCloud,
-      animationsEnabled: row.animationsEnabled,
+      animationsEnabled: !!row.animationsEnabled,
     };
   } catch (err) {
     console.warn("[settings] failed to load site settings:", err);

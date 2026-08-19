@@ -1,10 +1,11 @@
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
 import { ContentEditor } from "./content-editor";
 
 export default async function ContentPage() {
-  const items = await prisma.contentItem.findMany({
-    orderBy: [{ section: "asc" }, { key: "asc" }],
-  });
+  const db = getDB();
+  const { results: items } = await db
+    .prepare("SELECT * FROM ContentItem ORDER BY section ASC, key ASC")
+    .all<{ id: string; section: string; key: string; label: string; type: string; value: string }>();
 
   return (
     <div>

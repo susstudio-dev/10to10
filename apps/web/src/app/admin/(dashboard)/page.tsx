@@ -1,12 +1,18 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
 import { ADMIN_PAGES } from "@/lib/admin-pages";
+
+async function count(table: string) {
+  const db = getDB();
+  const row = await db.prepare(`SELECT COUNT(*) as n FROM ${table}`).first<{ n: number }>();
+  return row?.n ?? 0;
+}
 
 export default async function AdminDashboardPage() {
   const [mediaCount, paymentCount, customPageCount] = await Promise.all([
-    prisma.mediaAsset.count(),
-    prisma.paymentRecord.count(),
-    prisma.page.count(),
+    count("MediaAsset"),
+    count("PaymentRecord"),
+    count("Page"),
   ]);
 
   return (

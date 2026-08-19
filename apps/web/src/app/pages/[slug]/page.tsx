@@ -1,13 +1,16 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
 import { pageMetadata } from "@/lib/seo";
 import { parseBlocks } from "@/lib/blocks";
 import { BlockReveal } from "@/components/block-reveal";
 
+type PageRow = { title: string; content: string; blocks: string; published: number };
+
 async function getPage(slug: string) {
-  const page = await prisma.page.findUnique({ where: { slug } });
+  const db = getDB();
+  const page = await db.prepare("SELECT * FROM Page WHERE slug = ?").bind(slug).first<PageRow>();
   if (!page || !page.published) return null;
   return page;
 }

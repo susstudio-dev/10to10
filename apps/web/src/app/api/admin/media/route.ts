@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import { randomUUID } from "crypto";
+import { getDB, getMediaBucket, newId, nowIso } from "@/lib/db";
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/svg+xml", "image/gif"];
 const MAX_SIZE = 8 * 1024 * 1024;
 
 export async function GET() {
-  const assets = await prisma.mediaAsset.findMany({ orderBy: { uploadedAt: "desc" } });
-  return NextResponse.json({ assets });
+  const db = getDB();
+  const { results } = await db
+    .prepare("SELECT * FROM MediaAsset ORDER BY uploadedAt DESC")
+    .all();
+  return NextResponse.json({ assets: results });
 }
 
 export async function POST(req: NextRequest) {
@@ -28,14 +27,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "File too large (max 8MB)." }, { status: 400 });
   }
 
-  await mkdir(UPLOAD_DIR, { recursive: true });
-  const ext = path.extname(file.name) || "";
-  const filename = `${randomUUID()}${ext}`;
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(path.join(UPLOAD_DIR, filename), buffer);
+  const ext = file.name.includes(".") ? file.name.slice(file.name.lastIndexOf(".")) : "";
+  const objectKey = `uploads/${newId()}${ext}`;
 
-  const asset = await prisma.mediaAsset.create({
-    data: { filename: file.name, path: `/uploads/${filename}`, altText },
+  const bucket = getMediaBucket();
+  await bucket.put(objectKey, await file.arrayBuffer(), {
+    httpMetadata: { contentType: file.type },
   });
+
+  const id = newId();
+  const uploadedAt = nowIso();
+  const publicPath = `/media/${objectKey}`;
+
+  const db = getDB();
+  await db
+    .prepare("INSERT INTO MediaAsset (id, filename, path, altText, uploadedAt) VALUES (?, ?, ?, ?, ?)")
+    .bind(id, file.name, publicPath, altText, uploadedAt)
+    .run();
+
+  const asset = { id, filename: file.name, path: publicPath, altText, uploadedAt };
   return NextResponse.json({ asset }, { status: 201 });
 }

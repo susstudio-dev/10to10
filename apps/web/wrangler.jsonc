@@ -1,0 +1,34 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "10to10-web",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  // Created by `wrangler login` + `wrangler d1 create 10to10-admin` —
+  // replace database_id with the real one it prints out, then run:
+  //   npx wrangler d1 migrations apply DB --local   (for local dev)
+  //   npx wrangler d1 migrations apply DB --remote  (once deployed)
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "10to10-admin",
+      "database_id": "REPLACE_WITH_REAL_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Created by `wrangler r2 bucket create 10to10-media` — holds uploaded
+  // admin images, served back through /media/[...key].
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "10to10-media"
+    }
+  ],
+  // Set these with `wrangler secret put <NAME>` before deploying; for local
+  // dev, put them in .dev.vars (gitignored) instead — see .dev.vars.example.
+  "vars": {}
+}

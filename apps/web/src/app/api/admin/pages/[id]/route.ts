@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getDB, nowIso } from "@/lib/db";
 import { serializeBlocks } from "@/lib/blocks";
 
 const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -21,7 +21,8 @@ const RESERVED_SLUGS = new Set([
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const page = await prisma.page.findUnique({ where: { id } });
+  const db = getDB();
+  const page = await db.prepare("SELECT * FROM Page WHERE id = ?").bind(id).first();
   if (!page) return NextResponse.json({ error: "Not found." }, { status: 404 });
   return NextResponse.json({ page });
 }
@@ -43,28 +44,36 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: `"${slug}" is reserved — pick another slug.` }, { status: 400 });
   }
 
-  const conflict = await prisma.page.findUnique({ where: { slug } });
+  const db = getDB();
+  const conflict = await db
+    .prepare("SELECT id FROM Page WHERE slug = ?")
+    .bind(slug)
+    .first<{ id: string }>();
   if (conflict && conflict.id !== id) {
     return NextResponse.json({ error: "A page with that slug already exists." }, { status: 409 });
   }
 
-  const page = await prisma.page.update({
-    where: { id },
-    data: {
-      title,
-      slug,
-      content: typeof content === "string" ? content : "",
-      blocks: serializeBlocks(blocks),
-      published: !!published,
-    },
-  });
+  const updatedAt = nowIso();
+  const contentValue = typeof content === "string" ? content : "";
+  const blocksValue = serializeBlocks(blocks);
+  const publishedValue = published ? 1 : 0;
+
+  await db
+    .prepare(
+      "UPDATE Page SET title = ?, slug = ?, content = ?, blocks = ?, published = ?, updatedAt = ? WHERE id = ?"
+    )
+    .bind(title, slug, contentValue, blocksValue, publishedValue, updatedAt, id)
+    .run();
+
+  const page = await db.prepare("SELECT * FROM Page WHERE id = ?").bind(id).first();
   return NextResponse.json({ page });
 }
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const page = await prisma.page.findUnique({ where: { id } });
+  const db = getDB();
+  const page = await db.prepare("SELECT id FROM Page WHERE id = ?").bind(id).first();
   if (!page) return NextResponse.json({ error: "Not found." }, { status: 404 });
-  await prisma.page.delete({ where: { id } });
+  await db.prepare("DELETE FROM Page WHERE id = ?").bind(id).run();
   return NextResponse.json({ ok: true });
 }

@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getDB, nowIso } from "@/lib/db";
 
 export async function GET() {
-  const items = await prisma.contentItem.findMany({
-    orderBy: [{ section: "asc" }, { key: "asc" }],
-  });
-  return NextResponse.json({ items });
+  const db = getDB();
+  const { results } = await db
+    .prepare("SELECT * FROM ContentItem ORDER BY section ASC, key ASC")
+    .all();
+  return NextResponse.json({ items: results });
 }
 
 export async function PUT(req: NextRequest) {
@@ -13,6 +14,11 @@ export async function PUT(req: NextRequest) {
   if (!key || typeof value !== "string") {
     return NextResponse.json({ error: "key and value are required." }, { status: 400 });
   }
-  const item = await prisma.contentItem.update({ where: { key }, data: { value } });
+  const db = getDB();
+  await db
+    .prepare("UPDATE ContentItem SET value = ?, updatedAt = ? WHERE key = ?")
+    .bind(value, nowIso(), key)
+    .run();
+  const item = await db.prepare("SELECT * FROM ContentItem WHERE key = ?").bind(key).first();
   return NextResponse.json({ item });
 }

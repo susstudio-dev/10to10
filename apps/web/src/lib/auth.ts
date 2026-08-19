@@ -1,11 +1,12 @@
 import { SignJWT, jwtVerify } from "jose";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export const SESSION_COOKIE = "admin_session";
 
 function getSecret() {
-  const secret = process.env.SESSION_SECRET;
+  const secret = getCloudflareContext().env.SESSION_SECRET;
   if (!secret) {
-    throw new Error("SESSION_SECRET is not set — add it to apps/web/.env.local");
+    throw new Error("SESSION_SECRET is not set — add it to apps/web/.dev.vars (or as a wrangler secret in production)");
   }
   return new TextEncoder().encode(secret);
 }

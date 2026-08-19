@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getDB } from "@/lib/db";
 
 export async function GET() {
-  const payments = await prisma.paymentRecord.findMany({ orderBy: { createdAt: "desc" } });
-  return NextResponse.json({ payments });
+  const db = getDB();
+  const { results } = await db
+    .prepare("SELECT * FROM PaymentRecord ORDER BY createdAt DESC")
+    .all();
+  return NextResponse.json({ payments: results });
 }
