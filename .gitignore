@@ -15,6 +15,6 @@ next-env.d.ts
 
 # Cloudflare local dev secrets + emulated D1/R2 state + build output
 apps/web/.dev.vars
-apps/web/.wrangler/
+.wrangler/
 apps/web/.open-next/
 apps/web/public/uploads/

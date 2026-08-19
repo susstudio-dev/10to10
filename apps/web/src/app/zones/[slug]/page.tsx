@@ -21,10 +21,10 @@ const accentTint: Record<Accent, { doodle: string; halo: string; check: string }
 
 const checkTilts = ["-rotate-6", "rotate-3", "-rotate-3", "rotate-6"];
 
-export function generateStaticParams() {
-  return zones.map((z) => ({ slug: z.slug }));
-}
-
+// No generateStaticParams: prerendering these pages would bake the default
+// theme into their HTML, ignoring admin color edits — the root layout pulls
+// SiteSettings from D1 per request, so zones render dynamically like the
+// rest of the site. Unknown slugs still 404 via notFound() below.
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const zone = zones.find((z) => z.slug === slug);

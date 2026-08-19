@@ -98,6 +98,12 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+// Every route reads CMS data from D1 (this layout pulls SiteSettings for the
+// theme), so nothing can be prerendered at build time — there is no real
+// database there, and `getCloudflareContext()` throws in sync mode during
+// SSG. Rendering per-request also means admin edits show up immediately.
+export const dynamic = "force-dynamic";
+
 export default async function RootLayout({
   children,
 }: {

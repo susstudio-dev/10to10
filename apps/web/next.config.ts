@@ -31,6 +31,9 @@ export default config;
 // Workers in production. Async internally, but intentionally not awaited
 // here (per @opennextjs/cloudflare's own docs) — awaiting would require
 // top-level await, which breaks Next's CJS config transpilation.
-if (!isStaticExport) {
+// Dev-only: `next build` also evaluates this config (in several worker
+// processes at once), and booting Miniflare there is useless — no route
+// prerenders — and crashes workerd on Windows.
+if (!isStaticExport && process.env.NODE_ENV === "development") {
   initOpenNextCloudflareForDev();
 }
