@@ -19,7 +19,7 @@
     {
       "binding": "DB",
       "database_name": "10to10-admin",
-      "database_id": "REPLACE_WITH_REAL_D1_DATABASE_ID",
+      "database_id": "5bc48659-c5ab-464c-8452-00151a14179b",
       "migrations_dir": "migrations"
     }
   ],
